@@ -25,12 +25,11 @@ from ask_sdk_core.skill_builder import CustomSkillBuilder
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
 
 from ask_sdk_model import Response
-from ask_sdk_core import utils
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-dotenv_path = join(dirname(__file__), '.env')
+dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 SECRET_PHRASE = os.environ.get("SECRET_PHRASE")
@@ -39,7 +38,7 @@ ALGORITHM = os.environ.get("ALGORITHM")
 REQUEST_SERVER_OUTPUT = """
     Welcome to PyTrain! To get started, I need to know your
     PyTrain server URL. Please say: 'My PyTrain server is', followed by
-    your server's URL. Use the word 'dot' for periods. 
+    your server's URL. Use the word 'dot' for periods.
 """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
@@ -47,19 +46,20 @@ REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the n
 PYTRAIN_REPROMPT = "For PyTrain help, say 'help!"
 
 PATH_MAP = {
-    '0': "engine",
-    '1': "train",
-    '2': "switch",
-    '3': "accessory",
-    '4': "route",
+    "0": "engine",
+    "1": "train",
+    "2": "switch",
+    "3": "accessory",
+    "4": "route",
 }
 
 #
-# initialize persistance adapter
-ddb_region = os.environ.get('DYNAMODB_PERSISTENCE_REGION')
-ddb_table_name = os.environ.get('DYNAMODB_PERSISTENCE_TABLE_NAME')
+# initialize persistence adapter
+ddb_region = os.environ.get("DYNAMODB_PERSISTENCE_REGION")
+ddb_table_name = os.environ.get("DYNAMODB_PERSISTENCE_TABLE_NAME")
+logger.info(f"ddb_region: {ddb_region} ddb_table_name: {ddb_table_name}")
 
-ddb_resource = boto3.resource('dynamodb', region_name=ddb_region)
+ddb_resource = boto3.resource("dynamodb", region_name=ddb_region)
 dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=False, dynamodb_resource=ddb_resource)
 
 
@@ -67,17 +67,18 @@ class NoServerException(Exception):
     pass
 
 
-def get_state(handler_input):
+def get_state(handler_input) -> dict:
     state = handler_input.attributes_manager.session_attributes
-    if state is None or state.get('URL_BASE', None) is None:
+    if state is None or state.get("URL_BASE", None) is None:
         state = handler_input.attributes_manager.persistent_attributes
         if not state:
-            state['server'] = None
-            state['URL_BASE'] = None
-            state['invocations'] = 0
+            state["server"] = None
+            state["URL_BASE"] = None
+            state["invocations"] = 0
             handler_input.attributes_manager.save_persistent_attributes()
         handler_input.attributes_manager.session_attributes = state
     return state
+
 
 def persist_state(handler_input, state: Dict[str, Any]):
     if handler_input.attributes_manager.session_attributes:
@@ -86,20 +87,22 @@ def persist_state(handler_input, state: Dict[str, Any]):
     else:
         persisted_state = {}
         handler_input.attributes_manager.session_attributes = session_state = {}
-    for k,v in state.items():
+    for k, v in state.items():
         session_state[k] = v
-        if k not in ['api-key', 'uid']:
+        if k not in ["api-key", "uid"]:
             persisted_state[k] = v
+    persisted_state["ddb_table_name"] = ddb_table_name
     handler_input.attributes_manager.persistent_attributes = persisted_state
     handler_input.attributes_manager.save_persistent_attributes()
 
-def get_user_info(handler_input):
-    #Fetching access token
-    accesstoken = str(handler_input.request_envelope.context.system.api_access_token)
-    api_access_token = "Bearer " + accesstoken 
+
+def get_user_info(handler_input) -> dict:
+    # Fetching access token
+    access_token = str(handler_input.request_envelope.context.system.api_access_token)
+    api_access_token = "Bearer " + access_token
     headers = {"Authorization": api_access_token}
-    user_info = {'uid': get_user_id(handler_input)}
-    for pc in ['email', 'givenName']:
+    user_info = {"uid": get_user_id(handler_input)}
+    for pc in ["email", "givenName"]:
         # Fetching user profile from ASK API
         ep = f"https://api.amazonalexa.com/v2/accounts/~current/settings/Profile.{pc}"
         r = requests.get(ep, headers=headers)
@@ -108,22 +111,25 @@ def get_user_info(handler_input):
     persist_state(handler_input, user_info)
     return user_info
 
-def encode_id(state, server: str = None) -> str:
-    uid = state.get('uid')
-    server = server if server else state.get('server')
-    key = state.get('email', None)
-    key = key if key else SECRET_PHRASE
-    return jwt.encode({'UID': uid, "SERVER": server}, key, algorithm=ALGORITHM)
 
-def request_api_key(handler_input, state = None, server: str = None) -> int:
-    user_info = get_user_info(handler_input)
+def encode_id(state, server: str = None) -> str:
+    uid = state.get("uid")
+    server = server if server else state.get("server")
+    key = state.get("email", None)
+    key = key if key else SECRET_PHRASE
+    return jwt.encode({"UID": uid, "SERVER": server}, key, algorithm=ALGORITHM)
+
+
+def request_api_key(handler_input, state=None, server: str = None) -> requests.Response:
+    get_user_info(handler_input)
     state = state if state else get_state(handler_input)
-    server = server if server else state.get('server', None) 
-    response = requests.post(f"https://{server}/version", json={'uid': encode_id(state, server=server)})
+    server = server if server else state.get("server", None)
+    response = requests.post(f"https://{server}/version", json={"uid": encode_id(state, server=server)})
     if response.status_code == 200:
-        state['api-key'] = response.json().get('api-token', None)
+        state["api-key"] = response.json().get("api-token", None)
         persist_state(handler_input, state)
     return response
+
 
 def get_canonical_slot(slot):
     if slot and slot.resolutions and slot.resolutions.resolutions_per_authority:
@@ -135,107 +141,111 @@ def get_canonical_slot(slot):
 
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
+
+    def can_handle(self, handler_input: HandlerInput) -> bool:
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
-        
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
-        reprompt = ""
-        if state and state.get('URL_BASE', None):
+        if state and state.get("URL_BASE", None):
             speak_output = "Welcome back to PyTrain!"
             reprompt = PYTRAIN_REPROMPT
-            state['invocations'] = state['invocations'] + 1 if 'invocations' in state else 1
-            response = request_api_key(handler_input, state)
+            state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
+            response: requests.Response = request_api_key(handler_input, state)
             if response.status_code != 200:
                 logger.warning(f"Launch Request failed with status code: {response.status_code} {response}")
-                speak_output = "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; " + REQUEST_SERVER_REPROMPT
+                speak_output = (
+                    "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
+                    + REQUEST_SERVER_REPROMPT
+                )
                 reprompt = REQUEST_SERVER_REPROMPT
         else:
             speak_output = REQUEST_SERVER_OUTPUT
             reprompt = REQUEST_SERVER_REPROMPT
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(reprompt)
-                .set_should_end_session(False)
-                .response
-        )
+        return handler_input.response_builder.speak(speak_output).ask(reprompt).set_should_end_session(False).response
 
 
 class PyTrainIntentHandler(AbstractRequestHandler):
     _slots = None
     _handler_input = None
-    
-    def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
+
+    def can_handle(self, handler_input: HandlerInput) -> bool:
         intent = self.__class__.__name__.replace("Handler", "")
         return ask_utils.is_intent_name(intent)(handler_input)
-        
-    def handle(self, handler_input, raise_exception: bool = True):
+
+    def handle(self, handler_input: HandlerInput, raise_exception: bool = True) -> Response | None:
         setattr(self, "_handler_input", handler_input)
         setattr(self, "_slots", handler_input.request_envelope.request.intent.slots)
         if raise_exception is True:
             state = self.session_state
-            if state is None or state.get('URL_BASE', None) is None:
+            if state is None or state.get("URL_BASE", None) is None:
                 raise NoServerException
             if state.get("api-key", None) is None:
-                response = request_api_key(handler_input, state=state)
+                response: requests.Response = request_api_key(handler_input, state=state)
                 if response and response.status_code != 200:
                     logger.warning(f"Handler Super Request failed with status code: {response.status_code} {response}")
-        
-    def handle_response(self, response, handler_input, speak_output, reprompt="What next?", close_session: bool = False, default_responses: bool = True):
+        return None
+
+    def handle_response(
+        self,
+        response,
+        handler_input,
+        speak_output,
+        reprompt="What next?",
+        close_session: bool = False,
+        default_responses: bool = True,
+    ):
         if response is not None:
             if response.status_code == 200:
                 # Handle the response data
                 data = response.json()
                 logger.info(data)
             elif default_responses is True and 400 <= response.status_code <= 499:
-                speak_output = f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
+                speak_output = (
+                    f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
+                )
                 reprompt = None
                 close_session = True
             else:
                 logger.warning(f"Request failed with status code: {response.status_code}")
         else:
-            logger.warning(f"Request failed with no additional information")
+            logger.warning("Request failed with no additional information")
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(reprompt)
-                .set_should_end_session(close_session)
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(reprompt)
+            .set_should_end_session(close_session)
+            .response
         )
-        
+
     def post(self, url: str) -> requests.Response:
         headers = {"X-API-Key": self.api_key}
         return requests.post(url, headers=headers)
-        
+
     def get(self, url: str) -> requests.Response:
         headers = {"X-API-Key": self.api_key}
         return requests.get(url, headers=headers)
-        
+
     @property
-    def session_state(self) -> None:
+    def session_state(self) -> dict:
         state = self._handler_input.attributes_manager.session_attributes
-        if state is None or 'URL_BASE' not in state or 'api-key' not in state:
+        if state is None or "URL_BASE" not in state or "api-key" not in state:
             state = get_state(self._handler_input)
         return state
 
     @property
     def api_key(self) -> str:
-        return self.session_state.get('api-key')
+        return self.session_state.get("api-key")
 
     @property
     def url_base(self) -> str:
-        return self.session_state.get('URL_BASE')
-        
+        return self.session_state.get("URL_BASE")
+
     @property
     def scope(self) -> str:
         slots = self._handler_input.request_envelope.request.intent.slots
         scope = get_canonical_slot(slots["scope"]) if "scope" in slots else None
         return "train" if scope and scope.value.id == "1" else "engine"
-        
+
     @property
     def component(self) -> str:
         scope = get_canonical_slot(self._slots["scope"]) if "scope" in self._slots else None
@@ -243,25 +253,25 @@ class PyTrainIntentHandler(AbstractRequestHandler):
             return PATH_MAP.get(scope.value.id, "engine")
         else:
             return "engine"
-       
+
     @property
     def engine(self):
         slots = self._handler_input.request_envelope.request.intent.slots
         return slots["engine"] if "engine" in slots else None
-        
+
     @property
     def tmcc_id(self):
         return self._slots["tmcc_id"] if "tmcc_id" in self._slots else self.engine
-        
+
     @property
     def dialog(self):
         slots = self._handler_input.request_envelope.request.intent.slots
         return get_canonical_slot(slots["dialog"]) if "dialog" in slots else None
-        
+
     @property
     def speed(self):
         return get_canonical_slot(self._slots["speed"]) if "speed" in self._slots else None
-        
+
     @property
     def coupler(self):
         return get_canonical_slot(self._slots["coupler"]) if "coupler" in self._slots else None
@@ -269,48 +279,56 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     @property
     def horn(self):
         return get_canonical_slot(self._slots["horn"]) if "horn" in self._slots else None
-        
+
     @property
     def bell(self):
         return get_canonical_slot(self._slots["ring"]) if "ring" in self._slots else None
-        
+
     @property
     def direction(self):
         return get_canonical_slot(self._slots["direction"]) if "direction" in self._slots else None
-        
+
     @property
     def smoke(self):
         return get_canonical_slot(self._slots["smoke"]) if "smoke" in self._slots else None
-        
+
     @property
     def volume(self):
         return get_canonical_slot(self._slots["volume"]) if "volume" in self._slots else None
 
 
 class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
-    def handle(self, handler_input):
-        super().handle(handler_input, False)
+    def handle(self, handler_input: HandlerInput, raise_exception: bool = False) -> Response:
+        super().handle(handler_input, raise_exception)
         state = get_state(handler_input)
-        server = self._slots['server'].value if 'server' in self._slots else None
-        processed = server.replace(' dot ', '.').replace (' ', '').lower()
+        server = self._slots["server"].value if "server" in self._slots else None
+        processed = server.replace(" dot ", ".").replace(" ", "").lower()
         logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
-        
+
         response = request_api_key(handler_input, state=state, server=processed)
         if response and response.status_code == 200:
             speak_output = f"Setting PyTrain server URL to {server}"
             reprompt = PYTRAIN_REPROMPT
-            URL_BASE = f"https://{processed}/pytrain/v1"
-            persist_state(handler_input, {'URL_BASE': URL_BASE, 'server': processed})
+            url_base = f"https://{processed}/pytrain/v1"
+            persist_state(handler_input, {"URL_BASE": url_base, "server": processed})
         else:
-            speak_output = f"There was a problem connecting to {processed}, please try again Error {response.status_code}"
+            speak_output = (
+                f"There was a problem connecting to {processed}, please try again Error {response.status_code}"
+            )
             reprompt = REQUEST_SERVER_REPROMPT
-        return self.handle_response(response, handler_input, speak_output, reprompt=reprompt, default_responses=False)
-        
-    
+        return self.handle_response(
+            response,
+            handler_input,
+            speak_output,
+            reprompt=reprompt,
+            default_responses=False,
+        )
+
+
 class HaltIntentHandler(PyTrainIntentHandler):
     """Handler for Halt Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         url = f"{self.url_base}/system/halt"
         speak_output = "Halting all trains"
@@ -320,8 +338,8 @@ class HaltIntentHandler(PyTrainIntentHandler):
 
 class SpeedIntentHandler(PyTrainIntentHandler):
     """Handler for Speed Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -347,8 +365,8 @@ class SpeedIntentHandler(PyTrainIntentHandler):
 
 class OpenCouplerIntentHandler(PyTrainIntentHandler):
     """Handler for Open Coupler Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -358,7 +376,7 @@ class OpenCouplerIntentHandler(PyTrainIntentHandler):
             logger.warning("No {scope.title()} number specified")
             speak_output = "I don't know what {scope.title()} you want me to decouple, sorry!"
         else:
-            if coupler and coupler.value.id == '1':
+            if coupler and coupler.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/rear_coupler_req"
                 device = "rear"
             else:
@@ -371,8 +389,8 @@ class OpenCouplerIntentHandler(PyTrainIntentHandler):
 
 class SoundHornIntentHandler(PyTrainIntentHandler):
     """Handler for Sound Horn Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -385,7 +403,7 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
             opt = "sound"
             device = "horn"
             if horn is not None:
-                if horn.value.id == '2':
+                if horn.value.id == "2":
                     opt = "grade"
                     device = "crossing signal"
                 elif horn.value.id == "1":
@@ -398,8 +416,8 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
 
 class RingBellIntentHandler(PyTrainIntentHandler):
     """Handler for Ring Bell Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -412,7 +430,7 @@ class RingBellIntentHandler(PyTrainIntentHandler):
             opt = "toggle"
             device = "Toggle bell"
             if bell is not None:
-                if bell.value.id == '1':
+                if bell.value.id == "1":
                     opt = "once"
                     device = "Ring the bell once"
                 elif bell.value.id == "2":
@@ -429,8 +447,8 @@ class RingBellIntentHandler(PyTrainIntentHandler):
 
 class StartUpIntentHandler(PyTrainIntentHandler):
     """Handler for Start Up Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -440,7 +458,7 @@ class StartUpIntentHandler(PyTrainIntentHandler):
             logger.warning("No Engine/Train Number Specified")
             speak_output = f"I don't know what {scope} you want me to start, sorry!"
         else:
-            opt = "" if dialog is None or dialog.value.id == '0' else "?dialog=true"
+            opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
             url = f"{self.url_base}/{scope}/{engine.value}/startup_req{opt}"
             speak_output = f"Starting up {scope} {engine.value}"
             response = self.post(url)
@@ -449,8 +467,8 @@ class StartUpIntentHandler(PyTrainIntentHandler):
 
 class ShutDownIntentHandler(PyTrainIntentHandler):
     """Handler for Shut Down Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -460,7 +478,7 @@ class ShutDownIntentHandler(PyTrainIntentHandler):
             logger.warning("No Engine Number Specified")
             speak_output = f"I don't know what {scope} you want me to shut down, sorry!"
         else:
-            opt = "" if dialog is None or dialog.value.id == '0' else "?dialog=true"
+            opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
             url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
             speak_output = f"Shutting down {scope} {engine.value}"
             response = self.post(url)
@@ -469,8 +487,8 @@ class ShutDownIntentHandler(PyTrainIntentHandler):
 
 class StopImmediateIntentHandler(PyTrainIntentHandler):
     """Handler for Stop Immediate Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -480,7 +498,8 @@ class StopImmediateIntentHandler(PyTrainIntentHandler):
             speak_output = "I don't know what {scope) you want me to stop, sorry!"
         else:
             url = f"{self.url_base}/{scope}/{engine.value}/stop_req"
-            speak_output = f"<speak>Stoping {scope} {engine.value} <voice name='Brian'><lang xml:lang='en-GB'>in it's tracks!</lang></voice></speak>"
+            speak_output = f"<speak>Stopping {scope} {engine.value} "
+            speak_output += "<voice name='Brian'><lang xml:lang='en-GB'>in it's tracks!</lang></voice></speak>"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -489,14 +508,14 @@ class ResetIntentHandler(PyTrainIntentHandler):
     @property
     def url(self):
         return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req"
-        
+
     @property
     def spoken_response(self):
         return f"Resetting {self.scope} {self.engine.value}"
-        
+
     """Handler for Reset Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -515,7 +534,7 @@ class RefuelIntentHandler(ResetIntentHandler):
     @property
     def url(self):
         return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req?hold=true"
-    
+
     @property
     def spoken_response(self):
         return f"Refueling {self.scope} {self.engine.value}"
@@ -523,32 +542,32 @@ class RefuelIntentHandler(ResetIntentHandler):
 
 class SetDirectionIntentHandler(PyTrainIntentHandler):
     """Handler for Set Direction Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
         engine = self.engine
-        dir = self.direction
+        dr = self.direction
         if engine is None:
             logger.warning("No {scope.title()} Number Specified")
             speak_output = "I don't know what {scope} to change the direction of, sorry!"
         else:
-            if dir and dir.value.id == '1':
+            if dr and dr.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/reverse_req"
-            elif dir and dir.value.id == '2':
+            elif dr and dr.value.id == "2":
                 url = f"{self.url_base}/{scope}/{engine.value}/toggle_direction_req"
             else:
                 url = f"{self.url_base}/{scope}/{engine.value}/forward_req"
-            speak_output = f"Changing the direction of {scope} {engine.value} to {dir.value.name}"
+            speak_output = f"Changing the direction of {scope} {engine.value} to {dr.value.name}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
 
 class ChangeVolumeIntentHandler(PyTrainIntentHandler):
     """Handler for Change Volume Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -558,7 +577,7 @@ class ChangeVolumeIntentHandler(PyTrainIntentHandler):
             logger.warning("No {scope.title()} Number Specified")
             speak_output = "I don't know what {scope} to change the volume of, sorry!"
         else:
-            if vol and vol.value.id == '1':
+            if vol and vol.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/volume_down_req"
                 directive = "Decreasing"
             else:
@@ -571,8 +590,8 @@ class ChangeVolumeIntentHandler(PyTrainIntentHandler):
 
 class SmokeLevelIntentHandler(PyTrainIntentHandler):
     """Handler for Smoke Level Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.scope
@@ -582,7 +601,7 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
             logger.warning("No {scope.title()} Number Specified")
             speak_output = f"I don't know what {scope} you want me to smoke, sorry!"
         else:
-            opt = "?level=off" if smoke is None or smoke.value.id == '0' else f"?level={smoke.value.name.lower()}"
+            opt = "?level=off" if smoke is None or smoke.value.id == "0" else f"?level={smoke.value.name.lower()}"
             url = f"{self.url_base}/{scope}/{engine.value}/smoke_level_req{opt}"
             speak_output = f"Setting smoke level on {scope} {engine.value} to {smoke.value.name}"
             response = self.post(url)
@@ -591,8 +610,8 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
 
 class ThrowSwitchIntentHandler(PyTrainIntentHandler):
     """Handler for Throw Switch Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         switch = self._slots["switch"] if "switch" in self._slots else None
@@ -601,7 +620,7 @@ class ThrowSwitchIntentHandler(PyTrainIntentHandler):
             logger.warning("No Switch Number Specified")
             speak_output = "I don't know what switch you want me to throw, sorry!"
         else:
-            pos = "thru" if position is None or position.value.id == '0' else "out"
+            pos = "thru" if position is None or position.value.id == "0" else "out"
             url = f"{self.url_base}/switch/{switch.value}/{pos}_req"
             speak_output = f"Throwing switch {switch.value} {pos}"
             response = self.post(url)
@@ -610,8 +629,8 @@ class ThrowSwitchIntentHandler(PyTrainIntentHandler):
 
 class FireRouteIntentHandler(PyTrainIntentHandler):
     """Handler for Fire Route Intent."""
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         route = self._slots["route"] if "route" in self._slots else None
@@ -627,7 +646,8 @@ class FireRouteIntentHandler(PyTrainIntentHandler):
 
 class GetStatusIntentHandler(PyTrainIntentHandler):
     """Handler for Get Status Intent."""
-    def handle(self, handler_input):
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
         scope = self.component
@@ -643,19 +663,27 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
                 # Handle the response data
                 data = response.json()
                 speak_output = f"<speak>{scope} {tmcc_id.value}: <break strength='strong'/>"
+
                 for key, value in data.items():
-                    if key == 'scope':
+                    if value is None:
+                        continue
+                    if key == "scope":
                         continue
                     if key == "tmcc_id":
                         key = "TMCC <say-as interpret-as='spell-out'>ID</say-as>"
-                    elif '_' in key:
-                        key = key.replace('_',' ')
+                    key = key.replace("_", " ")
+                    if isinstance(value, str):
+                        value = value.replace("_", " ")
+                        value = value.replace("-", " ")
+                        value = value.replace("&", " and ")
                     speak_output += f"{key}<break strength='medium'/> {value}<break strength='strong'/>"
                 speak_output += "</speak>"
         return self.handle_response(response, handler_input, speak_output)
 
+
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
@@ -676,53 +704,45 @@ class HelpIntentHandler(AbstractRequestHandler):
             What would you like to do?
             """
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(speak_output)
-                .response
-        )
+        return handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
 
 class CancelIntentHandler(AbstractRequestHandler):
     """Single handler for Cancel and Stop Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return (ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input))
+        return ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Canceling."
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(PYTRAIN_REPROMPT)
-                .set_should_end_session(False)
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(PYTRAIN_REPROMPT)
+            .set_should_end_session(False)
+            .response
         )
 
 
 class StopIntentHandler(AbstractRequestHandler):
     """Handler for Stop Intent."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return (ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
+        return ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Goodbye from PyTrain!"
 
-        return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .set_should_end_session(True)
-                .response
-        )
+        return handler_input.response_builder.speak(speak_output).set_should_end_session(True).response
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):
     """Handler for Session End."""
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_request_type("SessionEndedRequest")(handler_input)
@@ -741,6 +761,7 @@ class IntentReflectorHandler(AbstractRequestHandler):
     for your intents by defining them above, then also adding them to the request
     handler chain below.
     """
+
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return ask_utils.is_request_type("IntentRequest")(handler_input)
@@ -751,10 +772,9 @@ class IntentReflectorHandler(AbstractRequestHandler):
         speak_output = "You just triggered " + intent_name + "."
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                # .ask("add a reprompt if you want to keep the session open for the user to respond")
-                .response
+            handler_input.response_builder.speak(speak_output)
+            # .ask("add a reprompt if you want to keep the session open for the user to respond")
+            .response
         )
 
 
@@ -763,6 +783,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
     stating the request handler chain is not found, you have not implemented a handler for
     the intent being invoked or included it in the skill builder below.
     """
+
     def can_handle(self, handler_input, exception):
         # type: (HandlerInput, Exception) -> bool
         return True
@@ -781,18 +802,18 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
             end_session = True
 
         return (
-            handler_input.response_builder
-                .speak(speak_output)
-                .ask(ask_output)
-                .set_should_end_session(end_session)
-                .response
+            handler_input.response_builder.speak(speak_output)
+            .ask(ask_output)
+            .set_should_end_session(end_session)
+            .response
         )
+
 
 # The SkillBuilder object acts as the entry point for your skill, routing all request and response
 # payloads to the handlers above. Make sure any new handlers or interceptors you've
 # defined are included below. The order matters - they're processed top to bottom.
 
-sb = CustomSkillBuilder(persistence_adapter = dynamodb_adapter)
+sb = CustomSkillBuilder(persistence_adapter=dynamodb_adapter)
 
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(SetPyTrainServerIntentHandler())
@@ -816,7 +837,9 @@ sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelIntentHandler())
 sb.add_request_handler(StopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+sb.add_request_handler(
+    IntentReflectorHandler()
+)  # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
 
 sb.add_exception_handler(CatchAllExceptionHandler())
 

@@ -60,3 +60,19 @@
     }
   }
 }
+
+<speak>
+engine 20: <break strength='strong'/>
+TMCC <say-as interpret-as='spell-out'>ID</say-as><break strength='medium'/> 20<break strength='strong'/>
+road name<break strength='medium'/> Delaware & Hudson FA-2 A<break strength='strong'/>
+road number<break strength='medium'/> 0020<break strength='strong'/>
+control<break strength='medium'/> legacy<break strength='strong'/>
+labor<break strength='medium'/> 12<break strength='strong'/>
+max speed<break strength='medium'/> 195<break strength='strong'/>
+momentum<break strength='medium'/> 0<break strength='strong'/>
+rpm<break strength='medium'/> 0<break strength='strong'/>
+smoke<break strength='medium'/> smoke_off<break strength='strong'/>
+sound type<break strength='medium'/> legacy<break strength='strong'/>
+speed<break strength='medium'/> 0<break strength='strong'/>
+train brake<break strength='medium'/> 0<break strength='strong'/>
+</speak>
