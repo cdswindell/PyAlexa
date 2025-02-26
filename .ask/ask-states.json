@@ -4,8 +4,31 @@
     "default": {
       "skillInfrastructure": {
         "@ask-cli/lambda-deployer": {
-          "deployState": {}
+          "deployState": {
+            "default": {
+              "lambda": {
+                "arn": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548",
+                "lastModified": "2025-02-26T22:08:57.000+0000",
+                "revisionId": "8e335c59-8b3d-4956-a5cc-662afe3b7e45"
+              },
+              "iamRole": "arn:aws:iam::253746361293:role/ask-lambda-pytrain-skill-1740598447271"
+            }
+          }
         }
+      },
+      "deploymentStatus": "COMPLETE",
+      "skillMetadata": {
+        "lastImportId": "amzn1.ask-package.import.55ddc0ca-3b7b-41d4-8d3e-4be749e8848f",
+        "lastImportTimestamp": "2025-02-26T19:34:22.353Z",
+        "lastDeployHash": "4Mn04sNmntaw5P4SSGWvZdjKKYw=",
+        "lastDeployType": "interaction-model"
+      },
+      "skillId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35",
+      "code": {
+        "default": {
+          "lastDeployHash": "n20GsmZaVfBqYJCdF3y/6Z67h3g="
+        },
+        "lastDeployTimestamp": "2025-02-26T22:08:58.483Z"
       }
     }
   }

@@ -5,7 +5,8 @@
         "en-US": {
           "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment",
           "examplePhrases": [
-            "Alexa, open pie train"
+            "Alexa open pie train",
+            "Alexa open pytrain"
           ],
           "keywords": [
             "Lionel",
@@ -27,7 +28,10 @@
       "distributionCountries": []
     },
     "apis": {
-      "custom": {}
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548"
+        }
       }
     },
     "manifestVersion": "1.0",
