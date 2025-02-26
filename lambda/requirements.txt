@@ -1,1 +1,6 @@
-ask-sdk-core>=1.10.2
+boto3==1.37.1
+ask-sdk-core==1.19.0
+ask-sdk-dynamodb-persistence-adapter==1.19.0
+pyjwt==2.4.0
+python-dotenv==1.0.1
+# ask-sdk==1.19.0
