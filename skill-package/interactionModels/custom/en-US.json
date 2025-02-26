@@ -1,40 +1,2748 @@
 {
-    "interactionModel": {
-        "languageModel": {
-            "invocationName": "hello world",
-            "intents": [
+  "interactionModel": {
+    "dialog": {
+      "intents": [
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
                 {
-                    "name": "AMAZON.CancelIntent",
-                    "samples": []
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.294327337529.85306214949.1597708537537",
+                  "value": "99"
                 },
                 {
-                    "name": "AMAZON.HelpIntent",
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.StopIntent",
-                    "samples": []
-                },
-                {
-                    "name": "HelloWorldIntent",
-                    "slots": [],
-                    "samples": [
-                        "hello",
-                        "how are you",
-                        "say hi world",
-                        "say hi",
-                        "hi",
-                        "say hello world",
-                        "say hello"
-                    ]
-                },
-                {
-                    "name": "AMAZON.NavigateHomeIntent",
-                    "samples": []
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.294327337529.85306214949.1592235969306",
+                  "value": "1"
                 }
-            ],
-            "types": []
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.294327337529.85306214949"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "dialog",
+              "elicitationRequired": false,
+              "type": "dialogs",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "StartUpIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.411810261860.210611615696.1688622544231",
+                  "value": "99"
+                },
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.411810261860.210611615696.888772910670",
+                  "value": "1"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.411810261860.210611615696"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "dialog",
+              "elicitationRequired": false,
+              "type": "dialogs",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "ShutDownIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "switch",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.277570185413.1119547334991.1142131786356",
+                  "value": "99"
+                },
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.277570185413.1119547334991.35334226928",
+                  "value": "1"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.277570185413.1119547334991"
+              }
+            },
+            {
+              "name": "position",
+              "elicitationRequired": false,
+              "type": "switch_position",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "ThrowSwitchIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1174998521723.1606465795309.683680880889",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1174998521723.1606465795309.1734462557423",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1174998521723.1606465795309"
+              }
+            },
+            {
+              "name": "horn",
+              "elicitationRequired": true,
+              "type": "horn_sound",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1174998521723.1515229671472"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "SoundHornIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.463265233135.1392289754285.184451404187",
+                  "value": "99"
+                },
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.463265233135.1392289754285.769730269406",
+                  "value": "1"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.463265233135.1392289754285"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "StopImmediateIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "ring",
+              "elicitationRequired": true,
+              "type": "bell_options",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1637281932431.1482550008352"
+              }
+            },
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1637281932431.214580969012"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "RingBellIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1090937071017.444672627875.1659284034510",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1090937071017.444672627875.1391222387061",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1090937071017.444672627875"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "ResetIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1243735893019.978032627933.1358061955586",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1243735893019.978032627933.543256270120",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1243735893019.978032627933"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "RefuelIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "direction",
+              "elicitationRequired": true,
+              "type": "direction",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.751737244317.883298190230"
+              }
+            },
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.751737244317.949992380403.406839739441",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.751737244317.949992380403.44649532497",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.751737244317.949992380403"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "SetDirectionIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "coupler",
+              "elicitationRequired": true,
+              "type": "coupler",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1358337494406.338770774556"
+              }
+            },
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1358337494406.86532759867.755026613231",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1358337494406.86532759867.317623550279",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1358337494406.86532759867"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "OpenCouplerIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.923966049691.969468193031"
+              }
+            },
+            {
+              "name": "speed",
+              "elicitationRequired": true,
+              "type": "rr_speed",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.923966049691.953382892021"
+              }
+            },
+            {
+              "name": "dialog",
+              "elicitationRequired": false,
+              "type": "dialogs",
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            }
+          ],
+          "name": "SpeedIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "route",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.223262448747.47417090794.516677893122",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.223262448747.47417090794.1127824902411",
+                  "value": "99"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.223262448747.47417090794"
+              }
+            }
+          ],
+          "name": "FireRouteIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "scope",
+              "elicitationRequired": true,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.352033256157.1183583677769"
+              }
+            },
+            {
+              "name": "tmcc_id",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.352033256157.656353053770.266418224017",
+                  "value": "1"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.352033256157.656353053770"
+              }
+            }
+          ],
+          "name": "GetStatusIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.972783674255.517513819329.1262717389102",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.972783674255.517513819329.537713898101",
+                  "value": "9999"
+                }
+              ],
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.972783674255.517513819329"
+              }
+            },
+            {
+              "name": "smoke",
+              "elicitationRequired": true,
+              "type": "smoke_options",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.972783674255.455064527029"
+              }
+            }
+          ],
+          "name": "SmokeLevelIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "server",
+              "elicitationRequired": true,
+              "type": "AMAZON.SearchQuery",
+              "confirmationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.520346523642.1711855872549",
+                "confirmation": "Confirm.Slot.520346523642.1711855872549"
+              }
+            }
+          ],
+          "name": "SetPyTrainServerIntent",
+          "confirmationRequired": false,
+          "prompts": {}
+        },
+        {
+          "slots": [
+            {
+              "name": "volume",
+              "elicitationRequired": true,
+              "type": "volume",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.453350679191.512045947681"
+              }
+            },
+            {
+              "name": "scope",
+              "elicitationRequired": false,
+              "type": "scope",
+              "confirmationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "engine",
+              "elicitationRequired": true,
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "prompts": {
+                "elicitation": "Elicit.Slot.453350679191.1271070001596"
+              }
+            }
+          ],
+          "name": "ChangeVolumeIntent",
+          "confirmationRequired": false,
+          "prompts": {}
         }
-    }
+      ],
+      "delegationStrategy": "ALWAYS"
+    },
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": [
+            "forget it",
+            "never mind",
+            "Nevermind",
+            "Nothing"
+          ]
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": [
+            "what can I say",
+            "what do I do",
+            "How does this skill work",
+            "help me"
+          ]
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": [
+            "quit pytrain",
+            "Quit skill",
+            "Quit Pie Train",
+            "Exit skill",
+            "Exit pytrain",
+            "Exit pie train",
+            "that\u0027s it",
+            "All done",
+            "Stop Pie Train",
+            "Stop PyTrain"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "dialog",
+              "type": "dialogs"
+            }
+          ],
+          "name": "StartUpIntent",
+          "samples": [
+            "Start up {scope} {engine} {dialog}",
+            "Start",
+            "Start up",
+            "Power on {scope} {engine} {dialog}",
+            "Power up {scope} {engine} {dialog}",
+            "start {scope} {engine} {dialog}",
+            "startup {scope} {engine} {dialog}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "dialog",
+              "type": "dialogs"
+            }
+          ],
+          "name": "ShutDownIntent",
+          "samples": [
+            "Shut down {engine} {dialog}",
+            "Power off  {engine} {dialog}",
+            "Power down {engine} {dialog}",
+            "Power off",
+            "Power off {scope} {engine} {dialog}",
+            "Power down {scope} {engine} {dialog}",
+            "Shut down {scope} {engine} {dialog}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "switch",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "switch {switch}",
+                "{switch}"
+              ]
+            },
+            {
+              "name": "position",
+              "type": "switch_position"
+            }
+          ],
+          "name": "ThrowSwitchIntent",
+          "samples": [
+            "switch {switch} {position}",
+            "Throw switch",
+            "switch",
+            "switch {switch} to {position}",
+            "throw",
+            "throw {switch} to {position}",
+            "Throw switch {switch} {position}"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "HaltIntent",
+          "samples": [
+            "Alexa halt",
+            "Whoa",
+            "Emergency Halt",
+            "Emergency Stop",
+            "Emergency",
+            "Halt"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "horn",
+              "type": "horn_sound",
+              "samples": [
+                "{horn}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "SoundHornIntent",
+          "samples": [
+            "sound the {horn} on {engine}",
+            "Sound {horn} on  {engine}",
+            "blow the {horn} on {engine}",
+            "blow {horn} on {engine}",
+            "blow {horn} on {scope} {engine}",
+            "Sound the {horn} on {scope} {engine}",
+            "Blow the {horn} on {scope} {engine}",
+            "Sound {horn} on {scope} {engine}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "StopImmediateIntent",
+          "samples": [
+            "stop {engine}",
+            "stop {scope} {engine} immediately",
+            "stop {scope} {engine}",
+            "tell {engine} to stop",
+            "tell {scope} {engine} to stop"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "ring",
+              "type": "bell_options",
+              "samples": [
+                "{ring}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "RingBellIntent",
+          "samples": [
+            "Bell {ring} {scope} {engine}",
+            "{ring} bell {engine}",
+            "{ring} bell on {scope} {engine}",
+            "{ring} the bell on {scope} {engine}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "ResetIntent",
+          "samples": [
+            "Reset {engine}",
+            "Reset {scope} {engine}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "RefuelIntent",
+          "samples": [
+            "Refuel {engine}",
+            "Refuel {scope} {engine}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "direction",
+              "type": "direction",
+              "samples": [
+                "{direction}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "SetDirectionIntent",
+          "samples": [
+            "{direction} direction {scope} {engine}",
+            "{direction} direction of {scope} {engine}",
+            "{direction} the direction of {scope} {engine}",
+            "tell {scope} {engine} move {direction}",
+            "tell {scope} {engine} to move {direction}",
+            "tell {scope} {engine} {direction}",
+            "tell {scope} {engine} go {direction}",
+            "tell {scope} {engine} to go {direction}",
+            "change direction {scope} {engine} {direction}",
+            "change the direction of {scope} {engine} to {direction}",
+            "change the direction of {scope} {engine} {direction}",
+            "{direction} {scope} {engine}",
+            "{direction} {engine}",
+            "set the direction of {scope} {engine} {direction}",
+            "change direction {engine} {direction}",
+            "change direction of {scope} {engine} {direction}",
+            "change direction of {scope} {engine} to {direction}",
+            "set direction of {scope} {engine} to {direction}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "coupler",
+              "type": "coupler",
+              "samples": [
+                "{coupler}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "OpenCouplerIntent",
+          "samples": [
+            "Open {coupler} {scope} {engine}",
+            "Trigger {coupler} {scope} {engine}",
+            "release {coupler} {scope} {engine}",
+            "Open {coupler} on {scope} {engine}",
+            "Release {coupler} on {scope} {engine}",
+            "Trigger {coupler} on {scope} {engine}",
+            "Trigger {coupler} on {engine}",
+            "Release {coupler} on {engine}",
+            "Open {coupler} on {engine}",
+            "Release  {coupler} {engine}",
+            "Trigger {coupler} {engine}",
+            "Open {coupler} {engine}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "speed",
+              "type": "rr_speed",
+              "samples": [
+                "step {speed}",
+                "speed {speed}",
+                "speed step {speed}",
+                "{speed}"
+              ]
+            },
+            {
+              "name": "dialog",
+              "type": "dialogs"
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "name": "SpeedIntent",
+          "samples": [
+            "Slow {scope} {engine} to speed {speed} {dialog}",
+            "speed up {scope} {engine} to {speed} {dialog}",
+            "Set the speed of {engine} to  {speed} {dialog}",
+            "Set speed of {engine} to {speed} {dialog}",
+            "accelerate {scope} {engine} to {speed} {dialog}",
+            "decelerate {scope} {engine} to {speed} {dialog}",
+            "decelerate {scope} {engine} to speed {speed} {dialog}",
+            "accelerate {scope} {engine} to speed {speed} {dialog}",
+            "Set speed of {engine} to speed {speed} {dialog}",
+            "Set the speed of {engine} to speed  {speed} {dialog}",
+            "speed up {engine} to {speed} {dialog}",
+            "slow {engine} to {speed} {dialog}",
+            "Slow {scope} {engine} to {speed} {dialog}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "route",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{route}",
+                "route {route}"
+              ]
+            }
+          ],
+          "name": "FireRouteIntent",
+          "samples": [
+            "Activate route {route}",
+            "Fire {route}",
+            "trigger route {route}",
+            "Fire route {route}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope",
+              "samples": [
+                "{scope}"
+              ]
+            },
+            {
+              "name": "tmcc_id",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "number {tmcc_id}",
+                "Accessory {tmcc_id}",
+                "Turnout {scope}",
+                "Switch {tmcc_id}",
+                "Train {tmcc_id}",
+                "Engine {tmcc_id}",
+                "{tmcc_id}"
+              ]
+            }
+          ],
+          "name": "GetStatusIntent",
+          "samples": [
+            "{scope} number {tmcc_id} status",
+            "report on {scope} {tmcc_id}",
+            "{scope} {tmcc_id} report",
+            "{scope} {tmcc_id} status",
+            "report {scope} {tmcc_id}",
+            "What\u0027s the status of {scope} {tmcc_id}",
+            "Status of {scope} {tmcc_id}",
+            "Tell me about {scope} {tmcc_id}",
+            "status {scope} {tmcc_id}",
+            "Get the status of {scope} {tmcc_id}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "smoke",
+              "type": "smoke_options",
+              "samples": [
+                "level {smoke}",
+                "{smoke} level",
+                "{smoke}"
+              ]
+            }
+          ],
+          "name": "SmokeLevelIntent",
+          "samples": [
+            "{smoke}  {scope} {engine}",
+            "{smoke}  on {scope} {engine}",
+            "{smoke} the smoke on {scope} {engine}",
+            "Smoke {scope} {engine} {smoke}",
+            "Set the smoke level of {scope} {engine} to {smoke}",
+            "Set smoke level {scope} {engine} {smoke}",
+            "Set smoke level {scope} {engine} to {smoke}",
+            "Set the smoke level on {scope} {engine} to {smoke}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "server",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "My PyTrain Server is {server}",
+                "My server is {server}",
+                "{server}"
+              ]
+            }
+          ],
+          "name": "SetPyTrainServerIntent",
+          "samples": [
+            "My py train url is {server}",
+            "my pietrain server url is {server}",
+            "my pytrain server url is {server}",
+            "my pi train server url is {server}",
+            "My pi train url is {server}",
+            "My pie train url is {server}",
+            "My url is {server}",
+            "server {server}",
+            "my server is {server}",
+            "My Pie Train server is {server}",
+            "My Py Train server is {server}",
+            "My PyTrain server is {server}",
+            "My PyTrain url is {server}",
+            "My Pie Train server url is {server}",
+            "My PieTrain url is {server}",
+            "My server url is {server}",
+            "url {server}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "volume",
+              "type": "volume",
+              "samples": [
+                "{volume}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{engine}",
+                "train {engine}",
+                "engine {engine}"
+              ]
+            }
+          ],
+          "name": "ChangeVolumeIntent",
+          "samples": [
+            "{volume} volume  {engine}",
+            "{volume} volume of {engine}",
+            "{volume} the volume of  {engine}",
+            "{volume} volume {scope} {engine}",
+            "{volume} volume of {scope} {engine}",
+            "{volume} the volume of {scope} {engine}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "a. s. a. p.",
+                  "ASAP",
+                  "immediately",
+                  "right away",
+                  "now"
+                ],
+                "value": "immediate"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "delay",
+                  "with delay",
+                  "with dialog",
+                  "delayed"
+                ],
+                "value": "dialog"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "no dialog",
+                  "no delay",
+                  "silent",
+                  "with no delay",
+                  "with no dialog"
+                ],
+                "value": "no dialog"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "dialogs"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "siding",
+                  "divergent",
+                  "diverge"
+                ],
+                "value": "out"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "main line",
+                  "main",
+                  "through"
+                ],
+                "value": "thru"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "switch_position"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "grade crossing signal",
+                  "crossing"
+                ],
+                "value": "grade crossing"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "steam whistle"
+                ],
+                "value": "whistle"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "value": "horn"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "horn_sound"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "disable",
+                  "off",
+                  "quiet",
+                  "silence",
+                  "deactivate"
+                ],
+                "value": "turn off"
+              },
+              "id": "3"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "enable",
+                  "on",
+                  "sound",
+                  "activate"
+                ],
+                "value": "turn on"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "value": "toggle"
+              },
+              "id": "0"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "ding"
+                ],
+                "value": "ring"
+              },
+              "id": "1"
+            }
+          ],
+          "name": "bell_options"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "toggle"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "backwards",
+                  "backward"
+                ],
+                "value": "reverse"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "value": "forward"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "direction"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "rear connector",
+                  "back coupler",
+                  "back",
+                  "rear"
+                ],
+                "value": "rear coupler"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "front connector",
+                  "forward coupler",
+                  "forward",
+                  "front"
+                ],
+                "value": "front coupler"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "coupler"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "110"
+              },
+              "id": "110"
+            },
+            {
+              "name": {
+                "value": "109"
+              },
+              "id": "109"
+            },
+            {
+              "name": {
+                "value": "108"
+              },
+              "id": "108"
+            },
+            {
+              "name": {
+                "value": "107"
+              },
+              "id": "107"
+            },
+            {
+              "name": {
+                "value": "106"
+              },
+              "id": "106"
+            },
+            {
+              "name": {
+                "value": "105"
+              },
+              "id": "105"
+            },
+            {
+              "name": {
+                "value": "104"
+              },
+              "id": "104"
+            },
+            {
+              "name": {
+                "value": "103"
+              },
+              "id": "103"
+            },
+            {
+              "name": {
+                "value": "102"
+              },
+              "id": "102"
+            },
+            {
+              "name": {
+                "value": "101"
+              },
+              "id": "101"
+            },
+            {
+              "name": {
+                "value": "100"
+              },
+              "id": "100"
+            },
+            {
+              "name": {
+                "value": "99"
+              },
+              "id": "99"
+            },
+            {
+              "name": {
+                "value": "98"
+              },
+              "id": "98"
+            },
+            {
+              "name": {
+                "value": "97"
+              },
+              "id": "97"
+            },
+            {
+              "name": {
+                "value": "96"
+              },
+              "id": "96"
+            },
+            {
+              "name": {
+                "value": "95"
+              },
+              "id": "95"
+            },
+            {
+              "name": {
+                "value": "94"
+              },
+              "id": "94"
+            },
+            {
+              "name": {
+                "value": "93"
+              },
+              "id": "93"
+            },
+            {
+              "name": {
+                "value": "92"
+              },
+              "id": "92"
+            },
+            {
+              "name": {
+                "value": "91"
+              },
+              "id": "91"
+            },
+            {
+              "name": {
+                "value": "90"
+              },
+              "id": "90"
+            },
+            {
+              "name": {
+                "value": "89"
+              },
+              "id": "89"
+            },
+            {
+              "name": {
+                "value": "88"
+              },
+              "id": "88"
+            },
+            {
+              "name": {
+                "value": "87"
+              },
+              "id": "87"
+            },
+            {
+              "name": {
+                "value": "86"
+              },
+              "id": "86"
+            },
+            {
+              "name": {
+                "value": "85"
+              },
+              "id": "85"
+            },
+            {
+              "name": {
+                "value": "84"
+              },
+              "id": "84"
+            },
+            {
+              "name": {
+                "value": "83"
+              },
+              "id": "83"
+            },
+            {
+              "name": {
+                "value": "82"
+              },
+              "id": "82"
+            },
+            {
+              "name": {
+                "value": "81"
+              },
+              "id": "81"
+            },
+            {
+              "name": {
+                "value": "80"
+              },
+              "id": "80"
+            },
+            {
+              "name": {
+                "value": "79"
+              },
+              "id": "79"
+            },
+            {
+              "name": {
+                "value": "78"
+              },
+              "id": "78"
+            },
+            {
+              "name": {
+                "value": "77"
+              },
+              "id": "77"
+            },
+            {
+              "name": {
+                "value": "76"
+              },
+              "id": "76"
+            },
+            {
+              "name": {
+                "value": "75"
+              },
+              "id": "75"
+            },
+            {
+              "name": {
+                "value": "74"
+              },
+              "id": "74"
+            },
+            {
+              "name": {
+                "value": "73"
+              },
+              "id": "73"
+            },
+            {
+              "name": {
+                "value": "72"
+              },
+              "id": "72"
+            },
+            {
+              "name": {
+                "value": "71"
+              },
+              "id": "71"
+            },
+            {
+              "name": {
+                "value": "70"
+              },
+              "id": "70"
+            },
+            {
+              "name": {
+                "value": "69"
+              },
+              "id": "69"
+            },
+            {
+              "name": {
+                "value": "68"
+              },
+              "id": "68"
+            },
+            {
+              "name": {
+                "value": "67"
+              },
+              "id": "67"
+            },
+            {
+              "name": {
+                "value": "66"
+              },
+              "id": "66"
+            },
+            {
+              "name": {
+                "value": "65"
+              },
+              "id": "65"
+            },
+            {
+              "name": {
+                "value": "64"
+              },
+              "id": "64"
+            },
+            {
+              "name": {
+                "value": "63"
+              },
+              "id": "63"
+            },
+            {
+              "name": {
+                "value": "62"
+              },
+              "id": "62"
+            },
+            {
+              "name": {
+                "value": "61"
+              },
+              "id": "61"
+            },
+            {
+              "name": {
+                "value": "60"
+              },
+              "id": "60"
+            },
+            {
+              "name": {
+                "value": "59"
+              },
+              "id": "59"
+            },
+            {
+              "name": {
+                "value": "58"
+              },
+              "id": "58"
+            },
+            {
+              "name": {
+                "value": "57"
+              },
+              "id": "57"
+            },
+            {
+              "name": {
+                "value": "56"
+              },
+              "id": "56"
+            },
+            {
+              "name": {
+                "value": "55"
+              },
+              "id": "55"
+            },
+            {
+              "name": {
+                "value": "54"
+              },
+              "id": "54"
+            },
+            {
+              "name": {
+                "value": "53"
+              },
+              "id": "53"
+            },
+            {
+              "name": {
+                "value": "52"
+              },
+              "id": "52"
+            },
+            {
+              "name": {
+                "value": "51"
+              },
+              "id": "51"
+            },
+            {
+              "name": {
+                "value": "50"
+              },
+              "id": "50"
+            },
+            {
+              "name": {
+                "value": "49"
+              },
+              "id": "49"
+            },
+            {
+              "name": {
+                "value": "48"
+              },
+              "id": "48"
+            },
+            {
+              "name": {
+                "value": "47"
+              },
+              "id": "47"
+            },
+            {
+              "name": {
+                "value": "46"
+              },
+              "id": "46"
+            },
+            {
+              "name": {
+                "value": "45"
+              },
+              "id": "45"
+            },
+            {
+              "name": {
+                "value": "44"
+              },
+              "id": "44"
+            },
+            {
+              "name": {
+                "value": "43"
+              },
+              "id": "43"
+            },
+            {
+              "name": {
+                "value": "42"
+              },
+              "id": "42"
+            },
+            {
+              "name": {
+                "value": "41"
+              },
+              "id": "41"
+            },
+            {
+              "name": {
+                "value": "40"
+              },
+              "id": "40"
+            },
+            {
+              "name": {
+                "value": "39"
+              },
+              "id": "39"
+            },
+            {
+              "name": {
+                "value": "38"
+              },
+              "id": "38"
+            },
+            {
+              "name": {
+                "value": "37"
+              },
+              "id": "37"
+            },
+            {
+              "name": {
+                "value": "36"
+              },
+              "id": "36"
+            },
+            {
+              "name": {
+                "value": "35"
+              },
+              "id": "35"
+            },
+            {
+              "name": {
+                "value": "34"
+              },
+              "id": "34"
+            },
+            {
+              "name": {
+                "value": "33"
+              },
+              "id": "33"
+            },
+            {
+              "name": {
+                "value": "32"
+              },
+              "id": "32"
+            },
+            {
+              "name": {
+                "value": "31"
+              },
+              "id": "31"
+            },
+            {
+              "name": {
+                "value": "30"
+              },
+              "id": "30"
+            },
+            {
+              "name": {
+                "value": "29"
+              },
+              "id": "29"
+            },
+            {
+              "name": {
+                "value": "28"
+              },
+              "id": "28"
+            },
+            {
+              "name": {
+                "value": "27"
+              },
+              "id": "27"
+            },
+            {
+              "name": {
+                "value": "26"
+              },
+              "id": "26"
+            },
+            {
+              "name": {
+                "value": "25"
+              },
+              "id": "25"
+            },
+            {
+              "name": {
+                "value": "24"
+              },
+              "id": "24"
+            },
+            {
+              "name": {
+                "value": "23"
+              },
+              "id": "23"
+            },
+            {
+              "name": {
+                "value": "22"
+              },
+              "id": "22"
+            },
+            {
+              "name": {
+                "value": "21"
+              },
+              "id": "21"
+            },
+            {
+              "name": {
+                "value": "20"
+              },
+              "id": "20"
+            },
+            {
+              "name": {
+                "value": "19"
+              },
+              "id": "19"
+            },
+            {
+              "name": {
+                "value": "18"
+              },
+              "id": "18"
+            },
+            {
+              "name": {
+                "value": "17"
+              },
+              "id": "17"
+            },
+            {
+              "name": {
+                "value": "16"
+              },
+              "id": "16"
+            },
+            {
+              "name": {
+                "value": "15"
+              },
+              "id": "15"
+            },
+            {
+              "name": {
+                "value": "14"
+              },
+              "id": "14"
+            },
+            {
+              "name": {
+                "value": "13"
+              },
+              "id": "13"
+            },
+            {
+              "name": {
+                "value": "12"
+              },
+              "id": "12"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "eleven"
+                ],
+                "value": "11"
+              },
+              "id": "11"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "ten"
+                ],
+                "value": "10"
+              },
+              "id": "10"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "nine"
+                ],
+                "value": "9"
+              },
+              "id": "9"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "eight"
+                ],
+                "value": "8"
+              },
+              "id": "8"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "seven"
+                ],
+                "value": "7"
+              },
+              "id": "7"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "six"
+                ],
+                "value": "6"
+              },
+              "id": "6"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "five"
+                ],
+                "value": "5"
+              },
+              "id": "5"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "four"
+                ],
+                "value": "4"
+              },
+              "id": "4"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "three"
+                ],
+                "value": "3"
+              },
+              "id": "3"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "two"
+                ],
+                "value": "2"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "one"
+                ],
+                "value": "1"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "zero"
+                ],
+                "value": "0"
+              },
+              "id": "0"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "stop and hold",
+                  "hold"
+                ],
+                "value": "stop"
+              },
+              "id": "200"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "highball speed",
+                  "zoom",
+                  "really fast",
+                  "max",
+                  "maximum"
+                ],
+                "value": "highball"
+              },
+              "id": "207"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "normal speed"
+                ],
+                "value": "normal"
+              },
+              "id": "206"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "limited speed"
+                ],
+                "value": "limited"
+              },
+              "id": "205"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "medium speed"
+                ],
+                "value": "medium"
+              },
+              "id": "204"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "slow speed"
+                ],
+                "value": "slow"
+              },
+              "id": "203"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "restricted speed"
+                ],
+                "value": "restricted"
+              },
+              "id": "202"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "roll speed"
+                ],
+                "value": "roll"
+              },
+              "id": "201"
+            }
+          ],
+          "name": "rr_speed"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "value": "route"
+              },
+              "id": "4"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "sensor",
+                  "track",
+                  "sensor track",
+                  "power district"
+                ],
+                "value": "accessory"
+              },
+              "id": "3"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "turnout"
+                ],
+                "value": "switch"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "lashup",
+                  "lash up",
+                  "consist"
+                ],
+                "value": "train"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "big boy",
+                  "steamer",
+                  "switcher",
+                  "locomotive",
+                  "loco"
+                ],
+                "value": "engine"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "scope"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "dense",
+                  "thick",
+                  "max",
+                  "maximum",
+                  "full",
+                  "heavy"
+                ],
+                "value": "high"
+              },
+              "id": "3"
+            },
+            {
+              "name": {
+                "value": "medium"
+              },
+              "id": "2"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "enable",
+                  "lowest",
+                  "wispy",
+                  "minimum",
+                  "min",
+                  "light"
+                ],
+                "value": "low"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "value": "on"
+              },
+              "id": "4"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "disable"
+                ],
+                "value": "off"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "smoke_options"
+        },
+        {
+          "values": [
+            {
+              "name": {
+                "synonyms": [
+                  "lower"
+                ],
+                "value": "decrease"
+              },
+              "id": "1"
+            },
+            {
+              "name": {
+                "synonyms": [
+                  "raise"
+                ],
+                "value": "increases"
+              },
+              "id": "0"
+            }
+          ],
+          "name": "volume"
+        }
+      ],
+      "invocationName": "pie train"
+    },
+    "prompts": [
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What is the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.294327337529.85306214949"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.294327337529.85306214949.1597708537537"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.294327337529.85306214949.1592235969306"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.411810261860.210611615696"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.411810261860.210611615696.1688622544231"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.411810261860.210611615696.888772910670"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Start up options are now, immediate, delayed, or with dialog."
+          }
+        ],
+        "id": "Slot.Validation.446143357065.340185573145.1104912264856"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the Switch TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.277570185413.1119547334991"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The Switch TMCC ID must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.277570185413.1119547334991.1142131786356"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The Switch TMCC ID must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.277570185413.1119547334991.35334226928"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.1174998521723.1606465795309"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What should I sound, Horn, Whistle, Grade Crossing, or Quilling?"
+          }
+        ],
+        "id": "Elicit.Slot.1174998521723.1515229671472"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1174998521723.1606465795309.683680880889"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1174998521723.1606465795309.1734462557423"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The TMCC ID must be between one and ninety-nine"
+          }
+        ],
+        "id": "Slot.Validation.463265233135.1392289754285.184451404187"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The TMCC ID must be between one and ninety-nine"
+          }
+        ],
+        "id": "Slot.Validation.463265233135.1392289754285.769730269406"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.463265233135.1392289754285"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What bell action should I perform?"
+          }
+        ],
+        "id": "Elicit.Slot.1637281932431.1482550008352"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.1637281932431.214580969012"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.1090937071017.444672627875"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1090937071017.444672627875.1659284034510"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1090937071017.444672627875.1391222387061"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.1243735893019.978032627933"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1243735893019.978032627933.1358061955586"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1243735893019.978032627933.543256270120"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Which direction should engine {engine} go, forward or reverse?"
+          }
+        ],
+        "id": "Elicit.Slot.751737244317.883298190230"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What is the Engine TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.751737244317.949992380403"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.751737244317.949992380403.406839739441"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.751737244317.949992380403.44649532497"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Which coupler, front or back?"
+          }
+        ],
+        "id": "Elicit.Slot.1358337494406.338770774556"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.1358337494406.86532759867"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1358337494406.86532759867.755026613231"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.1358337494406.86532759867.317623550279"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC ID?"
+          }
+        ],
+        "id": "Elicit.Slot.923966049691.969468193031"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "To what speed?"
+          }
+        ],
+        "id": "Elicit.Slot.923966049691.953382892021"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the TMCC ID of the route to fire?"
+          }
+        ],
+        "id": "Elicit.Slot.223262448747.47417090794"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Routes must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.223262448747.47417090794.516677893122"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Routes must be between one and ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.223262448747.47417090794.1127824902411"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What should I start up, an engine or a train?"
+          }
+        ],
+        "id": "Elicit.Slot.1476602551302.1619159214572"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What should I shut down, an Engine or a Train?"
+          }
+        ],
+        "id": "Elicit.Slot.527245701953.1616932068616"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What layout element do you want the status of?"
+          }
+        ],
+        "id": "Elicit.Slot.352033256157.1183583677769"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the TMCC ID of the {scope} ?"
+          }
+        ],
+        "id": "Elicit.Slot.352033256157.656353053770"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC IDs must be equal to or greater than one"
+          }
+        ],
+        "id": "Slot.Validation.352033256157.656353053770.266418224017"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the TMCC of the engine?"
+          },
+          {
+            "type": "PlainText",
+            "value": "Tell me the TMCC ID of the {scope} ?"
+          }
+        ],
+        "id": "Elicit.Slot.972783674255.517513819329"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and nine thousand nine hundred ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.972783674255.517513819329.1262717389102"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC ID\u0027s must be between one and nine thousand nine hundred ninety nine"
+          }
+        ],
+        "id": "Slot.Validation.972783674255.517513819329.537713898101"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the smoke level you want for {scope} {engine}"
+          }
+        ],
+        "id": "Elicit.Slot.972783674255.455064527029"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "You said {server} ?"
+          }
+        ],
+        "id": "Confirm.Slot.520346523642.1711855872549"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the name of your PyTrain server?"
+          }
+        ],
+        "id": "Elicit.Slot.520346523642.1711855872549"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Should I raise or lower the volume?"
+          }
+        ],
+        "id": "Elicit.Slot.453350679191.512045947681"
+      },
+      {
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Tell me the engine TMCC ID"
+          },
+          {
+            "type": "PlainText",
+            "value": "Tell me the {scope} TMCC  ID"
+          }
+        ],
+        "id": "Elicit.Slot.453350679191.1271070001596"
+      }
+    ]
   }
-  
+}
