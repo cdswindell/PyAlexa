@@ -14,7 +14,7 @@
       "skillInfrastructure": {
         "userConfig": {
           "runtime": "python3.9",
-          "handler": "pytrain-skill.handler",
+          "handler": "pytrain_skill.handler",
           "awsRegion": "us-east-1"
         },
         "type": "@ask-cli/lambda-deployer"
