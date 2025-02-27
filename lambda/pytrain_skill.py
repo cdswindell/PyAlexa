@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# This sample demonstrates handling intents from an Alexa skill using the Alexa Skills Kit SDK for Python.
-# Please visit https://alexa.design/cookbook for additional examples on implementing slots, dialog management,
-# session persistence, api calls, and more.
-# This sample is built using the handler classes approach in skill builder.
+#
+# PyTrain Alexa Skill
+#
+# The PyTrain skill translates your voice commands into Lionel TMCC and Legacy commands
+# to control engines, trains, switches, and other equipment. The skill communicates
+# via HTTPS with a PyTrain API Server on your local network with access to your Base 3.
+#
 import logging
 import requests
 import os
