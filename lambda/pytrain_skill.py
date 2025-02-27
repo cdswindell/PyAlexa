@@ -59,8 +59,9 @@ ddb_region = os.environ.get("DYNAMODB_PERSISTENCE_REGION")
 ddb_table_name = os.environ.get("DYNAMODB_PERSISTENCE_TABLE_NAME")
 logger.info(f"ddb_region: {ddb_region} ddb_table_name: {ddb_table_name}")
 
-ddb_resource = boto3.resource("dynamodb", region_name=ddb_region)
-dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=False, dynamodb_resource=ddb_resource)
+ddb_resource = boto3.resource("dynamodb")
+ddb_table_name = ddb_table_name if ddb_table_name else "pytrain-skill-state"
+dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=True, dynamodb_resource=ddb_resource)
 
 
 class NoServerException(Exception):
@@ -70,6 +71,7 @@ class NoServerException(Exception):
 def get_state(handler_input) -> dict:
     state = handler_input.attributes_manager.session_attributes
     if state is None or state.get("URL_BASE", None) is None:
+        logger.info(f"User ID: {get_user_id(handler_input)}")
         state = handler_input.attributes_manager.persistent_attributes
         if not state:
             state["server"] = None
@@ -91,8 +93,9 @@ def persist_state(handler_input, state: Dict[str, Any]):
         session_state[k] = v
         if k not in ["api-key", "uid"]:
             persisted_state[k] = v
-    persisted_state["ddb_table_name"] = ddb_table_name
-    handler_input.attributes_manager.persistent_attributes = persisted_state
+    handler_input.attributes_manager.persistent_attributes = persisted_state.copy()
+    if "api-key" in persisted_state:
+        del handler_input.attributes_manager.persistent_attributes["api-key"]
     handler_input.attributes_manager.save_persistent_attributes()
 
 
@@ -117,6 +120,7 @@ def encode_id(state, server: str = None) -> str:
     server = server if server else state.get("server")
     key = state.get("email", None)
     key = key if key else SECRET_PHRASE
+    logger.info(f"State: {state} Key: {key}")
     return jwt.encode({"UID": uid, "SERVER": server}, key, algorithm=ALGORITHM)
 
 
@@ -304,7 +308,6 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         server = self._slots["server"].value if "server" in self._slots else None
         processed = server.replace(" dot ", ".").replace(" ", "").lower()
         logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
-
         response = request_api_key(handler_input, state=state, server=processed)
         if response and response.status_code == 200:
             speak_output = f"Setting PyTrain server URL to {server}"
@@ -843,4 +846,4 @@ sb.add_request_handler(
 
 sb.add_exception_handler(CatchAllExceptionHandler())
 
-lambda_handler = sb.lambda_handler()
+handler = sb.lambda_handler()
