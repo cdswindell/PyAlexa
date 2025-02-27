@@ -662,7 +662,7 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
             if response and response.status_code == 200:
                 # Handle the response data
                 data = response.json()
-                speak_output = f"<speak>{scope} {tmcc_id.value}: <break strength='strong'/>"
+                speak_output = f"<speak>Here's the current status of {scope} {tmcc_id.value}: <break strength='strong'/>"
 
                 for key, value in data.items():
                     if value is None:
@@ -678,6 +678,34 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
                         value = value.replace("&", " and ")
                     speak_output += f"{key}<break strength='medium'/> {value}<break strength='strong'/>"
                 speak_output += "</speak>"
+        return self.handle_response(response, handler_input, speak_output)
+
+
+class FindTmccIdIntentHandler(PyTrainIntentHandler):
+    """Handler for Find TMCC ID Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        engine_num = self.engine
+        if engine_num is None:
+            logger.warning("No Engine Number Specified")
+            speak_output = "I don't know the engine number to query, sorry!"
+        else:
+            engine_num = engine_num.value
+            speak_output = ""
+            url = f"{self.url_base}/engine/{engine_num}"
+            response = self.get(url)
+
+            if response and response.status_code == 200:
+                # Handle the response data
+                data = response.json()
+                tmcc_id = data.get("tmcc_id", None)
+                if tmcc_id:
+                    speak_output = f"<speak>The TMCC <say-as interpret-as='spell-out'>ID</say-as> "
+                    speak_output += f"of Engine number {engine_num} is {tmcc_id}</speak>"
+                else:
+                    speak_output = f"I couldn't find any engine numbered {engine_num}, sorry!"
         return self.handle_response(response, handler_input, speak_output)
 
 
@@ -832,6 +860,7 @@ sb.add_request_handler(SmokeLevelIntentHandler())
 sb.add_request_handler(ChangeVolumeIntentHandler())
 sb.add_request_handler(ThrowSwitchIntentHandler())
 sb.add_request_handler(FireRouteIntentHandler())
+sb.add_request_handler(FindTmccIdIntentHandler())
 sb.add_request_handler(GetStatusIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelIntentHandler())

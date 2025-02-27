@@ -458,9 +458,10 @@
                         "{scope} {tmcc_id} report",
                         "{scope} {tmcc_id} status",
                         "report {scope} {tmcc_id}",
-                        "What's the status of {scope} {tmcc_id}",
+                        "report {scope} {tmcc_id} status",
                         "Status of {scope} {tmcc_id}",
                         "Tell me about {scope} {tmcc_id}",
+                        "Tell me the status of {scope} {tmcc_id}",
                         "status {scope} {tmcc_id}",
                         "Get the status of {scope} {tmcc_id}"
                     ]
@@ -583,19 +584,22 @@
                         }
                     ],
                     "samples": [
+                        "Find the address of engine {engine}",
+                        "Find the ID of engine {engine}",
+                        "Find the TMCC ID of engine {engine}",
                         "What's the address of number {engine}",
                         "What's the address of engine number {engine}",
                         "What's the ID of engine number {engine}",
                         "What's the TMCC ID of Engine Number {engine}",
                         "What's the ID of {engine}",
                         "What's the id of engine {engine}",
-                        "What is the ID of engine {engine}",
                         "What's the TMCC ID of engine {engine}",
                         "what's the address of {engine}",
                         "what's the address of engine {engine}",
-                        "What is the address of engine {engine}",
                         "What's the TMCC ID of {engine}",
-                        "What is the TMCC ID of engine {engine} "
+                        "What is the ID of engine {engine}",
+                        "What is the TMCC ID of engine {engine} ",
+                        "What is the address of engine {engine}"
                     ]
                 }
             ],
