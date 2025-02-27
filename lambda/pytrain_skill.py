@@ -14,7 +14,7 @@ import ask_sdk_core.utils as ask_utils
 
 from dotenv import load_dotenv
 from os.path import join, dirname
-from typing import Any, Dict, Union
+from typing import Any
 
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
@@ -77,7 +77,7 @@ def get_state(handler_input) -> dict:
     return state
 
 
-def persist_state(handler_input, state: Dict[str, Any]):
+def persist_state(handler_input, state: dict[str, Any]):
     if handler_input.attributes_manager.session_attributes:
         session_state = handler_input.attributes_manager.session_attributes
         persisted_state = session_state.copy()
@@ -174,7 +174,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         intent = self.__class__.__name__.replace("Handler", "")
         return ask_utils.is_intent_name(intent)(handler_input)
 
-    def handle(self, handler_input: HandlerInput, raise_exception: bool = True) -> Union[Response, None]:
+    def handle(self, handler_input: HandlerInput, raise_exception: bool = True) -> Response | None:
         setattr(self, "_handler_input", handler_input)
         setattr(self, "_slots", handler_input.request_envelope.request.intent.slots)
         if raise_exception is True:
