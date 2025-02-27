@@ -49,7 +49,7 @@
         "isShoppingActionsEnabled": false,
         "isAmazonAssociatesOnAlexaEnabled": false
       },
-      "usesPersonalInfo": true
+      "usesPersonalInfo": false
     }
   }
 }
