@@ -55,14 +55,10 @@ PATH_MAP = {
 
 #
 # initialize persistence adapter
-ddb_region = os.environ.get("DYNAMODB_PERSISTENCE_REGION")
-ddb_table_name = os.environ.get("DYNAMODB_PERSISTENCE_TABLE_NAME")
-logger.info(f"ddb_region: {ddb_region} ddb_table_name: {ddb_table_name}")
-
 ddb_resource = boto3.resource("dynamodb")
+ddb_table_name = os.environ.get("DYNAMODB_PERSISTENCE_TABLE_NAME")
 ddb_table_name = ddb_table_name if ddb_table_name else "pytrain-skill-state"
 dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=True, dynamodb_resource=ddb_resource)
-
 
 class NoServerException(Exception):
     pass
@@ -71,7 +67,6 @@ class NoServerException(Exception):
 def get_state(handler_input) -> dict:
     state = handler_input.attributes_manager.session_attributes
     if state is None or state.get("URL_BASE", None) is None:
-        logger.info(f"User ID: {get_user_id(handler_input)}")
         state = handler_input.attributes_manager.persistent_attributes
         if not state:
             state["server"] = None
@@ -100,6 +95,9 @@ def persist_state(handler_input, state: Dict[str, Any]):
 
 
 def get_user_info(handler_input) -> dict:
+    """
+    This function is currently deprecated. Leaving here for reference.
+    """
     # Fetching access token
     access_token = str(handler_input.request_envelope.context.system.api_access_token)
     api_access_token = "Bearer " + access_token
@@ -118,14 +116,13 @@ def get_user_info(handler_input) -> dict:
 def encode_id(state, server: str = None) -> str:
     uid = state.get("uid")
     server = server if server else state.get("server")
-    key = state.get("email", None)
-    key = key if key else SECRET_PHRASE
-    logger.info(f"State: {state} Key: {key}")
-    return jwt.encode({"UID": uid, "SERVER": server}, key, algorithm=ALGORITHM)
+    #key = state.get("email", None)
+    #key = key if key else SECRET_PHRASE
+    return jwt.encode({"UID": uid, "SERVER": server}, server, algorithm=ALGORITHM)
 
 
 def request_api_key(handler_input, state=None, server: str = None) -> requests.Response:
-    get_user_info(handler_input)
+    #get_user_info(handler_input)
     state = state if state else get_state(handler_input)
     server = server if server else state.get("server", None)
     response = requests.post(f"https://{server}/version", json={"uid": encode_id(state, server=server)})

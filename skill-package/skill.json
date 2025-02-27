@@ -35,14 +35,6 @@
       }
     },
     "manifestVersion": "1.0",
-    "permissions": [
-      {
-        "name": "alexa::profile:given_name:read"
-      },
-      {
-        "name": "alexa::profile:email:read"
-      }
-    ],
     "privacyAndCompliance": {
       "allowsPurchases": false,
       "locales": {
