@@ -281,10 +281,16 @@
                         {
                             "name": "scope",
                             "type": "scope"
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION"
                         }
                     ],
                     "samples": [
+                        "Refuel {engine} for {duration}",
                         "Refuel {engine}",
+                        "Refuel {scope} {engine} for {duration}",
                         "Refuel {scope} {engine}"
                     ]
                 },

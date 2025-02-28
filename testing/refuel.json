@@ -79,11 +79,15 @@
     "type": "IntentRequest",
     "locale": "en-US",
     "intent": {
-      "name": "ShutDownIntent",
+      "name": "RefuelIntent",
       "slots": {
         "engine": {
           "name": "engine",
           "value": "67"
+        },
+		  "duration": {
+          "name": "duration",
+          "value": "PT12S"
         }
       }
     }

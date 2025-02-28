@@ -72,10 +72,6 @@
 			"user": {
 				"userId": "amzn1.ask.account.testUser"
 			},
-			"device": {
-				"deviceId": "amzn1.ask.device.AMA6VKEEPQX7L3R2PVW7JOSNCITWKLQQFYNKDF6DZWIW65OPCOQJ5VVGVGFC3TMAKURENWL4NXURBJFZYANLCXKDYLFUSSO4THZFEHKPE7LKM3BQW7RZ5F3ZDPF3KEDPWR25GOEOSMV7HLUUSI4NHKARRMQPJTHZMNNG7Z2OPWYJYHO45VTOHJYVMATSAMQNUK5DE",
-				"supportedInterfaces": {}
-			},
 			"apiEndpoint": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548"
 		}
 	},

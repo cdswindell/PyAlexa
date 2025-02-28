@@ -15,7 +15,9 @@ import jwt
 
 import ask_sdk_core.utils as ask_utils
 
+
 from dotenv import load_dotenv
+from isodate import parse_duration
 from os.path import join, dirname
 from typing import Any
 
@@ -40,8 +42,8 @@ ALGORITHM = os.environ.get("ALGORITHM")
 
 REQUEST_SERVER_OUTPUT = """
     Welcome to PyTrain! To get started, I need to know your
-    PyTrain server URL. Please say: 'My PyTrain server is', followed by
-    your server's URL. Use the word 'dot' for periods.
+    PyTrain API server URL. Please say: 'My PyTrain server is',
+    followed by your server's URL. Use the word 'dot' for periods.
 """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
@@ -66,6 +68,11 @@ dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=True,
 class NoServerException(Exception):
     pass
 
+class UnsupportedDuration(Exception):
+    def __init__(self, duration: Any) -> None:
+        message = f"Duration not supported: {duration}"
+        super().__init__(message)
+        self.duration = duration
 
 def get_state(handler_input) -> dict:
     state = handler_input.attributes_manager.session_attributes
@@ -190,9 +197,9 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                     logger.warning(f"Handler Super Request failed with status code: {response.status_code} {response}")
         return None
 
+    @staticmethod
     def handle_response(
-        self,
-        response,
+            response,
         handler_input,
         speak_output,
         reprompt="What next?",
@@ -271,6 +278,19 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     def dialog(self):
         slots = self._handler_input.request_envelope.request.intent.slots
         return get_canonical_slot(slots["dialog"]) if "dialog" in slots else None
+
+    @property
+    def duration(self) -> int | None:
+        slots = self._handler_input.request_envelope.request.intent.slots
+        duration_slot = slots["duration"] if "duration" in slots else None
+        if duration_slot:
+            if duration_slot.value.startswith('PT'):
+                duration = parse_duration(duration_slot.value).seconds
+            else:
+                raise UnsupportedDuration(duration_slot.value)
+        else:
+            duration = None
+        return duration
 
     @property
     def speed(self):
@@ -538,6 +558,8 @@ class ResetIntentHandler(PyTrainIntentHandler):
         response = None
         scope = self.scope
         engine = self.engine
+        duration = self.duration
+        logger.info(f"Duration: {duration}")
         if engine is None:
             logger.warning(f"No {scope.title()} Number Specified")
             speak_output = "I don't know what {scope} you want me to reset, sorry!"
@@ -551,11 +573,14 @@ class ResetIntentHandler(PyTrainIntentHandler):
 class RefuelIntentHandler(ResetIntentHandler):
     @property
     def url(self):
-        return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req?hold=true"
+        duration = self.duration if self.duration and self.duration >= 3 else 3
+        return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req?hold=true&duration={duration}"
 
     @property
     def spoken_response(self):
-        return f"Refueling {self.scope} {self.engine.value}"
+        duration = self.duration
+        dur = f" for {duration} second{'s' if duration and duration == 1 else ''}" if duration else ""
+        return f"Refueling {self.scope} {self.engine.value}{dur}"
 
 
 class SetDirectionIntentHandler(PyTrainIntentHandler):
