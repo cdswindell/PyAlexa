@@ -306,13 +306,28 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         super().handle(handler_input, raise_exception)
         state = get_state(handler_input)
         server = self._slots["server"].value if "server" in self._slots else None
-        processed = server.replace(" dot ", ".").replace(" ", "").lower()
+        parts = server.split()
+        new_parts = []
+        http = ""
+        for part in parts:
+            part = part.lower().replace("://", "")
+            if not part or part in  ["colon", "slash", "", "://", ":", "/"]:
+                continue
+            if part == "dot":
+                new_parts.append('.')
+            elif part.startswith('http'):
+                http = part
+            else:
+                new_parts.append(part)
+        processed = "".join(new_parts)
+        #processed = server.replace(" dot ", ".").replace(" ", "").lower()
         logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
         response = request_api_key(handler_input, state=state, server=processed)
         if response and response.status_code == 200:
             speak_output = f"Setting PyTrain server URL to {server}"
             reprompt = PYTRAIN_REPROMPT
-            url_base = f"https://{processed}/pytrain/v1"
+            http = http if http else "https"
+            url_base = f"{http}://{processed}/pytrain/v1"
             persist_state(handler_input, {"URL_BASE": url_base, "server": processed})
         else:
             speak_output = (
