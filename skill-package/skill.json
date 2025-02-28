@@ -26,6 +26,7 @@
       },
       "isAvailableWorldwide": true,
       "testingInstructions": "PyTrain Testing Instructions (tbw).",
+      "category": "SMART_HOME",
       "distributionCountries": []
     },
     "apis": {
