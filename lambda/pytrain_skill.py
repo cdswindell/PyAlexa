@@ -326,7 +326,7 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         if response and response.status_code == 200:
             speak_output = f"Setting PyTrain server URL to {server}"
             reprompt = PYTRAIN_REPROMPT
-            http = http if http else "https"
+            http = http if http else "http"
             url_base = f"{http}://{processed}/pytrain/v1"
             persist_state(handler_input, {"URL_BASE": url_base, "server": processed})
         else:
