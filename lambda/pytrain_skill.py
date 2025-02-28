@@ -320,7 +320,7 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
             else:
                 new_parts.append(part)
         processed = "".join(new_parts)
-        #processed = server.replace(" dot ", ".").replace(" ", "").lower()
+
         logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
         response = request_api_key(handler_input, state=state, server=processed)
         if response and response.status_code == 200:

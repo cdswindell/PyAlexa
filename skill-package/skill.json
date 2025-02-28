@@ -19,7 +19,7 @@
           "name": "pytrain",
           "description": "PyTrain allows you to control your Lionel TMCC/Legacy layout using your voice. You can throw switches, fire routes, and control engines and trains all with voice commands. Examples of engine and train operations include:\n\n* Start up Train 53\n* Accelerate Train 53 to speed step 35\n* Reverse Train 5\n* Ring the bell on Engine 10\n* Stop Train 35\n* Set the smoke level on engine 6 to low\n * Emergency Halt\n\nPyTrain requires you to run a local HTTPS server that proxies requests to an running instance of the PyTrain API.",
           "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
-          "updatesDescription": "Added API Token retrieving mechanism to authorize to PyTrain API on the fly, securely. New feature requires User consent to email and given name release.",
+          "updatesDescription": "Added support for accessing PyTrain API via HTTP or HTTPS",
           "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
         }
       },
@@ -34,22 +34,6 @@
         }
       }
     },
-    "manifestVersion": "1.0",
-    "privacyAndCompliance": {
-      "allowsPurchases": false,
-      "locales": {
-        "en-US": {
-          "privacyPolicyUrl": "https://app.termly.io/policy-viewer/policy.html?policyUUID=aed26dd0-2ae9-4c73-b8d7-ac5a550bcc7b"
-        }
-      },
-      "containsAds": false,
-      "isExportCompliant": true,
-      "isChildDirected": false,
-      "shoppingKit": {
-        "isShoppingActionsEnabled": false,
-        "isAmazonAssociatesOnAlexaEnabled": false
-      },
-      "usesPersonalInfo": false
-    }
+    "manifestVersion": "1.0"
   }
 }
