@@ -15,25 +15,30 @@
                 {
                     "name": "AMAZON.HelpIntent",
                     "samples": [
+                        "guide me",
+                        "guide",
+                        "help me",
+                        "how does this skill work",
                         "what can I say",
-                        "what do I do",
-                        "How does this skill work",
-                        "help me"
+                        "what do I do"
                     ]
                 },
                 {
                     "name": "AMAZON.StopIntent",
                     "samples": [
-                        "quit pytrain",
-                        "Quit skill",
-                        "Quit Pie Train",
-                        "Exit skill",
-                        "Exit pytrain",
-                        "Exit pie train",
-                        "that's it",
                         "All done",
+                        "Exit pie train",
+                        "Exit pytrain",
+                        "Exit skill",
+                        "Good Bye",
+                        "I'm done",
+                        "Quit Pie Train",
+                        "Quit pytrain",
+                        "Quit skill",
                         "Stop Pie Train",
-                        "Stop PyTrain"
+                        "Stop PyTrain",
+                        "That's all",
+                        "That's it"
                     ]
                 },
                 {
@@ -51,8 +56,8 @@
                             "name": "engine",
                             "type": "AMAZON.NUMBER",
                             "samples": [
-                                "train {engine}",
                                 "engine {engine}",
+                                "train {engine}",
                                 "{engine}"
                             ]
                         },
@@ -66,13 +71,17 @@
                         }
                     ],
                     "samples": [
-                        "Start up {scope} {engine} {dialog}",
-                        "Start",
-                        "Start up",
+                        "Power on {engine} {dialog}",
                         "Power on {scope} {engine} {dialog}",
+                        "Power up {engine} {dialog}",
                         "Power up {scope} {engine} {dialog}",
-                        "start {scope} {engine} {dialog}",
-                        "startup {scope} {engine} {dialog}"
+                        "Start up {engine} {dialog}",
+                        "Start up {scope} {engine} {dialog}",
+                        "Start up",
+                        "Start {engine} {dialog}",
+                        "Start {scope} {engine} {dialog}",
+                        "Start",
+                        "Startup {scope} {engine} {dialog}"
                     ]
                 },
                 {
@@ -82,8 +91,8 @@
                             "name": "engine",
                             "type": "AMAZON.NUMBER",
                             "samples": [
-                                "train {engine}",
                                 "engine {engine}",
+                                "train {engine}",
                                 "{engine}"
                             ]
                         },
@@ -97,12 +106,12 @@
                         }
                     ],
                     "samples": [
-                        "Shut down {engine} {dialog}",
-                        "Power off  {engine} {dialog}",
                         "Power down {engine} {dialog}",
-                        "Power off",
-                        "Power off {scope} {engine} {dialog}",
                         "Power down {scope} {engine} {dialog}",
+                        "Power off  {engine} {dialog}",
+                        "Power off {scope} {engine} {dialog}",
+                        "Power off",
+                        "Shut down {engine} {dialog}",
                         "Shut down {scope} {engine} {dialog}"
                     ]
                 },
@@ -123,13 +132,13 @@
                         }
                     ],
                     "samples": [
-                        "switch {switch} {position}",
-                        "Throw switch",
-                        "switch",
                         "switch {switch} to {position}",
-                        "throw",
+                        "switch {switch} {position}",
+                        "switch",
+                        "throw switch {switch} {position}",
+                        "throw switch",
                         "throw {switch} to {position}",
-                        "Throw switch {switch} {position}"
+                        "throw"
                     ]
                 },
                 {
@@ -137,11 +146,11 @@
                     "slots": [],
                     "samples": [
                         "Alexa halt",
-                        "Whoa",
                         "Emergency Halt",
                         "Emergency Stop",
                         "Emergency",
-                        "Halt"
+                        "Halt",
+                        "Whoa"
                     ]
                 },
                 {
@@ -169,14 +178,14 @@
                         }
                     ],
                     "samples": [
-                        "sound the {horn} on {engine}",
-                        "Sound {horn} on  {engine}",
                         "blow the {horn} on {engine}",
+                        "blow the {horn} on {scope} {engine}",
                         "blow {horn} on {engine}",
                         "blow {horn} on {scope} {engine}",
-                        "Sound the {horn} on {scope} {engine}",
-                        "Blow the {horn} on {scope} {engine}",
-                        "Sound {horn} on {scope} {engine}"
+                        "sound the {horn} on {engine}",
+                        "sound the {horn} on {scope} {engine}",
+                        "sound {horn} on {engine}",
+                        "sound {horn} on {scope} {engine}"
                     ]
                 },
                 {
@@ -229,9 +238,9 @@
                         }
                     ],
                     "samples": [
-                        "Bell {ring} {scope} {engine}",
-                        "{ring} bell {engine}",
+                        "bell {ring} {scope} {engine}",
                         "{ring} bell on {scope} {engine}",
+                        "{ring} bell {engine}",
                         "{ring} the bell on {scope} {engine}"
                     ]
                 },
@@ -303,24 +312,24 @@
                         }
                     ],
                     "samples": [
-                        "{direction} direction {scope} {engine}",
-                        "{direction} direction of {scope} {engine}",
-                        "{direction} the direction of {scope} {engine}",
-                        "tell {scope} {engine} move {direction}",
-                        "tell {scope} {engine} to move {direction}",
-                        "tell {scope} {engine} {direction}",
-                        "tell {scope} {engine} go {direction}",
-                        "tell {scope} {engine} to go {direction}",
+                        "change direction of {scope} {engine} to {direction}",
+                        "change direction of {scope} {engine} {direction}",
+                        "change direction {engine} {direction}",
                         "change direction {scope} {engine} {direction}",
                         "change the direction of {scope} {engine} to {direction}",
                         "change the direction of {scope} {engine} {direction}",
-                        "{direction} {scope} {engine}",
-                        "{direction} {engine}",
+                        "set direction of {scope} {engine} to {direction}",
                         "set the direction of {scope} {engine} {direction}",
-                        "change direction {engine} {direction}",
-                        "change direction of {scope} {engine} {direction}",
-                        "change direction of {scope} {engine} to {direction}",
-                        "set direction of {scope} {engine} to {direction}"
+                        "tell {scope} {engine} go {direction}",
+                        "tell {scope} {engine} move {direction}",
+                        "tell {scope} {engine} to go {direction}",
+                        "tell {scope} {engine} to move {direction}",
+                        "tell {scope} {engine} {direction}",
+                        "{direction} direction of {scope} {engine}",
+                        "{direction} direction {scope} {engine}",
+                        "{direction} the direction of {scope} {engine}",
+                        "{direction} {engine}",
+                        "{direction} {scope} {engine}"
                     ]
                 },
                 {
@@ -348,18 +357,18 @@
                         }
                     ],
                     "samples": [
-                        "Open {coupler} {scope} {engine}",
-                        "Trigger {coupler} {scope} {engine}",
-                        "release {coupler} {scope} {engine}",
-                        "Open {coupler} on {scope} {engine}",
-                        "Release {coupler} on {scope} {engine}",
-                        "Trigger {coupler} on {scope} {engine}",
-                        "Trigger {coupler} on {engine}",
-                        "Release {coupler} on {engine}",
                         "Open {coupler} on {engine}",
-                        "Release  {coupler} {engine}",
+                        "Open {coupler} on {scope} {engine}",
+                        "Open {coupler} {engine}",
+                        "Open {coupler} {scope} {engine}",
+                        "Release {coupler} on {engine}",
+                        "Release {coupler} on {scope} {engine}",
+                        "Release {coupler} {engine}",
+                        "Release {coupler} {scope} {engine}",
+                        "Trigger {coupler} on {engine}",
+                        "Trigger {coupler} on {scope} {engine}",
                         "Trigger {coupler} {engine}",
-                        "Open {coupler} {engine}"
+                        "Trigger {coupler} {scope} {engine}"
                     ]
                 },
                 {
@@ -394,19 +403,21 @@
                         }
                     ],
                     "samples": [
-                        "Slow {scope} {engine} to speed {speed} {dialog}",
-                        "speed up {scope} {engine} to {speed} {dialog}",
-                        "Set the speed of {engine} to  {speed} {dialog}",
-                        "Set speed of {engine} to {speed} {dialog}",
-                        "accelerate {scope} {engine} to {speed} {dialog}",
-                        "decelerate {scope} {engine} to {speed} {dialog}",
-                        "decelerate {scope} {engine} to speed {speed} {dialog}",
+                        "accelerate {scope} {engine} to speed step {speed} {dialog}",
                         "accelerate {scope} {engine} to speed {speed} {dialog}",
-                        "Set speed of {engine} to speed {speed} {dialog}",
-                        "Set the speed of {engine} to speed  {speed} {dialog}",
-                        "speed up {engine} to {speed} {dialog}",
+                        "accelerate {scope} {engine} to {speed} {dialog}",
+                        "decelerate {scope} {engine} to speed step {speed} {dialog}",
+                        "decelerate {scope} {engine} to speed {speed} {dialog}",
+                        "decelerate {scope} {engine} to {speed} {dialog}",
+                        "set speed of {engine} to speed {speed} {dialog}",
+                        "set speed of {engine} to {speed} {dialog}",
+                        "set the speed of {engine} to speed {speed} {dialog}",
+                        "set the speed of {engine} to {speed} {dialog}",
                         "slow {engine} to {speed} {dialog}",
-                        "Slow {scope} {engine} to {speed} {dialog}"
+                        "slow {scope} {engine} to speed {speed} {dialog}",
+                        "slow {scope} {engine} to {speed} {dialog}",
+                        "speed up {engine} to {speed} {dialog}",
+                        "speed up {scope} {engine} to {speed} {dialog}"
                     ]
                 },
                 {
@@ -423,9 +434,9 @@
                     ],
                     "samples": [
                         "Activate route {route}",
+                        "Fire route {route}",
                         "Fire {route}",
-                        "trigger route {route}",
-                        "Fire route {route}"
+                        "Trigger route {route}"
                     ]
                 },
                 {
@@ -442,28 +453,32 @@
                             "name": "tmcc_id",
                             "type": "AMAZON.NUMBER",
                             "samples": [
-                                "number {tmcc_id}",
                                 "Accessory {tmcc_id}",
-                                "Turnout {scope}",
+                                "Engine {tmcc_id}",
+                                "Number {tmcc_id}",
                                 "Switch {tmcc_id}",
                                 "Train {tmcc_id}",
-                                "Engine {tmcc_id}",
+                                "Turnout {scope}",
                                 "{tmcc_id}"
                             ]
                         }
                     ],
                     "samples": [
-                        "{scope} number {tmcc_id} status",
+                        "get status of {tmcc_id}",
+                        "get status of {scope} {tmcc_id}",
+                        "get the status of {scope} {tmcc_id}",
                         "report on {scope} {tmcc_id}",
-                        "{scope} {tmcc_id} report",
-                        "{scope} {tmcc_id} status",
-                        "report {scope} {tmcc_id}",
                         "report {scope} {tmcc_id} status",
-                        "Status of {scope} {tmcc_id}",
-                        "Tell me about {scope} {tmcc_id}",
-                        "Tell me the status of {scope} {tmcc_id}",
+                        "report {scope} {tmcc_id}",
+                        "status of {scope} {tmcc_id}",
                         "status {scope} {tmcc_id}",
-                        "Get the status of {scope} {tmcc_id}"
+                        "tell me about {scope} {tmcc_id}",
+                        "tell me the status of {scope} {tmcc_id}",
+                        "what is the status of {scope} {tmcc_id}",
+                        "what's the status of {scope} {tmcc_id}",
+                        "{scope} number {tmcc_id} status",
+                        "{scope} {tmcc_id} report",
+                        "{scope} {tmcc_id} status"
                     ]
                 },
                 {
@@ -493,14 +508,17 @@
                         }
                     ],
                     "samples": [
-                        "{smoke}  {scope} {engine}",
-                        "{smoke}  on {scope} {engine}",
+                        "set smoke level of {scope} {engine} to {smoke}",
+                        "set smoke level {scope} {engine} to {smoke}",
+                        "set smoke level {scope} {engine} {smoke}",
+                        "set the smoke level of {engine} to {smoke}",
+                        "set the smoke level of {scope} {engine} to {smoke}",
+                        "set the smoke level on {engine} to {smoke}",
+                        "set the smoke level on {scope} {engine} to {smoke}",
+                        "smoke {scope} {engine} {smoke}",
+                        "{smoke} on {scope} {engine}",
                         "{smoke} the smoke on {scope} {engine}",
-                        "Smoke {scope} {engine} {smoke}",
-                        "Set the smoke level of {scope} {engine} to {smoke}",
-                        "Set smoke level {scope} {engine} {smoke}",
-                        "Set smoke level {scope} {engine} to {smoke}",
-                        "Set the smoke level on {scope} {engine} to {smoke}"
+                        "{smoke} {scope} {engine}"
                     ]
                 },
                 {
@@ -517,22 +535,22 @@
                         }
                     ],
                     "samples": [
-                        "My py train url is {server}",
-                        "my pietrain server url is {server}",
-                        "my pytrain server url is {server}",
-                        "my pi train server url is {server}",
-                        "My pi train url is {server}",
-                        "My pie train url is {server}",
-                        "My url is {server}",
-                        "server {server}",
-                        "my server is {server}",
                         "My Pie Train server is {server}",
+                        "My Pie Train server url is {server}",
+                        "My PieTrain url is {server}",
                         "My Py Train server is {server}",
                         "My PyTrain server is {server}",
                         "My PyTrain url is {server}",
-                        "My Pie Train server url is {server}",
-                        "My PieTrain url is {server}",
+                        "My pi train server url is {server}",
+                        "My pi train url is {server}",
+                        "My pie train url is {server}",
+                        "My pietrain server url is {server}",
+                        "My py train url is {server}",
+                        "My pytrain server url is {server}",
+                        "My server is {server}",
                         "My server url is {server}",
+                        "My url is {server}",
+                        "server {server}",
                         "url {server}"
                     ]
                 },
@@ -561,12 +579,12 @@
                         }
                     ],
                     "samples": [
+                        "{volume} the volume of {engine}",
+                        "{volume} the volume of {scope} {engine}",
                         "{volume} volume  {engine}",
                         "{volume} volume of {engine}",
-                        "{volume} the volume of  {engine}",
-                        "{volume} volume {scope} {engine}",
                         "{volume} volume of {scope} {engine}",
-                        "{volume} the volume of {scope} {engine}"
+                        "{volume} volume {scope} {engine}"
                     ]
                 },
                 {
@@ -584,22 +602,24 @@
                         }
                     ],
                     "samples": [
-                        "Find the address of engine {engine}",
                         "Find the ID of engine {engine}",
+                        "Find the ID of {engine}",
                         "Find the TMCC ID of engine {engine}",
-                        "What's the address of number {engine}",
-                        "What's the address of engine number {engine}",
-                        "What's the ID of engine number {engine}",
-                        "What's the TMCC ID of Engine Number {engine}",
-                        "What's the ID of {engine}",
-                        "What's the id of engine {engine}",
-                        "What's the TMCC ID of engine {engine}",
-                        "what's the address of {engine}",
-                        "what's the address of engine {engine}",
-                        "What's the TMCC ID of {engine}",
+                        "Find the address of engine {engine}",
+                        "Find the address of {engine}",
                         "What is the ID of engine {engine}",
                         "What is the TMCC ID of engine {engine} ",
-                        "What is the address of engine {engine}"
+                        "What is the address of engine {engine}",
+                        "What's the ID of engine number {engine}",
+                        "What's the ID of {engine}",
+                        "What's the TMCC ID of Engine Number {engine}",
+                        "What's the TMCC ID of engine {engine}",
+                        "What's the TMCC ID of {engine}",
+                        "What's the address of engine number {engine}",
+                        "What's the address of engine {engine}",
+                        "What's the address of number {engine}",
+                        "What's the address of {engine}",
+                        "What's the id of engine {engine}"
                     ]
                 }
             ],
