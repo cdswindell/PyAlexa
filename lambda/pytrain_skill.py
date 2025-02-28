@@ -474,7 +474,7 @@ class RingBellIntentHandler(PyTrainIntentHandler):
                     opt = "once"
                     device = "Ring the bell once"
                     dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
-                    dur_param = f"?duration={duration}" if duration else ""
+                    dur_param = f"&duration={duration}" if duration else ""
                 elif bell.value.id == "2":
                     opt = "on"
                     device = "Enable the bell"
