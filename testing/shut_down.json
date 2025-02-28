@@ -1,0 +1,96 @@
+{
+	"version": "1.0",
+	"session": {
+		"new": true,
+		"application": {
+			"applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+		},
+		"user": {
+			"userId": "amzn1.ask.account.AMA7RL32KSGFIANEM7SB7MUETUERMCPPHQRC7LGONDUG6EAFXX2OX5GU5VCMB7W4L2ACCDBWSWFD575KXLBTVR772OCUC4OYKEB3EABRJNHWBI6O4GX2Z2D4S4CO63T6XMMNO3DHP66ME7GJ3P4ZYG53WCGS3HCXXJ43AX7DNVHBWVGYQCJHZ7E72SW3MLZXGK2SPF4PY5P7BYKZGNXKMV7HBKG7776SZBEIS33JWHJQ"
+		}
+	},
+	"context": {
+		"Viewports": [
+			{
+				"type": "APL",
+				"id": "medHub",
+				"shape": "RECTANGLE",
+				"dpi": 160,
+				"presentationType": "OVERLAY",
+				"canRotate": false,
+				"configuration": {
+					"current": {
+						"mode": "HUB",
+						"video": {
+							"codecs": [
+								"H_264_42",
+								"H_264_41"
+							]
+						},
+						"size": {
+							"type": "DISCRETE",
+							"pixelWidth": 1280,
+							"pixelHeight": 800
+						}
+					}
+				}
+			}
+		],
+		"Viewport": {
+			"experiences": [
+				{
+					"arcMinuteWidth": 221,
+					"arcMinuteHeight": 162,
+					"canRotate": false,
+					"canResize": false
+				}
+			],
+			"mode": "HUB",
+			"shape": "RECTANGLE",
+			"pixelWidth": 1280,
+			"pixelHeight": 800,
+			"dpi": 160,
+			"currentPixelWidth": 1280,
+			"currentPixelHeight": 800,
+			"touch": [
+				"SINGLE"
+			],
+			"keyboard": [
+				"DIRECTION"
+			],
+			"video": {
+				"codecs": [
+					"H_264_42",
+					"H_264_41"
+				]
+			}
+		},
+		"System": {
+			"application": {
+				"applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+			},
+			"user": {
+				"userId": "amzn1.ask.account.AMA7RL32KSGFIANEM7SB7MUETUERMCPPHQRC7LGONDUG6EAFXX2OX5GU5VCMB7W4L2ACCDBWSWFD575KXLBTVR772OCUC4OYKEB3EABRJNHWBI6O4GX2Z2D4S4CO63T6XMMNO3DHP66ME7GJ3P4ZYG53WCGS3HCXXJ43AX7DNVHBWVGYQCJHZ7E72SW3MLZXGK2SPF4PY5P7BYKZGNXKMV7HBKG7776SZBEIS33JWHJQ"
+			},
+			"device": {
+				"deviceId": "amzn1.ask.device.AMA6VKEEPQX7L3R2PVW7JOSNCITWKLQQFYNKDF6DZWIW65OPCOQJ5VVGVGFC3TMAKURENWL4NXURBJFZYANLCXKDYLFUSSO4THZFEHKPE7LKM3BQW7RZ5F3ZDPF3KEDPWR25GOEOSMV7HLUUSI4NHKARRMQPJTHZMNNG7Z2OPWYJYHO45VTOHJYVMATSAMQNUK5DE",
+				"supportedInterfaces": {}
+			},
+			"apiEndpoint": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548",
+			"apiAccessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ.eyJhdWQiOiJodHRwczovL2FwaS5hbWF6b25hbGV4YS5jb20iLCJpc3MiOiJBbGV4YVNraWxsS2l0Iiwic3ViIjoiYW16bjEuYXNrLnNraWxsLmIzMTI3ODYxLTE3OWItNGFjMi04MDI4LTVmOTRhYTRkZTdhNyIsImV4cCI6MTc0MDcxMDMwMSwiaWF0IjoxNzQwNzEwMDAxLCJuYmYiOjE3NDA3MTAwMDEsInByaXZhdGVDbGFpbXMiOnsiZGV2aWNlSWQiOiJhbXpuMS5hc2suZGV2aWNlLkFNQTZWS0VFUFFYN0wzUjJQVlc3Sk9TTkNJVFdLTFFRRllOS0RGNkRaV0lXNjVPUENPUUo1VlZHVkdGQzNUTUFLVVJFTldMNE5YVVJCSkZaWUFOTENYS0RZTEZVU1NPNFRIWkZFSEtQRTdMS00zQlFXN1JaNUYzWkRQRjNLRURQV1IyNUdPRU9TTVY3SExVVVNJNE5IS0FSUk1RUEpUSFpNTk5HN1oyT1BXWUpZSE80NVZUT0hKWVZNQVRTQU1RTlVLNURFIiwidXNlcklkIjoiYW16bjEuYXNrLmFjY291bnQuQU1BN1JMMzJLU0dGSUFORU03U0I3TVVFVFVFUk1DUFBIUVJDN0xHT05EVUc2RUFGWFgyT1g1R1U1VkNNQjdXNEwyQUNDREJXU1dGRDU3NUtYTEJUVlI3NzJPQ1VDNE9ZS0VCM0VBQlJKTkhXQkk2TzRHWDJaMkQ0UzRDTzYzVDZYTU1OTzNESFA2Nk1FN0dKM1A0WllHNTNXQ0dTM0hDWFhKNDNBWDdETlZIQldWR1lRQ0pIWjdFNzJTVzNNTFpYR0syU1BGNFBZNVA3QllLWkdOWEtNVjdIQktHNzc3NlNaQkVJUzMzSldISlEifX0.D_2TYg3cQz4rgbGpi0Ttpif540oD8p80hIy-bNahs_aCN6eLjBhEDWoTODkZ9shHVpdKL6nygEySd8pHwnZrWWIe37rCsKw_mOTGn9kTzU1j6tIVVDRZVNVRCW4lcRNTEWt3Ywh18xG37tGfQWzB-UjeLF5lnOgWaTgVzL_MDJAWuyAytWBCKBBoSurtl9-83_yIcbvtgSf9N7a2nkpqfqblFRe-yU5BI5NED0z2x0kkzwxP3mQ5e1HFBGJMa8OqMp8y4nLwnrowaL_-TlLHseG1sgvgXBm8MBlayMi5MaKdd3QaPHS2sgL_FAaIGph5rV6ALLSgWLdD7LEIEVMl9g"
+		}
+	},
+  "request": {
+    "type": "IntentRequest",
+    "locale": "en-US",
+    "intent": {
+      "name": "ShutDownIntent",
+      "slots": {
+        "engine": {
+          "name": "engine",
+          "value": "67"
+        }
+      }
+    }
+  }
+}
