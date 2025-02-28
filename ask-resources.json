@@ -13,7 +13,7 @@
       },
       "skillInfrastructure": {
         "userConfig": {
-          "runtime": "python3.12",
+          "runtime": "python3.11",
           "handler": "pytrain_skill.handler",
           "awsRegion": "us-east-1"
         },

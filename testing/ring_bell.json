@@ -1,0 +1,86 @@
+{
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "application": {
+      "applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.testUser"
+    }
+  },
+  "context": {
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.testUser"
+      },
+      "apiEndpoint": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "locale": "en-US",
+    "intent": {
+      "name": "RingBellIntent",
+      "slots": {
+				"ring": {
+					"name": "ring",
+					"value": "ring",
+					"resolutions": {
+						"resolutionsPerAuthority": [
+							{
+								"authority": "amzn1.er-authority.echo-sdk.amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35_Live.bell_options",
+								"status": {
+									"code": "ER_SUCCESS_MATCH"
+								},
+								"values": [
+									{
+										"value": {
+											"name": "ring",
+											"id": "1"
+										}
+									}
+								]
+							}
+						]
+					},
+					"confirmationStatus": "NONE",
+					"source": "USER",
+					"slotValue": {
+						"type": "Simple",
+						"value": "ring",
+						"resolutions": {
+							"resolutionsPerAuthority": [
+								{
+									"authority": "amzn1.er-authority.echo-sdk.amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35_Live.bell_options",
+									"status": {
+										"code": "ER_SUCCESS_MATCH"
+									},
+									"values": [
+										{
+											"value": {
+												"name": "ring",
+												"id": "1"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				},
+        "engine": {
+          "name": "engine",
+          "value": "5067"
+        },
+        "duration": {
+          "name": "duration",
+          "value": "PT5S"
+        }
+      }
+    }
+  }
+}
