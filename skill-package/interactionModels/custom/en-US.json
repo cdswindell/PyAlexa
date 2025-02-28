@@ -235,12 +235,20 @@
                         {
                             "name": "scope",
                             "type": "scope"
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION"
                         }
                     ],
                     "samples": [
+                        "bell {ring} {scope} {engine} for {duration}",
                         "bell {ring} {scope} {engine}",
+                        "{ring} bell on {scope} {engine} for {duration}",
                         "{ring} bell on {scope} {engine}",
+                        "{ring} bell {engine} for {duration}",
                         "{ring} bell {engine}",
+                        "{ring} the bell on {scope} {engine} for {duration}",
                         "{ring} the bell on {scope} {engine}"
                     ]
                 },
@@ -1976,6 +1984,13 @@
                         {
                             "name": "scope",
                             "type": "scope",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION",
                             "confirmationRequired": false,
                             "elicitationRequired": false,
                             "prompts": {}

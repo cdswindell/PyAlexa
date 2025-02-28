@@ -461,24 +461,28 @@ class RingBellIntentHandler(PyTrainIntentHandler):
         scope = self.scope
         engine = self.engine
         bell = self.bell
+        duration = self.duration
         if engine is None:
             logger.warning("No Engine Specified")
             speak_output = "I don't know what engine you want me to ring, sorry!"
         else:
             opt = "toggle"
             device = "Toggle bell"
+            dur = dur_param = ''
             if bell is not None:
                 if bell.value.id == "1":
                     opt = "once"
                     device = "Ring the bell once"
+                    dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
+                    dur_param = f"?duration={duration}" if duration else ""
                 elif bell.value.id == "2":
                     opt = "on"
                     device = "Enable the bell"
                 elif bell.value.id == "3":
                     opt = "off"
                     device = "Disable the bell"
-            url = f"{self.url_base}/{scope}/{engine.value}/bell_req?option={opt}"
-            speak_output = f"{device} on {scope} {engine.value}"
+            url = f"{self.url_base}/{scope}/{engine.value}/bell_req?option={opt}{dur_param}"
+            speak_output = f"{device} on {scope} {engine.value}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
