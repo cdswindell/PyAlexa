@@ -434,20 +434,26 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
         scope = self.scope
         engine = self.engine
         horn = self.horn
+        duration = self.duration
         if engine is None:
             logger.warning(f"No {scope.title()} Specified")
             speak_output = f"I don't know what {scope} you want me to sound, sorry!"
         else:
             opt = "sound"
             device = "horn"
+            dur = dur_param = ''
             if horn is not None:
                 if horn.value.id == "2":
                     opt = "grade"
                     device = "crossing signal"
-                elif horn.value.id == "1":
-                    device = "whistle"
-            url = f"{self.url_base}/{scope}/{engine.value}/horn_req?option={opt}"
-            speak_output = f"Sounding {device} on {scope} {engine.value}"
+                else:
+                    if horn.value.id == "1":
+                        device = "whistle"
+                    if duration:
+                        dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
+                        dur_param = f"&duration={duration}"
+            url = f"{self.url_base}/{scope}/{engine.value}/horn_req?option={opt}{dur_param}"
+            speak_output = f"Sounding {device} on {scope} {engine.value}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
