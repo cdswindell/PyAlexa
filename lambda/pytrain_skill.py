@@ -65,14 +65,17 @@ ddb_table_name = os.environ.get("DYNAMODB_PERSISTENCE_TABLE_NAME")
 ddb_table_name = ddb_table_name if ddb_table_name else "pytrain-skill-state"
 dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=True, dynamodb_resource=ddb_resource)
 
+
 class NoServerException(Exception):
     pass
+
 
 class UnsupportedDuration(Exception):
     def __init__(self, duration: Any) -> None:
         message = f"Duration not supported: {duration}"
         super().__init__(message)
         self.duration = duration
+
 
 def get_state(handler_input) -> dict:
     state = handler_input.attributes_manager.session_attributes
@@ -126,13 +129,11 @@ def get_user_info(handler_input) -> dict:
 def encode_id(state, server: str = None) -> str:
     uid = state.get("uid")
     server = server if server else state.get("server")
-    #key = state.get("email", None)
-    #key = key if key else SECRET_PHRASE
-    return jwt.encode({"UID": uid, "SERVER": server}, server, algorithm=ALGORITHM)
+    return jwt.encode({"UID": uid, "SERVER": server, "magic": "alexa"}, server, algorithm=ALGORITHM)
 
 
 def request_api_key(handler_input, state=None, server: str = None) -> requests.Response:
-    #get_user_info(handler_input)
+    # get_user_info(handler_input)
     state = state if state else get_state(handler_input)
     server = server if server else state.get("server", None)
     response = requests.post(f"https://{server}/version", json={"uid": encode_id(state, server=server)})
@@ -199,7 +200,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @staticmethod
     def handle_response(
-            response,
+        response,
         handler_input,
         speak_output,
         reprompt="What next?",
@@ -284,7 +285,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         slots = self._handler_input.request_envelope.request.intent.slots
         duration_slot = slots["duration"] if "duration" in slots else None
         if duration_slot:
-            if duration_slot.value.startswith('PT'):
+            if duration_slot.value.startswith("PT"):
                 duration = parse_duration(duration_slot.value).seconds
             else:
                 raise UnsupportedDuration(duration_slot.value)
@@ -331,11 +332,11 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         http = ""
         for part in parts:
             part = part.lower().replace("://", "")
-            if not part or part in  ["colon", "slash", "", "://", ":", "/"]:
+            if not part or part in ["colon", "slash", "", "://", ":", "/"]:
                 continue
             if part == "dot":
-                new_parts.append('.')
-            elif part.startswith('http'):
+                new_parts.append(".")
+            elif part.startswith("http"):
                 http = part
             else:
                 new_parts.append(part)
@@ -401,6 +402,48 @@ class SpeedIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class BoostSpeedIntentHandler(PyTrainIntentHandler):
+    """Handler for Boost Speed Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        scope = self.scope
+        engine = self.engine
+        duration = self.duration
+        if engine is None:
+            logger.warning("No Engine Specified")
+            speak_output = "I don't know what engine you want me to boost, sorry!"
+        else:
+            dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
+            dur_param = f"?duration={duration}" if duration else ""
+            url = f"{self.url_base}/{scope}/{engine.value}/boost_req{dur_param}"
+            speak_output = f"Boosting speed on {scope} {engine.value}{dur}"
+            response = self.post(url)
+        return self.handle_response(response, handler_input, speak_output)
+
+
+class BrakeSpeedIntentHandler(PyTrainIntentHandler):
+    """Handler for Brake Speed Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        scope = self.scope
+        engine = self.engine
+        duration = self.duration
+        if engine is None:
+            logger.warning("No Engine Specified")
+            speak_output = "I don't know what engine you want me to brake, sorry!"
+        else:
+            dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
+            dur_param = f"?duration={duration}" if duration else ""
+            url = f"{self.url_base}/{scope}/{engine.value}/brake_req{dur_param}"
+            speak_output = f"Braking speed on {scope} {engine.value}{dur}"
+            response = self.post(url)
+        return self.handle_response(response, handler_input, speak_output)
+
+
 class OpenCouplerIntentHandler(PyTrainIntentHandler):
     """Handler for Open Coupler Intent."""
 
@@ -441,7 +484,7 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
         else:
             opt = "sound"
             device = "horn"
-            dur = dur_param = ''
+            dur = dur_param = ""
             if horn is not None:
                 if horn.value.id == "2":
                     opt = "grade"
@@ -474,7 +517,7 @@ class RingBellIntentHandler(PyTrainIntentHandler):
         else:
             opt = "toggle"
             device = "Toggle bell"
-            dur = dur_param = ''
+            dur = dur_param = ""
             if bell is not None:
                 if bell.value.id == "1":
                     opt = "once"
@@ -715,7 +758,9 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
             if response and response.status_code == 200:
                 # Handle the response data
                 data = response.json()
-                speak_output = f"<speak>Here's the current status of {scope} {tmcc_id.value}: <break strength='strong'/>"
+                speak_output = (
+                    f"<speak>Here's the current status of {scope} {tmcc_id.value}: <break strength='strong'/>"
+                )
 
                 for key, value in data.items():
                     if value is None:
@@ -755,7 +800,7 @@ class FindTmccIdIntentHandler(PyTrainIntentHandler):
                 data = response.json()
                 tmcc_id = data.get("tmcc_id", None)
                 if tmcc_id:
-                    speak_output = f"<speak>The TMCC <say-as interpret-as='spell-out'>ID</say-as> "
+                    speak_output = "<speak>The TMCC <say-as interpret-as='spell-out'>ID</say-as> "
                     speak_output += f"of Engine number {engine_num} is {tmcc_id}</speak>"
                 else:
                     speak_output = f"I couldn't find any engine numbered {engine_num}, sorry!"

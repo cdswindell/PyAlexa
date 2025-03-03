@@ -175,6 +175,10 @@
                         {
                             "name": "scope",
                             "type": "scope"
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION"
                         }
                     ],
                     "samples": [
@@ -185,7 +189,15 @@
                         "sound the {horn} on {engine}",
                         "sound the {horn} on {scope} {engine}",
                         "sound {horn} on {engine}",
-                        "sound {horn} on {scope} {engine}"
+                        "sound {horn} on {scope} {engine}",
+                        "blow the {horn} on {engine} for {duration}",
+                        "blow the {horn} on {scope} {engine} for {duration}",
+                        "blow {horn} on {engine} for {duration}",
+                        "blow {horn} on {scope} {engine} for {duration}",
+                        "sound the {horn} on {engine} for {duration}",
+                        "sound the {horn} on {scope} {engine} for {duration}",
+                        "sound {horn} on {engine} for {duration}",
+                        "sound {horn} on {scope} {engine} for {duration}"
                     ]
                 },
                 {
@@ -634,6 +646,80 @@
                         "What's the address of number {engine}",
                         "What's the address of {engine}",
                         "What's the id of engine {engine}"
+                    ]
+                },
+                {
+                    "name": "BoostSpeedIntent",
+                    "slots": [
+                        {
+                            "name": "scope",
+                            "type": "scope"
+                        },
+                        {
+                            "name": "engine",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "{engine}",
+                                "engine {engine}",
+                                "train {engine}"
+                            ]
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION"
+                        }
+                    ],
+                    "samples": [
+                        "boost {scope} {engine}",
+                        "boost {engine}",
+                        "boost speed of {engine}",
+                        "boost the speed of {engine}",
+                        "boost speed {scope} {engine}",
+                        "boost speed of {scope} {engine}",
+                        "boost the speed of {scope} {engine}",
+                        "boost speed of {engine} for {duration}",
+                        "boost the speed of {engine} for {duration}",
+                        "boost {engine} for {duration}",
+                        "boost {scope} {engine} for {duration}",
+                        "boost the speed of {scope} {engine} for {duration}",
+                        "boost speed of {scope} {engine} for {duration}"
+                    ]
+                },
+                {
+                    "name": "BrakeSpeedIntent",
+                    "slots": [
+                        {
+                            "name": "scope",
+                            "type": "scope"
+                        },
+                        {
+                            "name": "engine",
+                            "type": "AMAZON.NUMBER",
+                            "samples": [
+                                "train {engine}",
+                                "engine {engine}",
+                                "{engine}"
+                            ]
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION"
+                        }
+                    ],
+                    "samples": [
+                        "brake {scope} {engine}",
+                        "brake {engine}",
+                        "brake speed of {engine}",
+                        "brake the speed of {engine}",
+                        "brake speed {scope} {engine}",
+                        "brake speed of {scope} {engine}",
+                        "brake the speed of {scope} {engine}",
+                        "brake speed of {engine} for {duration}",
+                        "brake the speed of {engine} for {duration}",
+                        "brake {engine} for {duration}",
+                        "brake {scope} {engine} for {duration}",
+                        "brake the speed of {scope} {engine} for {duration}",
+                        "brake speed of {scope} {engine} for {duration}"
                     ]
                 }
             ],
@@ -1920,6 +2006,13 @@
                             "confirmationRequired": false,
                             "elicitationRequired": false,
                             "prompts": {}
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
                         }
                     ]
                 },
@@ -2372,6 +2465,78 @@
                                     "value": "9999"
                                 }
                             ]
+                        }
+                    ]
+                },
+                {
+                    "name": "BoostSpeedIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "scope",
+                            "type": "scope",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "engine",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1019009468822.1699945974966"
+                            },
+                            "validations": [
+                                {
+                                    "type": "isGreaterThanOrEqualTo",
+                                    "prompt": "Slot.Validation.1019009468822.1699945974966.1649777748139",
+                                    "value": "1"
+                                },
+                                {
+                                    "type": "isLessThanOrEqualTo",
+                                    "prompt": "Slot.Validation.1019009468822.1699945974966.611244328775",
+                                    "value": "99"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        }
+                    ]
+                },
+                {
+                    "name": "BrakeSpeedIntent",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "scope",
+                            "type": "scope",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
+                        },
+                        {
+                            "name": "engine",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.1360848255511.1664938207301"
+                            }
+                        },
+                        {
+                            "name": "duration",
+                            "type": "AMAZON.DURATION",
+                            "confirmationRequired": false,
+                            "elicitationRequired": false,
+                            "prompts": {}
                         }
                     ]
                 }
@@ -2870,6 +3035,46 @@
                     {
                         "type": "PlainText",
                         "value": "Engine numbers must be between one and nine nine nine nine"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1019009468822.1699945974966",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Tell me the engine TMCC ID?"
+                    },
+                    {
+                        "type": "PlainText",
+                        "value": "Tell me the {scope} TMCC ID?"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.1019009468822.1699945974966.1649777748139",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "TMCC ID's must be between one and ninety nine"
+                    }
+                ]
+            },
+            {
+                "id": "Slot.Validation.1019009468822.1699945974966.611244328775",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "TMCC ID's must be between one and ninety nine"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.1360848255511.1664938207301",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Tell me the {scope} TMCC ID?"
                     }
                 ]
             }

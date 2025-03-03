@@ -3,7 +3,7 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment",
+          "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment by voice.",
           "examplePhrases": [
             "Alexa open pie train",
             "Alexa launch pie train",
@@ -18,7 +18,7 @@
             "Railroading"
           ],
           "name": "pytrain",
-          "description": "PyTrain allows you to control your Lionel TMCC/Legacy layout using your voice. You can throw switches, fire routes, and control engines and trains all with voice commands. Examples of engine and train operations include:\n\n* Start up Train 53\n* Accelerate Train 53 to speed step 35\n* Reverse Train 5\n* Ring the bell on Engine 10\n* Stop Train 35\n* Set the smoke level on engine 6 to low\n * Emergency Halt\n\nPyTrain requires you to run a local HTTPS server that proxies requests to an running instance of the PyTrain API.",
+          "description": "PyTrain allows you to control your Lionel TMCC/Legacy layout using your voice. You can throw switches, fire routes, and control engines and trains all with voice commands. Examples of engine and train operations include:\n\n* Start up Train 53\n* Accelerate Train 53 to speed step 35\n* Reverse Train 5\n* Ring the bell on Engine 10\n* Stop Train 35\n* Set the smoke level on engine 6 to low\n * Emergency Halt\n\nThe PyTrain skill requires access to a computer on your local network running the PyTrain Api via HTTP or HTTPS.",
           "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
           "updatesDescription": "Add duration concept; 'ring the bell on engine 67 for 10 seconds'",
           "largeIconUri": "file://assets/images/en-US_largeIconUri.png"
