@@ -70,6 +70,10 @@ class NoServerException(Exception):
     pass
 
 
+class ApiTokenExpiredException(Exception):
+    pass
+
+
 class UnsupportedDuration(Exception):
     def __init__(self, duration: Any) -> None:
         message = f"Duration not supported: {duration}"
@@ -212,6 +216,8 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                 # Handle the response data
                 data = response.json()
                 logger.info(data)
+            elif response.status_code == 498:
+                raise ApiTokenExpiredException()
             elif default_responses is True and 400 <= response.status_code <= 499:
                 speak_output = (
                     f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
@@ -921,6 +927,12 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         if isinstance(exception, NoServerException):
             speak_output = REQUEST_SERVER_OUTPUT
             ask_output = REQUEST_SERVER_REPROMPT
+            end_session = False
+        elif isinstance(exception, ApiTokenExpiredException):
+            if "api-key" in handler_input.attributes_manager.session_attributes:
+                del handler_input.attributes_manager.session_attributes["api-key"]
+            speak_output = "Sorry, could you please repeat that?"
+            ask_output = "Please repeat your last request."
             end_session = False
         else:
             speak_output = "Sorry, I had trouble doing what you asked. Please try again."
