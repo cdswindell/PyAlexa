@@ -860,16 +860,21 @@ class HelpIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = """
-            Control your Lionel layout with me. For example, you can say
-            'Emergency Halt',
+            Control your Lionel layout by voice!. Here are just a few examples of what can say:
+
             'Power up engine 67',
-            'Shut down train 33',
             'Set the speed of engine 23 to slow',
-            'Blow the whistle on Engine 5',
+            'Blow the whistle on Engine 5 for 30 seconds',
             "Reverse Engine sixty three',
             'Reset engine five',
-            'Refuel train seventeen',
+            'Refuel train seventeen for 10 seconds',
+            'Shut down train 33',
+            'throw switch 5 to thru'
+            'fire route 10'
             'Get status of engine 23',
+
+            In cace of trouble, say: 'Emergency Halt',
+
             What would you like to do?
             """
 
