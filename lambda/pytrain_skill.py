@@ -8,42 +8,40 @@
 # via HTTPS with a PyTrain API Server on your local network with access to your Base 3.
 #
 import logging
-import requests
 import os
-import boto3
-import jwt
-
-import ask_sdk_core.utils as ask_utils
-
-
-from dotenv import load_dotenv
-from isodate import parse_duration
 from os.path import join, dirname
 from typing import Any
 
-from ask_sdk_core.dispatch_components import AbstractRequestHandler
+import ask_sdk_core.utils as ask_utils
+import boto3
+import jwt
+import requests
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
+from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.handler_input import HandlerInput
-from ask_sdk_model.slu.entityresolution.status_code import StatusCode
-from ask_sdk_core.utils.request_util import get_user_id
 from ask_sdk_core.skill_builder import CustomSkillBuilder
+from ask_sdk_core.utils.request_util import get_user_id
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
-
 from ask_sdk_model import Response
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+from ask_sdk_model.slu.entityresolution.status_code import StatusCode
+from dotenv import load_dotenv
+from isodate import parse_duration
 
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
 
 SECRET_PHRASE = os.environ.get("SECRET_PHRASE")
 ALGORITHM = os.environ.get("ALGORITHM")
+LOGGER_LEVEL = os.environ.get("LOGGER_LEVEL", "INFO").upper()
+
+logger = logging.getLogger(__name__)
+logger.setLevel(level=LOGGER_LEVEL)
 
 REQUEST_SERVER_OUTPUT = """
     Welcome to PyTrain! To get started, I need to know your
     PyTrain API server URL. Please say: 'My PyTrain server is',
     followed by your server's URL. Use the word 'dot' for periods.
+    Say 'HTTPS colon slash slash' and your URL to use HTTPS.'
 """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
@@ -202,8 +200,8 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                     logger.warning(f"Handler Super Request failed with status code: {response.status_code} {response}")
         return None
 
-    @staticmethod
     def handle_response(
+        self,
         response,
         handler_input,
         speak_output,
@@ -215,8 +213,15 @@ class PyTrainIntentHandler(AbstractRequestHandler):
             if response.status_code == 200:
                 # Handle the response data
                 data = response.json()
-                logger.info(data)
+                logger.debug(data)
             elif response.status_code == 498:
+                # get a new token and repeat the last API call
+                state = self.session_state
+                if "api-key" in state:
+                    del state["api-key"]
+                if "last-url" in state:
+                    del state["last-url"]
+                    return self.handle(handler_input)  # get new API Token
                 raise ApiTokenExpiredException()
             elif default_responses is True and 400 <= response.status_code <= 499:
                 speak_output = (
@@ -235,11 +240,20 @@ class PyTrainIntentHandler(AbstractRequestHandler):
             .response
         )
 
+    def last_url(self, url: str, method: str) -> None:
+        state = get_state(self._handler_input)
+        if state:
+            state["last-url"] = {"url": url, "method": method}
+
     def post(self, url: str) -> requests.Response:
+        logger.debug(f"POST URL: {url}")
+        self.last_url(url, "POST")
         headers = {"X-API-Key": self.api_key}
         return requests.post(url, headers=headers)
 
     def get(self, url: str) -> requests.Response:
+        logger.debug(f"GET URL: {url}")
+        self.last_url(url, "GET")
         headers = {"X-API-Key": self.api_key}
         return requests.get(url, headers=headers)
 
@@ -617,8 +631,6 @@ class ResetIntentHandler(PyTrainIntentHandler):
         response = None
         scope = self.scope
         engine = self.engine
-        duration = self.duration
-        logger.info(f"Duration: {duration}")
         if engine is None:
             logger.warning(f"No {scope.title()} Number Specified")
             speak_output = "I don't know what {scope} you want me to reset, sorry!"
