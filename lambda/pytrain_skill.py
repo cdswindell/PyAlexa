@@ -338,6 +338,10 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return get_canonical_slot(self._slots["smoke"]) if "smoke" in self._slots else None
 
     @property
+    def on_off(self):
+        return get_canonical_slot(self._slots["state"]) if "state" in self._slots else None
+
+    @property
     def volume(self):
         return get_canonical_slot(self._slots["volume"]) if "volume" in self._slots else None
 
@@ -678,6 +682,27 @@ class SetDirectionIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class PowerDistrictIntentHandler(PyTrainIntentHandler):
+    """Handler for Power District Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        tmcc_id = self.tmcc_id
+        on_off = self.on_off
+        if tmcc_id is None:
+            logger.warning("No power district TMCC ID Specified")
+            speak_output = "I don't know what power district to control, sorry!"
+        else:
+            if on_off and on_off.value.id == "1":
+                url = f"{self.url_base}/accessory/{tmcc_id.value}/bpc2_req?state=on"
+            else:
+                url = f"{self.url_base}/accessory/{tmcc_id.value}/bpc2_req?state=off"
+            speak_output = f"Turning {on_off.value.name} power district {tmcc_id.value}"
+            response = self.post(url)
+        return self.handle_response(response, handler_input, speak_output)
+
+
 class ChangeVolumeIntentHandler(PyTrainIntentHandler):
     """Handler for Change Volume Intent."""
 
@@ -982,6 +1007,7 @@ sb.add_request_handler(SmokeLevelIntentHandler())
 sb.add_request_handler(ChangeVolumeIntentHandler())
 sb.add_request_handler(ThrowSwitchIntentHandler())
 sb.add_request_handler(FireRouteIntentHandler())
+sb.add_request_handler(PowerDistrictIntentHandler())
 sb.add_request_handler(FindTmccIdIntentHandler())
 sb.add_request_handler(GetStatusIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
