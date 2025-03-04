@@ -748,6 +748,34 @@
             "{state} power district {tmcc_id}",
             "{state} track {tmcc_id}"
           ]
+        },
+        {
+          "name": "AccessoryIntentHandler",
+          "slots": [
+            {
+              "name": "state",
+              "type": "on_off",
+              "samples": [
+                "{state}"
+              ]
+            },
+            {
+              "name": "tmcc_id",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "accessory {tmcc_id}",
+                "{tmcc_id}"
+              ]
+            },
+            {
+              "name": "duration",
+              "type": "AMAZON.DURATION"
+            }
+          ],
+          "samples": [
+            "{state} accessory {tmcc_id}",
+            "{state} accessory {tmcc_id} for {duration}"
+          ]
         }
       ],
       "types": [
@@ -2814,6 +2842,50 @@
               ]
             }
           ]
+        },
+        {
+          "name": "AccessoryIntentHandler",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "state",
+              "type": "on_off",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1181968090377.484241333653"
+              }
+            },
+            {
+              "name": "tmcc_id",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1181968090377.158032616555"
+              },
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1181968090377.158032616555.1011176998737",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1181968090377.158032616555.1403677828933",
+                  "value": "99"
+                }
+              ]
+            },
+            {
+              "name": "duration",
+              "type": "AMAZON.DURATION",
+              "confirmationRequired": false,
+              "elicitationRequired": false,
+              "prompts": {}
+            }
+          ]
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -3386,6 +3458,42 @@
           {
             "type": "PlainText",
             "value": "Power district TMCC IDs must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1181968090377.158032616555",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What's the accessory's  TMCC ID?"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.1181968090377.158032616555.1011176998737",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The accessories TMCC ID must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.1181968090377.158032616555.1403677828933",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "The accessories TMCC ID must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1181968090377.484241333653",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "what do you want to do to the accessory?"
           }
         ]
       }
