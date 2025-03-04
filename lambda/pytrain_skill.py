@@ -703,6 +703,34 @@ class PowerDistrictIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class AccessoryIntentHandler(PyTrainIntentHandler):
+    """Handler for Power District Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        tmcc_id = self.tmcc_id
+        on_off = self.on_off
+        duration = self.duration
+        if tmcc_id is None:
+            logger.warning("No accessory TMCC ID Specified")
+            speak_output = "I don't know the accessory to control, sorry!"
+        else:
+            if duration:
+                dur = f" for {duration} second{'s' if duration and duration == 1 else ''}" if duration else ""
+                dur_param = f"&duration={duration}" if duration else ""
+            else:
+                dur = dur_param = ""
+            if on_off and on_off.value.id == "1":
+                url = f"{self.url_base}/accessory/{tmcc_id.value}/asc2_req?state=on{dur_param}"
+            else:
+                dur = ""
+                url = f"{self.url_base}/accessory/{tmcc_id.value}/asc2_req?state=off"
+            speak_output = f"Turning {on_off.value.name} Accessory {tmcc_id.value}{dur}"
+            response = self.post(url)
+        return self.handle_response(response, handler_input, speak_output)
+
+
 class ChangeVolumeIntentHandler(PyTrainIntentHandler):
     """Handler for Change Volume Intent."""
 
