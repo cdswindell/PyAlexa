@@ -4,3 +4,5 @@ __pycache__
 /.idea
 /.ask/lambda
 /.ask/ask-states.json
+/.pytrain.history
+/pytrain.log*
