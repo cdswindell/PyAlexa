@@ -20,8 +20,17 @@
             "help me",
             "how does this skill work",
             "what can I say",
+            "what can I do",
             "what do I do"
           ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
         },
         {
           "name": "AMAZON.StopIntent",
@@ -42,610 +51,31 @@
           ]
         },
         {
-          "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        },
-        {
-          "name": "AMAZON.FallbackIntent",
-          "samples": []
-        },
-        {
-          "name": "StartUpIntent",
+          "name": "AccessoryIntent",
           "slots": [
             {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
+              "name": "state",
+              "type": "on_off",
               "samples": [
-                "engine {engine}",
-                "train {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "dialog",
-              "type": "dialogs"
-            }
-          ],
-          "samples": [
-            "Power on {engine} {dialog}",
-            "Power on {scope} {engine} {dialog}",
-            "Power up {engine} {dialog}",
-            "Power up {scope} {engine} {dialog}",
-            "Start up {engine} {dialog}",
-            "Start up {scope} {engine} {dialog}",
-            "Start up",
-            "Start {engine} {dialog}",
-            "Start {scope} {engine} {dialog}",
-            "Start",
-            "Startup {scope} {engine} {dialog}"
-          ]
-        },
-        {
-          "name": "ShutDownIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "engine {engine}",
-                "train {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "dialog",
-              "type": "dialogs"
-            }
-          ],
-          "samples": [
-            "Power down {engine} {dialog}",
-            "Power down {scope} {engine} {dialog}",
-            "Power off  {engine} {dialog}",
-            "Power off {scope} {engine} {dialog}",
-            "Power off",
-            "Shut down {engine} {dialog}",
-            "Shut down {scope} {engine} {dialog}"
-          ]
-        },
-        {
-          "name": "ThrowSwitchIntent",
-          "slots": [
-            {
-              "name": "switch",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "switch {switch}",
-                "{switch}"
-              ]
-            },
-            {
-              "name": "position",
-              "type": "switch_position"
-            }
-          ],
-          "samples": [
-            "switch {switch} to {position}",
-            "switch {switch} {position}",
-            "switch",
-            "throw switch {switch} {position}",
-            "throw switch",
-            "throw {switch} to {position}",
-            "throw"
-          ]
-        },
-        {
-          "name": "HaltIntent",
-          "slots": [],
-          "samples": [
-            "Alexa halt",
-            "Emergency Halt",
-            "Emergency Stop",
-            "Emergency",
-            "Halt",
-            "Whoa"
-          ]
-        },
-        {
-          "name": "SoundHornIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "{engine}",
-                "engine {engine}"
-              ]
-            },
-            {
-              "name": "horn",
-              "type": "horn_sound",
-              "samples": [
-                "{horn}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "duration",
-              "type": "AMAZON.DURATION"
-            }
-          ],
-          "samples": [
-            "blow the {horn} on {engine}",
-            "blow the {horn} on {scope} {engine}",
-            "blow {horn} on {engine}",
-            "blow {horn} on {scope} {engine}",
-            "sound the {horn} on {engine}",
-            "sound the {horn} on {scope} {engine}",
-            "sound {horn} on {engine}",
-            "sound {horn} on {scope} {engine}",
-            "blow the {horn} on {engine} for {duration}",
-            "blow the {horn} on {scope} {engine} for {duration}",
-            "blow {horn} on {engine} for {duration}",
-            "blow {horn} on {scope} {engine} for {duration}",
-            "sound the {horn} on {engine} for {duration}",
-            "sound the {horn} on {scope} {engine} for {duration}",
-            "sound {horn} on {engine} for {duration}",
-            "sound {horn} on {scope} {engine} for {duration}"
-          ]
-        },
-        {
-          "name": "StopImmediateIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "{engine}",
-                "engine {engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            }
-          ],
-          "samples": [
-            "stop {engine}",
-            "stop {scope} {engine} immediately",
-            "stop {scope} {engine}",
-            "tell {engine} to stop",
-            "tell {scope} {engine} to stop"
-          ]
-        },
-        {
-          "name": "RingBellIntent",
-          "slots": [
-            {
-              "name": "ring",
-              "type": "bell_options",
-              "samples": [
-                "{ring}"
-              ]
-            },
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "{engine}",
-                "engine {engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "duration",
-              "type": "AMAZON.DURATION"
-            }
-          ],
-          "samples": [
-            "bell {ring} {scope} {engine} for {duration}",
-            "bell {ring} {scope} {engine}",
-            "{ring} bell on {scope} {engine} for {duration}",
-            "{ring} bell on {scope} {engine}",
-            "{ring} bell {engine} for {duration}",
-            "{ring} bell {engine}",
-            "{ring} the bell on {scope} {engine} for {duration}",
-            "{ring} the bell on {scope} {engine}"
-          ]
-        },
-        {
-          "name": "ResetIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "engine {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            }
-          ],
-          "samples": [
-            "Reset {engine}",
-            "Reset {scope} {engine}"
-          ]
-        },
-        {
-          "name": "RefuelIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "engine {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "duration",
-              "type": "AMAZON.DURATION"
-            }
-          ],
-          "samples": [
-            "Refuel {engine} for {duration}",
-            "Refuel {engine}",
-            "Refuel {scope} {engine} for {duration}",
-            "Refuel {scope} {engine}"
-          ]
-        },
-        {
-          "name": "SetDirectionIntent",
-          "slots": [
-            {
-              "name": "direction",
-              "type": "direction",
-              "samples": [
-                "{direction}"
-              ]
-            },
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "engine {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            }
-          ],
-          "samples": [
-            "change direction of {scope} {engine} to {direction}",
-            "change direction of {scope} {engine} {direction}",
-            "change direction {engine} {direction}",
-            "change direction {scope} {engine} {direction}",
-            "change the direction of {scope} {engine} to {direction}",
-            "change the direction of {scope} {engine} {direction}",
-            "set direction of {scope} {engine} to {direction}",
-            "set the direction of {scope} {engine} {direction}",
-            "tell {scope} {engine} go {direction}",
-            "tell {scope} {engine} move {direction}",
-            "tell {scope} {engine} to go {direction}",
-            "tell {scope} {engine} to move {direction}",
-            "tell {scope} {engine} {direction}",
-            "{direction} direction of {scope} {engine}",
-            "{direction} direction {scope} {engine}",
-            "{direction} the direction of {scope} {engine}",
-            "{direction} {engine}",
-            "{direction} {scope} {engine}"
-          ]
-        },
-        {
-          "name": "OpenCouplerIntent",
-          "slots": [
-            {
-              "name": "coupler",
-              "type": "coupler",
-              "samples": [
-                "{coupler}"
-              ]
-            },
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "{engine}",
-                "engine {engine}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            }
-          ],
-          "samples": [
-            "Open {coupler} on {engine}",
-            "Open {coupler} on {scope} {engine}",
-            "Open {coupler} {engine}",
-            "Open {coupler} {scope} {engine}",
-            "Release {coupler} on {engine}",
-            "Release {coupler} on {scope} {engine}",
-            "Release {coupler} {engine}",
-            "Release {coupler} {scope} {engine}",
-            "Trigger {coupler} on {engine}",
-            "Trigger {coupler} on {scope} {engine}",
-            "Trigger {coupler} {engine}",
-            "Trigger {coupler} {scope} {engine}"
-          ]
-        },
-        {
-          "name": "SpeedIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "engine {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "speed",
-              "type": "rr_speed",
-              "samples": [
-                "step {speed}",
-                "speed {speed}",
-                "speed step {speed}",
-                "{speed}"
-              ]
-            },
-            {
-              "name": "dialog",
-              "type": "dialogs"
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            }
-          ],
-          "samples": [
-            "accelerate {scope} {engine} to speed step {speed} {dialog}",
-            "accelerate {scope} {engine} to speed {speed} {dialog}",
-            "accelerate {scope} {engine} to {speed} {dialog}",
-            "decelerate {scope} {engine} to speed step {speed} {dialog}",
-            "decelerate {scope} {engine} to speed {speed} {dialog}",
-            "decelerate {scope} {engine} to {speed} {dialog}",
-            "set speed of {engine} to speed {speed} {dialog}",
-            "set speed of {engine} to {speed} {dialog}",
-            "set the speed of {engine} to speed {speed} {dialog}",
-            "set the speed of {engine} to {speed} {dialog}",
-            "slow {engine} to {speed} {dialog}",
-            "slow {scope} {engine} to speed {speed} {dialog}",
-            "slow {scope} {engine} to {speed} {dialog}",
-            "speed up {engine} to {speed} {dialog}",
-            "speed up {scope} {engine} to {speed} {dialog}"
-          ]
-        },
-        {
-          "name": "FireRouteIntent",
-          "slots": [
-            {
-              "name": "route",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "{route}",
-                "route {route}"
-              ]
-            }
-          ],
-          "samples": [
-            "Activate route {route}",
-            "Fire route {route}",
-            "Fire {route}",
-            "Trigger route {route}"
-          ]
-        },
-        {
-          "name": "GetStatusIntent",
-          "slots": [
-            {
-              "name": "scope",
-              "type": "scope",
-              "samples": [
-                "{scope}"
+                "{state}"
               ]
             },
             {
               "name": "tmcc_id",
               "type": "AMAZON.NUMBER",
               "samples": [
-                "Accessory {tmcc_id}",
-                "Engine {tmcc_id}",
-                "Number {tmcc_id}",
-                "Switch {tmcc_id}",
-                "Train {tmcc_id}",
-                "Turnout {scope}",
+                "accessory {tmcc_id}",
                 "{tmcc_id}"
               ]
-            }
-          ],
-          "samples": [
-            "get status of {tmcc_id}",
-            "get status of {scope} {tmcc_id}",
-            "get the status of {scope} {tmcc_id}",
-            "report on {scope} {tmcc_id}",
-            "report {scope} {tmcc_id} status",
-            "report {scope} {tmcc_id}",
-            "status of {scope} {tmcc_id}",
-            "status {scope} {tmcc_id}",
-            "tell me about {scope} {tmcc_id}",
-            "tell me the status of {scope} {tmcc_id}",
-            "what is the status of {scope} {tmcc_id}",
-            "what's the status of {scope} {tmcc_id}",
-            "{scope} number {tmcc_id} status",
-            "{scope} {tmcc_id} report",
-            "{scope} {tmcc_id} status"
-          ]
-        },
-        {
-          "name": "SmokeLevelIntent",
-          "slots": [
-            {
-              "name": "scope",
-              "type": "scope"
             },
             {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "train {engine}",
-                "engine {engine}",
-                "{engine}"
-              ]
-            },
-            {
-              "name": "smoke",
-              "type": "smoke_options",
-              "samples": [
-                "level {smoke}",
-                "{smoke} level",
-                "{smoke}"
-              ]
+              "name": "duration",
+              "type": "AMAZON.DURATION"
             }
           ],
           "samples": [
-            "set smoke level of {scope} {engine} to {smoke}",
-            "set smoke level {scope} {engine} to {smoke}",
-            "set smoke level {scope} {engine} {smoke}",
-            "set the smoke level of {engine} to {smoke}",
-            "set the smoke level of {scope} {engine} to {smoke}",
-            "set the smoke level on {engine} to {smoke}",
-            "set the smoke level on {scope} {engine} to {smoke}",
-            "smoke {scope} {engine} {smoke}",
-            "{smoke} on {scope} {engine}",
-            "{smoke} the smoke on {scope} {engine}",
-            "{smoke} {scope} {engine}"
-          ]
-        },
-        {
-          "name": "SetPyTrainServerIntent",
-          "slots": [
-            {
-              "name": "server",
-              "type": "AMAZON.SearchQuery",
-              "samples": [
-                "My PyTrain Server is {server}",
-                "My server is {server}",
-                "{server}"
-              ]
-            }
-          ],
-          "samples": [
-            "My Pie Train server is {server}",
-            "My Pie Train server url is {server}",
-            "My PieTrain url is {server}",
-            "My Py Train server is {server}",
-            "My PyTrain server is {server}",
-            "My PyTrain url is {server}",
-            "My pi train server url is {server}",
-            "My pi train url is {server}",
-            "My pie train url is {server}",
-            "My pietrain server url is {server}",
-            "My py train url is {server}",
-            "My pytrain server url is {server}",
-            "My server is {server}",
-            "My server url is {server}",
-            "My url is {server}",
-            "server {server}",
-            "url {server}"
-          ]
-        },
-        {
-          "name": "ChangeVolumeIntent",
-          "slots": [
-            {
-              "name": "volume",
-              "type": "volume",
-              "samples": [
-                "{volume}"
-              ]
-            },
-            {
-              "name": "scope",
-              "type": "scope"
-            },
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "{engine}",
-                "train {engine}",
-                "engine {engine}"
-              ]
-            }
-          ],
-          "samples": [
-            "{volume} the volume of {engine}",
-            "{volume} the volume of {scope} {engine}",
-            "{volume} volume  {engine}",
-            "{volume} volume of {engine}",
-            "{volume} volume of {scope} {engine}",
-            "{volume} volume {scope} {engine}"
-          ]
-        },
-        {
-          "name": "FindTmccIdIntent",
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "Engine Number {engine}",
-                "Engine {engine}",
-                "Number {engine}",
-                "{engine}"
-              ]
-            }
-          ],
-          "samples": [
-            "Find the ID of engine {engine}",
-            "Find the ID of {engine}",
-            "Find the TMCC ID of engine {engine}",
-            "Find the address of engine {engine}",
-            "Find the address of {engine}",
-            "What is the ID of engine {engine}",
-            "What is the TMCC ID of engine {engine} ",
-            "What is the address of engine {engine}",
-            "What's the ID of engine number {engine}",
-            "What's the ID of {engine}",
-            "What's the TMCC ID of Engine Number {engine}",
-            "What's the TMCC ID of engine {engine}",
-            "What's the TMCC ID of {engine}",
-            "What's the address of engine number {engine}",
-            "What's the address of engine {engine}",
-            "What's the address of number {engine}",
-            "What's the address of {engine}",
-            "What's the id of engine {engine}"
+            "{state} accessory {tmcc_id}",
+            "{state} accessory {tmcc_id} for {duration}"
           ]
         },
         {
@@ -723,6 +153,181 @@
           ]
         },
         {
+          "name": "ChangeVolumeIntent",
+          "slots": [
+            {
+              "name": "volume",
+              "type": "volume",
+              "samples": [
+                "{volume}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{engine}",
+                "train {engine}",
+                "engine {engine}"
+              ]
+            }
+          ],
+          "samples": [
+            "{volume} the volume of {engine}",
+            "{volume} the volume of {scope} {engine}",
+            "{volume} volume  {engine}",
+            "{volume} volume of {engine}",
+            "{volume} volume of {scope} {engine}",
+            "{volume} volume {scope} {engine}"
+          ]
+        },
+        {
+          "name": "FindTmccIdIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "Engine Number {engine}",
+                "Engine {engine}",
+                "Number {engine}",
+                "{engine}"
+              ]
+            }
+          ],
+          "samples": [
+            "Find the ID of engine {engine}",
+            "Find the ID of {engine}",
+            "Find the TMCC ID of engine {engine}",
+            "Find the address of engine {engine}",
+            "Find the address of {engine}",
+            "What is the ID of engine {engine}",
+            "What is the TMCC ID of engine {engine} ",
+            "What is the address of engine {engine}",
+            "What's the ID of engine number {engine}",
+            "What's the ID of {engine}",
+            "What's the TMCC ID of Engine Number {engine}",
+            "What's the TMCC ID of engine {engine}",
+            "What's the TMCC ID of {engine}",
+            "What's the address of engine number {engine}",
+            "What's the address of engine {engine}",
+            "What's the address of number {engine}",
+            "What's the address of {engine}",
+            "What's the id of engine {engine}"
+          ]
+        },
+        {
+          "name": "FireRouteIntent",
+          "slots": [
+            {
+              "name": "route",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{route}",
+                "route {route}"
+              ]
+            }
+          ],
+          "samples": [
+            "Activate route {route}",
+            "Fire route {route}",
+            "Fire {route}",
+            "Trigger route {route}"
+          ]
+        },
+        {
+          "name": "GetStatusIntent",
+          "slots": [
+            {
+              "name": "tmcc_id",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{scope_ex} {tmcc_id}",
+                "{tmcc_id}"
+              ]
+            },
+            {
+              "name": "scope_ex",
+              "type": "scope_ex",
+              "samples": [
+                "{scope_ex}"
+              ]
+            }
+          ],
+          "samples": [
+            "get status of {tmcc_id}",
+            "get status of {scope_ex} {tmcc_id}",
+            "get the status of {scope_ex} {tmcc_id}",
+            "report on {scope_ex} {tmcc_id}",
+            "report {scope_ex} {tmcc_id} status",
+            "report {scope_ex} {tmcc_id}",
+            "status of {scope_ex} {tmcc_id}",
+            "status {scope_ex} {tmcc_id}",
+            "tell me about {scope_ex} {tmcc_id}",
+            "tell me the status of {scope_ex} {tmcc_id}",
+            "what is the status of {scope_ex} {tmcc_id}",
+            "what's the status of {scope_ex} {tmcc_id}",
+            "{scope_ex} number {tmcc_id} status",
+            "{scope_ex} {tmcc_id} report",
+            "{scope_ex} {tmcc_id} status"
+          ]
+        },
+        {
+          "name": "HaltIntent",
+          "slots": [],
+          "samples": [
+            "Alexa halt",
+            "Emergency Halt",
+            "Emergency Stop",
+            "Emergency",
+            "Halt",
+            "Whoa"
+          ]
+        },
+        {
+          "name": "OpenCouplerIntent",
+          "slots": [
+            {
+              "name": "coupler",
+              "type": "coupler",
+              "samples": [
+                "{coupler}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "samples": [
+            "Open {coupler} on {engine}",
+            "Open {coupler} on {scope} {engine}",
+            "Open {coupler} {engine}",
+            "Open {coupler} {scope} {engine}",
+            "Release {coupler} on {engine}",
+            "Release {coupler} on {scope} {engine}",
+            "Release {coupler} {engine}",
+            "Release {coupler} {scope} {engine}",
+            "Trigger {coupler} on {engine}",
+            "Trigger {coupler} on {scope} {engine}",
+            "Trigger {coupler} {engine}",
+            "Trigger {coupler} {scope} {engine}"
+          ]
+        },
+        {
           "name": "PowerDistrictIntent",
           "slots": [
             {
@@ -750,22 +355,20 @@
           ]
         },
         {
-          "name": "AccessoryIntentHandler",
+          "name": "RefuelIntent",
           "slots": [
             {
-              "name": "state",
-              "type": "on_off",
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
               "samples": [
-                "{state}"
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
               ]
             },
             {
-              "name": "tmcc_id",
-              "type": "AMAZON.NUMBER",
-              "samples": [
-                "accessory {tmcc_id}",
-                "{tmcc_id}"
-              ]
+              "name": "scope",
+              "type": "scope"
             },
             {
               "name": "duration",
@@ -773,8 +376,365 @@
             }
           ],
           "samples": [
-            "{state} accessory {tmcc_id}",
-            "{state} accessory {tmcc_id} for {duration}"
+            "Refuel {engine} for {duration}",
+            "Refuel {engine}",
+            "Refuel {scope} {engine} for {duration}",
+            "Refuel {scope} {engine}"
+          ]
+        },
+        {
+          "name": "ResetIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "samples": [
+            "Reset {engine}",
+            "Reset {scope} {engine}"
+          ]
+        },
+        {
+          "name": "RingBellIntent",
+          "slots": [
+            {
+              "name": "ring",
+              "type": "bell_options",
+              "samples": [
+                "{ring}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "duration",
+              "type": "AMAZON.DURATION"
+            }
+          ],
+          "samples": [
+            "bell {ring} {scope} {engine} for {duration}",
+            "bell {ring} {scope} {engine}",
+            "{ring} bell on {scope} {engine} for {duration}",
+            "{ring} bell on {scope} {engine}",
+            "{ring} bell {engine} for {duration}",
+            "{ring} bell {engine}",
+            "{ring} the bell on {scope} {engine} for {duration}",
+            "{ring} the bell on {scope} {engine}"
+          ]
+        },
+        {
+          "name": "SetDirectionIntent",
+          "slots": [
+            {
+              "name": "direction",
+              "type": "direction",
+              "samples": [
+                "{direction}"
+              ]
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "samples": [
+            "change direction of {scope} {engine} to {direction}",
+            "change direction of {scope} {engine} {direction}",
+            "change direction {engine} {direction}",
+            "change direction {scope} {engine} {direction}",
+            "change the direction of {scope} {engine} to {direction}",
+            "change the direction of {scope} {engine} {direction}",
+            "set direction of {scope} {engine} to {direction}",
+            "set the direction of {scope} {engine} {direction}",
+            "tell {scope} {engine} go {direction}",
+            "tell {scope} {engine} move {direction}",
+            "tell {scope} {engine} to go {direction}",
+            "tell {scope} {engine} to move {direction}",
+            "tell {scope} {engine} {direction}",
+            "{direction} direction of {scope} {engine}",
+            "{direction} direction {scope} {engine}",
+            "{direction} the direction of {scope} {engine}",
+            "{direction} {engine}",
+            "{direction} {scope} {engine}"
+          ]
+        },
+        {
+          "name": "SetPyTrainServerIntent",
+          "slots": [
+            {
+              "name": "server",
+              "type": "AMAZON.SearchQuery",
+              "samples": [
+                "My PyTrain Server is {server}",
+                "My server is {server}",
+                "{server}"
+              ]
+            }
+          ],
+          "samples": [
+            "My Pie Train server is {server}",
+            "My Pie Train server url is {server}",
+            "My PieTrain url is {server}",
+            "My Py Train server is {server}",
+            "My PyTrain server is {server}",
+            "My PyTrain url is {server}",
+            "My pi train server url is {server}",
+            "My pi train url is {server}",
+            "My pie train url is {server}",
+            "My pietrain server url is {server}",
+            "My py train url is {server}",
+            "My pytrain server url is {server}",
+            "My server is {server}",
+            "My server url is {server}",
+            "My url is {server}",
+            "server {server}",
+            "url {server}"
+          ]
+        },
+        {
+          "name": "SmokeLevelIntent",
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "smoke",
+              "type": "smoke_options",
+              "samples": [
+                "level {smoke}",
+                "{smoke} level",
+                "{smoke}"
+              ]
+            }
+          ],
+          "samples": [
+            "set smoke level of {scope} {engine} to {smoke}",
+            "set smoke level {scope} {engine} to {smoke}",
+            "set smoke level {scope} {engine} {smoke}",
+            "set the smoke level of {engine} to {smoke}",
+            "set the smoke level of {scope} {engine} to {smoke}",
+            "set the smoke level on {engine} to {smoke}",
+            "set the smoke level on {scope} {engine} to {smoke}",
+            "smoke {scope} {engine} {smoke}",
+            "{smoke} on {scope} {engine}",
+            "{smoke} the smoke on {scope} {engine}",
+            "{smoke} {scope} {engine}"
+          ]
+        },
+        {
+          "name": "SoundHornIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "horn",
+              "type": "horn_sound",
+              "samples": [
+                "{horn}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "duration",
+              "type": "AMAZON.DURATION"
+            }
+          ],
+          "samples": [
+            "blow the {horn} on {engine}",
+            "blow the {horn} on {scope} {engine}",
+            "blow {horn} on {engine}",
+            "blow {horn} on {scope} {engine}",
+            "sound the {horn} on {engine}",
+            "sound the {horn} on {scope} {engine}",
+            "sound {horn} on {engine}",
+            "sound {horn} on {scope} {engine}",
+            "blow the {horn} on {engine} for {duration}",
+            "blow the {horn} on {scope} {engine} for {duration}",
+            "blow {horn} on {engine} for {duration}",
+            "blow {horn} on {scope} {engine} for {duration}",
+            "sound the {horn} on {engine} for {duration}",
+            "sound the {horn} on {scope} {engine} for {duration}",
+            "sound {horn} on {engine} for {duration}",
+            "sound {horn} on {scope} {engine} for {duration}"
+          ]
+        },
+        {
+          "name": "SpeedIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "engine {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "speed",
+              "type": "rr_speed",
+              "samples": [
+                "step {speed}",
+                "speed {speed}",
+                "speed step {speed}",
+                "{speed}"
+              ]
+            },
+            {
+              "name": "dialog",
+              "type": "dialogs"
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "samples": [
+            "accelerate {scope} {engine} to speed step {speed} {dialog}",
+            "accelerate {scope} {engine} to speed {speed} {dialog}",
+            "accelerate {scope} {engine} to {speed} {dialog}",
+            "decelerate {scope} {engine} to speed step {speed} {dialog}",
+            "decelerate {scope} {engine} to speed {speed} {dialog}",
+            "decelerate {scope} {engine} to {speed} {dialog}",
+            "set speed of {engine} to speed {speed} {dialog}",
+            "set speed of {engine} to {speed} {dialog}",
+            "set the speed of {engine} to speed {speed} {dialog}",
+            "set the speed of {engine} to {speed} {dialog}",
+            "slow {engine} to {speed} {dialog}",
+            "slow {scope} {engine} to speed {speed} {dialog}",
+            "slow {scope} {engine} to {speed} {dialog}",
+            "speed up {engine} to {speed} {dialog}",
+            "speed up {scope} {engine} to {speed} {dialog}"
+          ]
+        },
+        {
+          "name": "StartUpShutDownUpIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "engine {engine}",
+                "train {engine}",
+                "{engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "dialog",
+              "type": "dialogs"
+            },
+            {
+              "name": "state",
+              "type": "on_off"
+            }
+          ],
+          "samples": [
+            "{state} {engine} {dialog}",
+            "{state} {scope} {engine} {dialog}"
+          ]
+        },
+        {
+          "name": "StopImmediateIntent",
+          "slots": [
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "train {engine}",
+                "{engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "scope",
+              "type": "scope"
+            }
+          ],
+          "samples": [
+            "stop {engine}",
+            "stop {scope} {engine} immediately",
+            "stop {scope} {engine}",
+            "tell {engine} to stop",
+            "tell {scope} {engine} to stop"
+          ]
+        },
+        {
+          "name": "ThrowSwitchIntent",
+          "slots": [
+            {
+              "name": "switch",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "switch {switch}",
+                "{switch}"
+              ]
+            },
+            {
+              "name": "position",
+              "type": "switch_position"
+            }
+          ],
+          "samples": [
+            "switch {switch} to {position}",
+            "switch {switch} {position}",
+            "switch",
+            "throw switch {switch} {position}",
+            "throw switch",
+            "throw {switch} to {position}",
+            "throw"
           ]
         }
       ],
@@ -2067,33 +2027,6 @@
           "name": "scope",
           "values": [
             {
-              "id": "4",
-              "name": {
-                "value": "route"
-              }
-            },
-            {
-              "id": "3",
-              "name": {
-                "value": "accessory",
-                "synonyms": [
-                  "sensor",
-                  "track",
-                  "sensor track",
-                  "power district"
-                ]
-              }
-            },
-            {
-              "id": "2",
-              "name": {
-                "value": "switch",
-                "synonyms": [
-                  "turnout"
-                ]
-              }
-            },
-            {
               "id": "1",
               "name": {
                 "value": "train",
@@ -2227,13 +2160,70 @@
               }
             }
           ]
+        },
+        {
+          "name": "scope_ex",
+          "values": [
+            {
+              "id": "4",
+              "name": {
+                "value": "route"
+              }
+            },
+            {
+              "id": "3",
+              "name": {
+                "value": "accessory",
+                "synonyms": [
+                  "power district",
+                  "track",
+                  "sensor track",
+                  "sensor"
+                ]
+              }
+            },
+            {
+              "id": "2",
+              "name": {
+                "value": "switch",
+                "synonyms": [
+                  "turnout"
+                ]
+              }
+            },
+            {
+              "id": "1",
+              "name": {
+                "value": "train",
+                "synonyms": [
+                  "consist",
+                  "lash up",
+                  "lashup"
+                ]
+              }
+            },
+            {
+              "id": "0",
+              "name": {
+                "value": "engine",
+                "synonyms": [
+                  "big boy",
+                  "steamer",
+                  "switcher",
+                  "diesel",
+                  "locomotive",
+                  "loco"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
     "dialog": {
       "intents": [
         {
-          "name": "StartUpIntent",
+          "name": "StartUpShutDownUpIntent",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2271,45 +2261,10 @@
               "confirmationRequired": false,
               "elicitationRequired": false,
               "prompts": {}
-            }
-          ]
-        },
-        {
-          "name": "ShutDownIntent",
-          "confirmationRequired": false,
-          "prompts": {},
-          "slots": [
-            {
-              "name": "engine",
-              "type": "AMAZON.NUMBER",
-              "confirmationRequired": false,
-              "elicitationRequired": true,
-              "prompts": {
-                "elicitation": "Elicit.Slot.411810261860.210611615696"
-              },
-              "validations": [
-                {
-                  "type": "isLessThanOrEqualTo",
-                  "prompt": "Slot.Validation.411810261860.210611615696.1688622544231",
-                  "value": "99"
-                },
-                {
-                  "type": "isGreaterThanOrEqualTo",
-                  "prompt": "Slot.Validation.411810261860.210611615696.888772910670",
-                  "value": "1"
-                }
-              ]
             },
             {
-              "name": "scope",
-              "type": "scope",
-              "confirmationRequired": false,
-              "elicitationRequired": false,
-              "prompts": {}
-            },
-            {
-              "name": "dialog",
-              "type": "dialogs",
+              "name": "state",
+              "type": "on_off",
               "confirmationRequired": false,
               "elicitationRequired": false,
               "prompts": {}
@@ -2707,15 +2662,6 @@
           "prompts": {},
           "slots": [
             {
-              "name": "scope",
-              "type": "scope",
-              "confirmationRequired": false,
-              "elicitationRequired": true,
-              "prompts": {
-                "elicitation": "Elicit.Slot.352033256157.1183583677769"
-              }
-            },
-            {
               "name": "tmcc_id",
               "type": "AMAZON.NUMBER",
               "confirmationRequired": false,
@@ -2730,6 +2676,15 @@
                   "value": "1"
                 }
               ]
+            },
+            {
+              "name": "scope_ex",
+              "type": "scope_ex",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1075675851799.542099251458"
+              }
             }
           ]
         },
@@ -2964,7 +2919,7 @@
           ]
         },
         {
-          "name": "AccessoryIntentHandler",
+          "name": "AccessoryIntent",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3372,20 +3327,11 @@
         ]
       },
       {
-        "id": "Elicit.Slot.352033256157.1183583677769",
-        "variations": [
-          {
-            "type": "PlainText",
-            "value": "What layout element do you want the status of?"
-          }
-        ]
-      },
-      {
         "id": "Elicit.Slot.352033256157.656353053770",
         "variations": [
           {
             "type": "PlainText",
-            "value": "Tell me the TMCC ID of the {scope} ?"
+            "value": "Tell me the TMCC ID of the {scope_ex} ?"
           }
         ]
       },
@@ -3614,6 +3560,24 @@
           {
             "type": "PlainText",
             "value": "what do you want to do to the accessory?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.857815648415.1584682426917",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What do you want to do?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1075675851799.542099251458",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What layout element do you want the status of?"
           }
         ]
       }

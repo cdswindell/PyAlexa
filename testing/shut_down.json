@@ -1,86 +1,132 @@
 {
-	"version": "1.0",
-	"session": {
-		"new": true,
-		"application": {
-			"applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
-		},
-		"user": {
-			"userId": "amzn1.ask.account.testUser"
-		}
-	},
-	"context": {
-		"Viewports": [
-			{
-				"type": "APL",
-				"id": "medHub",
-				"shape": "RECTANGLE",
-				"dpi": 160,
-				"presentationType": "OVERLAY",
-				"canRotate": false,
-				"configuration": {
-					"current": {
-						"mode": "HUB",
-						"video": {
-							"codecs": [
-								"H_264_42",
-								"H_264_41"
-							]
-						},
-						"size": {
-							"type": "DISCRETE",
-							"pixelWidth": 1280,
-							"pixelHeight": 800
-						}
-					}
-				}
-			}
-		],
-		"Viewport": {
-			"experiences": [
-				{
-					"arcMinuteWidth": 221,
-					"arcMinuteHeight": 162,
-					"canRotate": false,
-					"canResize": false
-				}
-			],
-			"mode": "HUB",
-			"shape": "RECTANGLE",
-			"pixelWidth": 1280,
-			"pixelHeight": 800,
-			"dpi": 160,
-			"currentPixelWidth": 1280,
-			"currentPixelHeight": 800,
-			"touch": [
-				"SINGLE"
-			],
-			"keyboard": [
-				"DIRECTION"
-			],
-			"video": {
-				"codecs": [
-					"H_264_42",
-					"H_264_41"
-				]
-			}
-		},
-		"System": {
-			"application": {
-				"applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
-			},
-			"user": {
-				"userId": "amzn1.ask.account.testUser"
-			},
-			"apiEndpoint": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548"
-		}
-	},
+  "version": "1.0",
+  "session": {
+    "new": true,
+    "application": {
+      "applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+    },
+    "user": {
+      "userId": "amzn1.ask.account.testUser"
+    }
+  },
+  "context": {
+    "Viewports": [
+      {
+        "type": "APL",
+        "id": "medHub",
+        "shape": "RECTANGLE",
+        "dpi": 160,
+        "presentationType": "OVERLAY",
+        "canRotate": false,
+        "configuration": {
+          "current": {
+            "mode": "HUB",
+            "video": {
+              "codecs": [
+                "H_264_42",
+                "H_264_41"
+              ]
+            },
+            "size": {
+              "type": "DISCRETE",
+              "pixelWidth": 1280,
+              "pixelHeight": 800
+            }
+          }
+        }
+      }
+    ],
+    "Viewport": {
+      "experiences": [
+        {
+          "arcMinuteWidth": 221,
+          "arcMinuteHeight": 162,
+          "canRotate": false,
+          "canResize": false
+        }
+      ],
+      "mode": "HUB",
+      "shape": "RECTANGLE",
+      "pixelWidth": 1280,
+      "pixelHeight": 800,
+      "dpi": 160,
+      "currentPixelWidth": 1280,
+      "currentPixelHeight": 800,
+      "touch": [
+        "SINGLE"
+      ],
+      "keyboard": [
+        "DIRECTION"
+      ],
+      "video": {
+        "codecs": [
+          "H_264_42",
+          "H_264_41"
+        ]
+      }
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.testUser"
+      },
+      "apiEndpoint": "arn:aws:lambda:us-east-1:253746361293:function:ask-pytrain-skill-default-default-1740598447548"
+    }
+  },
   "request": {
     "type": "IntentRequest",
     "locale": "en-US",
     "intent": {
-      "name": "ShutDownIntent",
+      "name": "StartUpShutDownIntent",
       "slots": {
+        "state": {
+          "name": "state",
+          "value": "shut down",
+          "resolutions": {
+            "resolutionsPerAuthority": [
+              {
+                "authority": "amzn1.er-authority.echo-sdk.amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35_Live.on_off",
+                "status": {
+                  "code": "ER_SUCCESS_MATCH"
+                },
+                "values": [
+                  {
+                    "value": {
+                      "name": "off",
+                      "id": "0"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "confirmationStatus": "NONE",
+          "source": "USER",
+          "slotValue": {
+            "type": "Simple",
+            "value": "shut down",
+            "resolutions": {
+              "resolutionsPerAuthority": [
+                {
+                  "authority": "amzn1.er-authority.echo-sdk.amzn1.ask.skill.9d64a0ef-01df-4cbf-a65c-e4e3af9eec35_Live.on_off",
+                  "status": {
+                    "code": "ER_SUCCESS_MATCH"
+                  },
+                  "values": [
+                    {
+                      "value": {
+                        "name": "shut down",
+                        "id": "0"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
         "engine": {
           "name": "engine",
           "value": "67"

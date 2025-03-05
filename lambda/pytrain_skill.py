@@ -280,7 +280,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @property
     def component(self) -> str:
-        scope = get_canonical_slot(self._slots["scope"]) if "scope" in self._slots else None
+        scope = get_canonical_slot(self._slots["scop_ex"]) if "scope_ex" in self._slots else None
         if scope:
             return PATH_MAP.get(scope.value.id, "engine")
         else:
@@ -560,22 +560,28 @@ class RingBellIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
-class StartUpIntentHandler(PyTrainIntentHandler):
-    """Handler for Start Up Intent."""
+class StartUpShutDownIntentHandler(PyTrainIntentHandler):
+    """Handler for Start Up/Shut Down Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
+        on_off = self.on_off
         scope = self.scope
         engine = self.engine
         dialog = self.dialog
         if engine is None:
             logger.warning("No Engine/Train Number Specified")
-            speak_output = f"I don't know what {scope} you want me to start, sorry!"
-        else:
+            speak_output = f"I don't know what {scope} you want me to control, sorry!"
+        elif on_off and on_off.value.id == "1":
             opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
             url = f"{self.url_base}/{scope}/{engine.value}/startup_req{opt}"
             speak_output = f"Starting up {scope} {engine.value}"
+            response = self.post(url)
+        else:
+            opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
+            url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
+            speak_output = f"Shutting down{scope} {engine.value}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -1026,8 +1032,7 @@ sb = CustomSkillBuilder(persistence_adapter=dynamodb_adapter)
 sb.add_request_handler(LaunchRequestHandler())
 sb.add_request_handler(SetPyTrainServerIntentHandler())
 sb.add_request_handler(HaltIntentHandler())
-sb.add_request_handler(StartUpIntentHandler())
-sb.add_request_handler(ShutDownIntentHandler())
+sb.add_request_handler(StartUpShutDownIntentHandler())
 sb.add_request_handler(SoundHornIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(StopImmediateIntentHandler())
