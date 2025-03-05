@@ -657,7 +657,7 @@
           ]
         },
         {
-          "name": "StartUpShutDownUpIntent",
+          "name": "StartUpShutDownIntent",
           "slots": [
             {
               "name": "engine",
@@ -2223,7 +2223,7 @@
     "dialog": {
       "intents": [
         {
-          "name": "StartUpShutDownUpIntent",
+          "name": "StartUpShutDownIntent",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
