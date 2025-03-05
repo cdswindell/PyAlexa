@@ -169,8 +169,8 @@ class LaunchRequestHandler(AbstractRequestHandler):
             if response.status_code != 200:
                 logger.warning(f"Launch Request failed with status code: {response.status_code} {response}")
                 speak_output = (
-                    "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
-                    + REQUEST_SERVER_REPROMPT
+                        "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
+                        + REQUEST_SERVER_REPROMPT
                 )
                 reprompt = REQUEST_SERVER_REPROMPT
         else:
@@ -201,13 +201,13 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return None
 
     def handle_response(
-        self,
-        response,
-        handler_input,
-        speak_output,
-        reprompt="What next?",
-        close_session: bool = False,
-        default_responses: bool = True,
+            self,
+            response,
+            handler_input,
+            speak_output,
+            reprompt="What next?",
+            close_session: bool = False,
+            default_responses: bool = True,
     ):
         if response is not None:
             if response.status_code == 200:
@@ -304,7 +304,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     def duration(self) -> int | None:
         slots = self._handler_input.request_envelope.request.intent.slots
         duration_slot = slots["duration"] if "duration" in slots else None
-        if duration_slot:
+        if duration_slot is not None and duration_slot.value:
             if duration_slot.value.startswith("PT"):
                 duration = parse_duration(duration_slot.value).seconds
             else:
@@ -660,7 +660,7 @@ class RefuelIntentHandler(ResetIntentHandler):
     @property
     def spoken_response(self):
         duration = self.duration
-        dur = f" for {duration} second{'s' if duration and duration == 1 else ''}" if duration else ""
+        dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
         return f"Refueling {self.scope} {self.engine.value}{dur}"
 
 
@@ -723,7 +723,7 @@ class AccessoryIntentHandler(PyTrainIntentHandler):
             speak_output = "I don't know the accessory to control, sorry!"
         else:
             if duration:
-                dur = f" for {duration} second{'s' if duration and duration == 1 else ''}" if duration else ""
+                dur = f" for {duration} second{'s' if duration > 1 else ''}" if duration else ""
                 dur_param = f"&duration={duration}" if duration else ""
             else:
                 dur = dur_param = ""
