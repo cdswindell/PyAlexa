@@ -280,7 +280,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @property
     def component(self) -> str:
-        scope = get_canonical_slot(self._slots["scop_ex"]) if "scope_ex" in self._slots else None
+        scope = get_canonical_slot(self._slots["scope_ex"]) if "scope_ex" in self._slots else None
         if scope:
             return PATH_MAP.get(scope.value.id, "engine")
         else:
@@ -582,26 +582,6 @@ class StartUpShutDownIntentHandler(PyTrainIntentHandler):
             opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
             url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
             speak_output = f"Shutting down{scope} {engine.value}"
-            response = self.post(url)
-        return self.handle_response(response, handler_input, speak_output)
-
-
-class ShutDownIntentHandler(PyTrainIntentHandler):
-    """Handler for Shut Down Intent."""
-
-    def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
-        scope = self.scope
-        engine = self.engine
-        dialog = self.dialog
-        if engine is None:
-            logger.warning("No Engine Number Specified")
-            speak_output = f"I don't know what {scope} you want me to shut down, sorry!"
-        else:
-            opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
-            url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
-            speak_output = f"Shutting down {scope} {engine.value}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -1030,33 +1010,36 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 sb = CustomSkillBuilder(persistence_adapter=dynamodb_adapter)
 
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(SetPyTrainServerIntentHandler())
+
+sb.add_request_handler(AccessoryIntentHandler())
+sb.add_request_handler(BoostSpeedIntentHandler())
+sb.add_request_handler(BrakeSpeedIntentHandler())
+sb.add_request_handler(ChangeVolumeIntentHandler())
+sb.add_request_handler(FindTmccIdIntentHandler())
+sb.add_request_handler(FireRouteIntentHandler())
+sb.add_request_handler(GetStatusIntentHandler())
 sb.add_request_handler(HaltIntentHandler())
+sb.add_request_handler(OpenCouplerIntentHandler())
+sb.add_request_handler(PowerDistrictIntentHandler())
+sb.add_request_handler(RefuelIntentHandler())
+sb.add_request_handler(ResetIntentHandler())
+sb.add_request_handler(RingBellIntentHandler())
+sb.add_request_handler(SetDirectionIntentHandler())
+sb.add_request_handler(SmokeLevelIntentHandler())
+sb.add_request_handler(SetPyTrainServerIntentHandler())
 sb.add_request_handler(StartUpShutDownIntentHandler())
 sb.add_request_handler(SoundHornIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(StopImmediateIntentHandler())
-sb.add_request_handler(RingBellIntentHandler())
-sb.add_request_handler(ResetIntentHandler())
-sb.add_request_handler(RefuelIntentHandler())
-sb.add_request_handler(SetDirectionIntentHandler())
-sb.add_request_handler(OpenCouplerIntentHandler())
-sb.add_request_handler(SmokeLevelIntentHandler())
-sb.add_request_handler(ChangeVolumeIntentHandler())
 sb.add_request_handler(ThrowSwitchIntentHandler())
-sb.add_request_handler(FireRouteIntentHandler())
-sb.add_request_handler(PowerDistrictIntentHandler())
-sb.add_request_handler(AccessoryIntentHandler())
-sb.add_request_handler(FindTmccIdIntentHandler())
-sb.add_request_handler(GetStatusIntentHandler())
+
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelIntentHandler())
 sb.add_request_handler(StopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
-sb.add_request_handler(
-    IntentReflectorHandler()
-)  # make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
 
+# make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
+sb.add_request_handler(IntentReflectorHandler())
 sb.add_exception_handler(CatchAllExceptionHandler())
 
 handler = sb.lambda_handler()
