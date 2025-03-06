@@ -410,7 +410,7 @@ class SpeedIntentHandler(PyTrainIntentHandler):
         speed = self.speed
         dialog = self.dialog
         if engine is None:
-            logger.warning(f"No {scope.title()} Number Specified")
+            logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         else:
             opt = ""
@@ -437,7 +437,7 @@ class BoostSpeedIntentHandler(PyTrainIntentHandler):
         duration = self.duration
         if engine is None:
             logger.warning("No Engine Specified")
-            speak_output = "I don't know what engine you want me to boost, sorry!"
+            speak_output = f"I don't know what {scope} you want me to boost, sorry!"
         else:
             dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
             dur_param = f"?duration={duration}" if duration else ""
@@ -458,7 +458,7 @@ class BrakeSpeedIntentHandler(PyTrainIntentHandler):
         duration = self.duration
         if engine is None:
             logger.warning("No Engine Specified")
-            speak_output = "I don't know what engine you want me to brake, sorry!"
+            speak_output = f"I don't know what {scope} you want me to brake, sorry!"
         else:
             dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
             dur_param = f"?duration={duration}" if duration else ""
@@ -478,8 +478,8 @@ class OpenCouplerIntentHandler(PyTrainIntentHandler):
         engine = self.engine
         coupler = self.coupler
         if engine is None:
-            logger.warning("No {scope.title()} number specified")
-            speak_output = "I don't know what {scope.title()} you want me to decouple, sorry!"
+            logger.warning(f"No {scope} number specified")
+            speak_output = f"I don't know what {scope} you want me to decouple, sorry!"
         else:
             if coupler and coupler.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/rear_coupler_req"
@@ -503,7 +503,7 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
         horn = self.horn
         duration = self.duration
         if engine is None:
-            logger.warning(f"No {scope.title()} Specified")
+            logger.warning(f"No {scope} Specified")
             speak_output = f"I don't know what {scope} you want me to sound, sorry!"
         else:
             opt = "sound"
@@ -537,7 +537,7 @@ class RingBellIntentHandler(PyTrainIntentHandler):
         duration = self.duration
         if engine is None:
             logger.warning("No Engine Specified")
-            speak_output = "I don't know what engine you want me to ring, sorry!"
+            speak_output = f"I don't know what {scope} you want me to ring, sorry!"
         else:
             opt = "toggle"
             device = "Toggle bell"
@@ -581,7 +581,7 @@ class StartUpShutDownIntentHandler(PyTrainIntentHandler):
         else:
             opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
             url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
-            speak_output = f"Shutting down{scope} {engine.value}"
+            speak_output = f"Shutting down {scope} {engine.value}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -595,8 +595,8 @@ class StopImmediateIntentHandler(PyTrainIntentHandler):
         scope = self.scope
         engine = self.engine
         if engine is None:
-            logger.warning("No {scope.title()} Number Specified")
-            speak_output = "I don't know what {scope) you want me to stop, sorry!"
+            logger.warning(f"No {scope} Number Specified")
+            speak_output = f"I don't know what {scope} you want me to stop, sorry!"
         else:
             url = f"{self.url_base}/{scope}/{engine.value}/stop_req"
             speak_output = f"<speak>Stopping {scope} {engine.value} "
@@ -622,8 +622,8 @@ class ResetIntentHandler(PyTrainIntentHandler):
         scope = self.scope
         engine = self.engine
         if engine is None:
-            logger.warning(f"No {scope.title()} Number Specified")
-            speak_output = "I don't know what {scope} you want me to reset, sorry!"
+            logger.warning(f"No {scope} Number Specified")
+            speak_output = f"I don't know what {scope} you want me to reset, sorry!"
         else:
             url = self.url
             speak_output = self.spoken_response
@@ -654,8 +654,8 @@ class SetDirectionIntentHandler(PyTrainIntentHandler):
         engine = self.engine
         dr = self.direction
         if engine is None:
-            logger.warning("No {scope.title()} Number Specified")
-            speak_output = "I don't know what {scope} to change the direction of, sorry!"
+            logger.warning(f"No {scope} Number Specified")
+            speak_output = f"I don't know what {scope} to change the direction of, sorry!"
         else:
             if dr and dr.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/reverse_req"
@@ -690,7 +690,7 @@ class PowerDistrictIntentHandler(PyTrainIntentHandler):
 
 
 class AccessoryIntentHandler(PyTrainIntentHandler):
-    """Handler for Power District Intent."""
+    """Handler for Accessory Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
@@ -712,7 +712,7 @@ class AccessoryIntentHandler(PyTrainIntentHandler):
             else:
                 dur = ""
                 url = f"{self.url_base}/accessory/{tmcc_id.value}/asc2_req?state=off"
-            speak_output = f"Turning {on_off.value.name} Accessory {tmcc_id.value}{dur}"
+            speak_output = f"Turning {on_off.value.name} accessory {tmcc_id.value}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -727,8 +727,8 @@ class ChangeVolumeIntentHandler(PyTrainIntentHandler):
         engine = self.engine
         vol = self.volume
         if engine is None:
-            logger.warning("No {scope.title()} Number Specified")
-            speak_output = "I don't know what {scope} to change the volume of, sorry!"
+            logger.warning(f"No {scope} Number Specified")
+            speak_output = f"I don't know what {scope} to change the volume of, sorry!"
         else:
             if vol and vol.value.id == "1":
                 url = f"{self.url_base}/{scope}/{engine.value}/volume_down_req"
@@ -751,7 +751,7 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
         engine = self.engine
         smoke = self.smoke
         if engine is None:
-            logger.warning("No {scope.title()} Number Specified")
+            logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to smoke, sorry!"
         else:
             opt = "?level=off" if smoke is None or smoke.value.id == "0" else f"?level={smoke.value.name.lower()}"
@@ -807,10 +807,10 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
         tmcc_id = self.tmcc_id
         if tmcc_id is None:
             logger.warning("No TMCC ID Specified")
-            speak_output = "I don't know the {scope} to query, sorry!"
+            speak_output = f"I don't know the {scope} to query, sorry!"
         else:
             url = f"{self.url_base}/{scope}/{tmcc_id.value}"
-            speak_output = f"Getting status of {scope} {tmcc_id.value}"
+            speak_output = f"Getting the status of {scope} {tmcc_id.value}"
             response = self.get(url)
             if response and response.status_code == 200:
                 # Handle the response data
