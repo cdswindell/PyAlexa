@@ -169,8 +169,8 @@ class LaunchRequestHandler(AbstractRequestHandler):
             if response.status_code != 200:
                 logger.warning(f"Launch Request failed with status code: {response.status_code} {response}")
                 speak_output = (
-                        "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
-                        + REQUEST_SERVER_REPROMPT
+                    "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
+                    + REQUEST_SERVER_REPROMPT
                 )
                 reprompt = REQUEST_SERVER_REPROMPT
         else:
@@ -201,13 +201,13 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return None
 
     def handle_response(
-            self,
-            response,
-            handler_input,
-            speak_output,
-            reprompt="What next?",
-            close_session: bool = False,
-            default_responses: bool = True,
+        self,
+        response,
+        handler_input,
+        speak_output,
+        reprompt="What next?",
+        close_session: bool = False,
+        default_responses: bool = True,
     ):
         if response is not None:
             if response.status_code == 200:
@@ -874,22 +874,29 @@ class HelpIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = """
-            Control your Lionel layout by voice!. Here are just a few examples of what can say:
+            <speak>PyTrain lets you control your
+            Lion<break strength='none'/><phoneme alphabet='ipa' ph='`ɛ:l'>el</phoneme>
+            layout with your voice!<break strength='medium'/>
+            Here are some examples of what you can say:<break strength='strong'/>
 
-            'Power up engine 67',
-            'Set the speed of engine 23 to slow',
-            'Blow the whistle on Engine 5 for 30 seconds',
-            "Reverse Engine sixty three',
-            'Reset engine five',
-            'Refuel train seventeen for 10 seconds',
-            'Shut down train 33',
-            'throw switch 5 to thru'
-            'fire route 10'
-            'Get status of engine 23',
+            <prosody rate='90%'>
+            'Power up engine 67.',<break strength='strong'/>
+            'Set the speed of engine 23 to slow.',<break strength='strong'/>
+            'Blow the whistle on Engine 5 for 30 seconds.',<break strength='strong'/>
+            "Reverse Engine sixty three.,<break strength='strong'/>
+            'Reset engine five.',<break strength='strong'/>
+            'Refuel train seventeen for 10 seconds.',<break strength='strong'/>
+            'Shut down train 33.',<break strength='strong'/>
+            'throw switch 5 to thru.'<break strength='strong'/>
+            'fire route 10.'<break strength='strong'/>
+            'Get status of engine 23.',<break strength='x-strong'/>
+            </prosody>
 
-            In cace of trouble, say: 'Emergency Halt',
+            In cace of trouble, say:
+                <amazon:emotion name="excited" intensity="medium">'Emergency Halt!'</amazon:emotion>,
+            <break strength='x-strong'/>
 
-            What would you like to do?
+            What would <emphasis level='strong'>you</emphasis> like to do?</speak>
             """
 
         return handler_input.response_builder.speak(speak_output).ask(speak_output).response
