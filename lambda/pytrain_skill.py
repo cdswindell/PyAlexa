@@ -134,11 +134,12 @@ def encode_id(state, server: str = None) -> str:
     return jwt.encode({"UID": uid, "SERVER": server, "magic": "alexa"}, server, algorithm=ALGORITHM)
 
 
-def request_api_key(handler_input, state=None, server: str = None) -> requests.Response:
+def request_api_key(handler_input, state=None, server: str = None, protocol: str = None) -> requests.Response:
     # get_user_info(handler_input)
     state = state if state else get_state(handler_input)
     server = server if server else state.get("server", None)
-    response = requests.post(f"https://{server}/version", json={"uid": encode_id(state, server=server)})
+    protocol = protocol if protocol else state.get("protocol", "http")
+    response = requests.post(f"{protocol}://{server}/version", json={"uid": encode_id(state, server=server)})
     if response.status_code == 200:
         state["api-key"] = response.json().get("api-token", None)
         persist_state(handler_input, state)
@@ -367,13 +368,13 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         processed = "".join(new_parts)
 
         logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
-        response = request_api_key(handler_input, state=state, server=processed)
+        response = request_api_key(handler_input, state=state, server=processed, protocol=http)
         if response and response.status_code == 200:
             speak_output = f"Setting PyTrain server URL to {server}"
             reprompt = PYTRAIN_REPROMPT
             http = http if http else "http"
             url_base = f"{http}://{processed}/pytrain/v1"
-            persist_state(handler_input, {"URL_BASE": url_base, "server": processed})
+            persist_state(handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http})
         else:
             speak_output = (
                 f"There was a problem connecting to {processed}, please try again Error {response.status_code}"
