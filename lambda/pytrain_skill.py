@@ -213,8 +213,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         if response is not None:
             if response.status_code == 200:
                 # Handle the response data
-                data = response.json()
-                logger.debug(data)
+                logger.debug(response.json())
             elif response.status_code == 498:
                 # get a new token and repeat the last API call
                 state = self.session_state
@@ -225,11 +224,17 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                     return self.handle(handler_input)  # get new API Token
                 raise ApiTokenExpiredException()
             elif default_responses is True and 400 <= response.status_code <= 499:
-                speak_output = (
-                    f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
-                )
-                reprompt = None
-                close_session = True
+                speak_output = None
+                if response.status_code == 422:
+                    data = response.json()
+                    if data:
+                        speak_output = data.get("detail", None)
+                if speak_output is None:
+                    speak_output = (
+                        f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
+                    )
+                    reprompt = None
+                    close_session = True
             else:
                 logger.warning(f"Request failed with status code: {response.status_code}")
         else:
@@ -922,6 +927,22 @@ class CancelIntentHandler(AbstractRequestHandler):
         )
 
 
+class FallbackIntentHandler(AbstractRequestHandler):
+    """Handler for Fallback Intent."""
+
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return ask_utils.is_intent_name("AMAZON.FallbackIntent")(handler_input)
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        speak_output = """
+        I'm afraid I can't help you with that. Say 'Help' for PyTrain help and to hear
+        examples of what you can say.
+        """
+        return handler_input.response_builder.speak(speak_output).set_should_end_session(False).response
+
+
 class StopIntentHandler(AbstractRequestHandler):
     """Handler for Stop Intent."""
 
@@ -1014,7 +1035,6 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 # The SkillBuilder object acts as the entry point for your skill, routing all request and response
 # payloads to the handlers above. Make sure any new handlers or interceptors you've
 # defined are included below. The order matters - they're processed top to bottom.
-
 sb = CustomSkillBuilder(persistence_adapter=dynamodb_adapter)
 
 sb.add_request_handler(LaunchRequestHandler())
@@ -1043,6 +1063,7 @@ sb.add_request_handler(ThrowSwitchIntentHandler())
 
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelIntentHandler())
+sb.add_request_handler(FallbackIntentHandler())
 sb.add_request_handler(StopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())
 
