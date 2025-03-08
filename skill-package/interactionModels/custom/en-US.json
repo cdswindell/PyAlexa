@@ -732,6 +732,67 @@
             "throw {switch} to {position}",
             "throw"
           ]
+        },
+        {
+          "name": "MomentumIntent",
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{engine}",
+                "train {engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "momentum",
+              "type": "momentum",
+              "samples": [
+                "{momentum}"
+              ]
+            }
+          ],
+          "samples": [
+            "change momentum of {engine} to {momentum}",
+            "change momentum of {scope} {engine} to {momentum}",
+            "change momentum {engine} to {momentum}",
+            "change momentum {scope} {engine} to {momentum}",
+            "change the momentum of {engine} to {momentum}",
+            "change the momentum of {scope} {engine} to {momentum}",
+            "momentum {engine} {momentum}",
+            "momentum {scope} {engine} {momentum}",
+            "set momentum of {engine} to {momentum}",
+            "set momentum of {scope} {engine} to {momentum}",
+            "set momentum {engine} to {momentum}",
+            "set momentum {scope} {engine} to {momentum}",
+            "set the momentum of {engine} to {momentum}",
+            "set the momentum of {scope} {engine} to {momentum}"
+          ]
+        },
+        {
+          "name": "ProtocolIntent",
+          "slots": [
+            {
+              "name": "protocol",
+              "type": "protocol",
+              "samples": [
+                "{protocol}"
+              ]
+            }
+          ],
+          "samples": [
+            "Change Protocol to {protocol}",
+            "Change PyTrain Api Server Protocol to {protocol}",
+            "Change PyTrain Server Protocol to {protocol}",
+            "Set Protocol to {protocol}",
+            "Set PyTrain Api Server Protocol to {protocol}",
+            "Set PyTrain Server Protocol to {protocol}"
+          ]
         }
       ],
       "types": [
@@ -2394,6 +2455,94 @@
               }
             }
           ]
+        },
+        {
+          "name": "momentum",
+          "values": [
+            {
+              "id": "7",
+              "name": {
+                "value": "7",
+                "synonyms": [
+                  "maximum",
+                  "max",
+                  "high"
+                ]
+              }
+            },
+            {
+              "id": "6",
+              "name": {
+                "value": "6"
+              }
+            },
+            {
+              "id": "5",
+              "name": {
+                "value": "5"
+              }
+            },
+            {
+              "id": "4",
+              "name": {
+                "value": "4"
+              }
+            },
+            {
+              "id": "3",
+              "name": {
+                "value": "3",
+                "synonyms": [
+                  "medium"
+                ]
+              }
+            },
+            {
+              "id": "2",
+              "name": {
+                "value": "2"
+              }
+            },
+            {
+              "id": "1",
+              "name": {
+                "value": "1"
+              }
+            },
+            {
+              "id": "0",
+              "name": {
+                "value": "0",
+                "synonyms": [
+                  "off",
+                  "low"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "protocol",
+          "values": [
+            {
+              "id": "443",
+              "name": {
+                "value": "https",
+                "synonyms": [
+                  "secure"
+                ]
+              }
+            },
+            {
+              "id": "80",
+              "name": {
+                "value": "http",
+                "synonyms": [
+                  "relaxed"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
@@ -3138,6 +3287,68 @@
               "prompts": {}
             }
           ]
+        },
+        {
+          "name": "MomentumIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope",
+              "confirmationRequired": false,
+              "elicitationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1718412471244.768340047140"
+              },
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.1718412471244.768340047140.1731405376400",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.1718412471244.768340047140.58098195538",
+                  "value": "99"
+                }
+              ]
+            },
+            {
+              "name": "momentum",
+              "type": "momentum",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1718412471244.991796320686"
+              }
+            }
+          ]
+        },
+        {
+          "name": "ProtocolIntent",
+          "confirmationRequired": true,
+          "prompts": {
+            "confirmation": "Confirm.Intent.960602055051"
+          },
+          "slots": [
+            {
+              "name": "protocol",
+              "type": "protocol",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.960602055051.942607346890"
+              }
+            }
+          ]
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -3755,6 +3966,76 @@
           {
             "type": "PlainText",
             "value": "What layout element do you want the status of?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1718412471244.768340047140",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What's the engine TMCC ID?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What is the {scope} TMCC ID?"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.1718412471244.768340047140.1731405376400",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "{scope}TMCC ID's must be between one and ninety nine"
+          },
+          {
+            "type": "PlainText",
+            "value": "TMCC ID's must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.1718412471244.768340047140.58098195538",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "{scope}TMCC ID's must be between one and ninety nine"
+          },
+          {
+            "type": "PlainText",
+            "value": "TMCC ID's must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1718412471244.991796320686",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What's the momentum value for engine {engine} ?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What's the momentum value for {scope} {engine} ?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.960602055051.942607346890",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What protocol should I use to send requests to yor PyTrain Api Server, HTTP or HTTPs?"
+          }
+        ]
+      },
+      {
+        "id": "Confirm.Intent.960602055051",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "To confirm, you want to set the Pytrain Api server endpoint protocol to {protocol} ?"
           }
         ]
       }

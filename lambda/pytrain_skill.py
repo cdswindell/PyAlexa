@@ -56,6 +56,12 @@ PATH_MAP = {
     "4": "route",
 }
 
+MOMENTUM_MAP = {
+    "0": "low",
+    "3": "medium",
+    "7": "high",
+}
+
 #
 # initialize persistence adapter
 ddb_resource = boto3.resource("dynamodb")
@@ -99,10 +105,18 @@ def persist_state(handler_input, state: dict[str, Any]):
     else:
         persisted_state = {}
         handler_input.attributes_manager.session_attributes = session_state = {}
+    deleted_keys = set()
     for k, v in state.items():
-        session_state[k] = v
-        if k not in ["api-key", "uid"]:
-            persisted_state[k] = v
+        if v is None:
+            deleted_keys.add(k)
+        else:
+            session_state[k] = v
+            if k not in ["api-key", "uid"]:
+                persisted_state[k] = v
+    # don't persist deleted keys
+    if deleted_keys:
+        persisted_state = {k: v for k, v in persisted_state.items() if k not in deleted_keys}
+    handler_input.attributes_manager.session_attributes = persisted_state
     handler_input.attributes_manager.persistent_attributes = persisted_state.copy()
     if "api-key" in persisted_state:
         del handler_input.attributes_manager.persistent_attributes["api-key"]
@@ -162,7 +176,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
-        if state and state.get("URL_BASE", None):
+        if state and state.get("URL_BASE", None) and state.get("server", None):
             speak_output = "Welcome back to PyTrain!"
             reprompt = PYTRAIN_REPROMPT
             state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
@@ -193,7 +207,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         setattr(self, "_slots", handler_input.request_envelope.request.intent.slots)
         if raise_exception is True:
             state = self.session_state
-            if state is None or state.get("URL_BASE", None) is None:
+            if state is None or state.get("URL_BASE", None) is None or state.get("server", None) is None:
                 raise NoServerException
             if state.get("api-key", None) is None:
                 response: requests.Response = request_api_key(handler_input, state=state)
@@ -203,14 +217,14 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     def handle_response(
         self,
-        response,
+        response: requests.Response | str | None,
         handler_input,
         speak_output,
         reprompt="What next?",
         close_session: bool = False,
         default_responses: bool = True,
     ):
-        if response is not None:
+        if isinstance(response, requests.Response):
             if response.status_code == 200:
                 # Handle the response data
                 logger.debug(response.json())
@@ -237,6 +251,8 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                     close_session = True
             else:
                 logger.warning(f"Request failed with status code: {response.status_code}")
+        elif isinstance(response, str) and response == "ok":
+            pass
         else:
             logger.warning("Request failed with no additional information")
         return (
@@ -266,17 +282,13 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     @property
     def session_state(self) -> dict:
         state = self._handler_input.attributes_manager.session_attributes
-        if state is None or "URL_BASE" not in state or "api-key" not in state:
+        if state is None or "URL_BASE" not in state or "server" not in state or "api-key" not in state:
             state = get_state(self._handler_input)
         return state
 
     @property
     def api_key(self) -> str:
         return self.session_state.get("api-key")
-
-    @property
-    def url_base(self) -> str:
-        return self.session_state.get("URL_BASE")
 
     @property
     def scope(self) -> str:
@@ -293,18 +305,21 @@ class PyTrainIntentHandler(AbstractRequestHandler):
             return "engine"
 
     @property
-    def engine(self):
-        slots = self._handler_input.request_envelope.request.intent.slots
-        return slots["engine"] if "engine" in slots else None
+    def bell(self):
+        return get_canonical_slot(self._slots["ring"]) if "ring" in self._slots else None
 
     @property
-    def tmcc_id(self):
-        return self._slots["tmcc_id"] if "tmcc_id" in self._slots else self.engine
+    def coupler(self):
+        return get_canonical_slot(self._slots["coupler"]) if "coupler" in self._slots else None
 
     @property
     def dialog(self):
         slots = self._handler_input.request_envelope.request.intent.slots
         return get_canonical_slot(slots["dialog"]) if "dialog" in slots else None
+
+    @property
+    def direction(self):
+        return get_canonical_slot(self._slots["direction"]) if "direction" in self._slots else None
 
     @property
     def duration(self) -> int | None:
@@ -320,32 +335,44 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return duration
 
     @property
-    def speed(self):
-        return get_canonical_slot(self._slots["speed"]) if "speed" in self._slots else None
-
-    @property
-    def coupler(self):
-        return get_canonical_slot(self._slots["coupler"]) if "coupler" in self._slots else None
+    def engine(self):
+        slots = self._handler_input.request_envelope.request.intent.slots
+        return slots["engine"] if "engine" in slots else None
 
     @property
     def horn(self):
         return get_canonical_slot(self._slots["horn"]) if "horn" in self._slots else None
 
     @property
-    def bell(self):
-        return get_canonical_slot(self._slots["ring"]) if "ring" in self._slots else None
+    def momentum(self):
+        slots = self._handler_input.request_envelope.request.intent.slots
+        return get_canonical_slot(slots["momentum"]) if "momentum" in slots else None
 
     @property
-    def direction(self):
-        return get_canonical_slot(self._slots["direction"]) if "direction" in self._slots else None
+    def on_off(self):
+        return get_canonical_slot(self._slots["state"]) if "state" in self._slots else None
+
+    @property
+    def protocol(self) -> str:
+        prot = get_canonical_slot(self._slots["protocol"]) if "protocol" in self._slots else None
+        logger.info(f"Protocol: {prot} {prot.value.name if prot else ''}")
+        return prot.value.name if prot else "http"
 
     @property
     def smoke(self):
         return get_canonical_slot(self._slots["smoke"]) if "smoke" in self._slots else None
 
     @property
-    def on_off(self):
-        return get_canonical_slot(self._slots["state"]) if "state" in self._slots else None
+    def speed(self):
+        return get_canonical_slot(self._slots["speed"]) if "speed" in self._slots else None
+
+    @property
+    def tmcc_id(self):
+        return self._slots["tmcc_id"] if "tmcc_id" in self._slots else self.engine
+
+    @property
+    def url_base(self) -> str:
+        return self.session_state.get("URL_BASE")
 
     @property
     def volume(self):
@@ -361,30 +388,36 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         new_parts = []
         http = ""
         for part in parts:
-            part = part.lower().replace("://", "")
+            part = part.lower().replace("://", "").strip()
             if not part or part in ["colon", "slash", "", "://", ":", "/"]:
                 continue
             if part == "dot":
                 new_parts.append(".")
-            elif part.startswith("http"):
+            elif part in ["http", "https"]:
                 http = part
             else:
                 new_parts.append(part)
-        processed = "".join(new_parts)
-
-        logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
-        response = request_api_key(handler_input, state=state, server=processed, protocol=http)
-        if response and response.status_code == 200:
-            speak_output = f"Setting PyTrain server URL to {server}"
-            reprompt = PYTRAIN_REPROMPT
-            http = http if http else "http"
-            url_base = f"{http}://{processed}/pytrain/v1"
-            persist_state(handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http})
+        processed = "".join(new_parts).strip()
+        if processed:
+            logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
+            response = request_api_key(handler_input, state=state, server=processed, protocol=http)
+            if response and response.status_code == 200:
+                speak_output = f"Setting PyTrain server URL to {server}"
+                reprompt = PYTRAIN_REPROMPT
+                http = http if http else "http"
+                url_base = f"{http}://{processed}/pytrain/v1"
+                persist_state(handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http})
+            else:
+                logger.warning(f"Failed to set Server URL: {response}")
+                speak_output = (
+                    f"There was a problem connecting to {processed}, please try again Error {response.status_code}"
+                )
+                reprompt = REQUEST_SERVER_REPROMPT
         else:
-            speak_output = (
-                f"There was a problem connecting to {processed}, please try again Error {response.status_code}"
-            )
+            logger.warning(f"No Server Specified: {server}")
+            speak_output = REQUEST_SERVER_REPROMPT
             reprompt = REQUEST_SERVER_REPROMPT
+            response = "ok"
         return self.handle_response(
             response,
             handler_input,
@@ -418,6 +451,10 @@ class SpeedIntentHandler(PyTrainIntentHandler):
         if engine is None:
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
+        elif speed is None or speed.value is None:
+            logger.info(f"Invalid speed: {speed}")
+            speak_output = f"You've specified an invalid speed for {scope} {engine.value}, please try again."
+            response = "ok"
         else:
             opt = ""
             if dialog is not None:
@@ -674,6 +711,31 @@ class SetDirectionIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class MomentumIntentHandler(PyTrainIntentHandler):
+    """Handler for momentum Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        scope = self.scope
+        engine = self.engine
+        mom = self.momentum
+        if engine is None:
+            logger.warning(f"No {scope} Number Specified")
+            speak_output = f"I don't know what {scope} to change the momentum of, sorry!"
+        elif mom is None or mom.value is None:
+            logger.info(f"Invalid momentum: {mom}")
+            speak_output = f"You've specified an invalid momentum level for {scope} {engine.value}, please try again."
+            response = "ok"
+        else:
+            mom_spk = MOMENTUM_MAP.get(mom.value.id, mom.value.id)
+            url = f"{self.url_base}/{scope}/{engine.value}/momentum_req?level={mom.value.id}"
+            logger.info(f"Momentum speak: {mom_spk}")
+            speak_output = f"Changing the momentum of {scope} {engine.value} to {mom_spk}"
+            response = self.post(url)
+        return self.handle_response(response, handler_input, speak_output)
+
+
 class PowerDistrictIntentHandler(PyTrainIntentHandler):
     """Handler for Power District Intent."""
 
@@ -870,6 +932,23 @@ class FindTmccIdIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class ProtocolIntentHandler(PyTrainIntentHandler):
+    """Handler for Protocol Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input, raise_exception=False)
+        state = self.session_state
+        server = state.get("server", None)
+        protocol = self.protocol
+        if protocol:
+            url_pase = f"{protocol}://{server}/pytrain/v1"
+            persist_state(handler_input, {"protocol": protocol, "URL_BASE": url_pase})
+            speak_output = f"Changing endpoint protocol to {protocol}"
+        else:
+            speak_output = "I've left the endpoint protocol alone"
+        return self.handle_response("ok", handler_input, speak_output)
+
+
 class HelpIntentHandler(AbstractRequestHandler):
     """Handler for Help Intent."""
 
@@ -1047,8 +1126,10 @@ sb.add_request_handler(FindTmccIdIntentHandler())
 sb.add_request_handler(FireRouteIntentHandler())
 sb.add_request_handler(GetStatusIntentHandler())
 sb.add_request_handler(HaltIntentHandler())
+sb.add_request_handler(MomentumIntentHandler())
 sb.add_request_handler(OpenCouplerIntentHandler())
 sb.add_request_handler(PowerDistrictIntentHandler())
+sb.add_request_handler(ProtocolIntentHandler())
 sb.add_request_handler(RefuelIntentHandler())
 sb.add_request_handler(ResetIntentHandler())
 sb.add_request_handler(RingBellIntentHandler())
