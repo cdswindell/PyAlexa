@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 #
-# PyTrain Alexa Skill
+# PyTrain/My Layout Alexa Skill
 #
-# The PyTrain skill translates your voice commands into Lionel TMCC and Legacy commands
+# The My Layout skill translates your voice commands into Lionel TMCC and Legacy commands
 # to control engines, trains, switches, and other equipment. The skill communicates
 # via HTTPS with a PyTrain API Server on your local network with access to your Base 3.
 #
@@ -37,8 +37,9 @@ LOGGER_LEVEL = os.environ.get("LOGGER_LEVEL", "INFO").upper()
 logger = logging.getLogger(__name__)
 logger.setLevel(level=LOGGER_LEVEL)
 
-REQUEST_SERVER_OUTPUT = """
-    Welcome to PyTrain! To get started, you need to tell me your
+SKILL_NAME = "My Layout"
+REQUEST_SERVER_OUTPUT = f"""
+    Welcome to {SKILL_NAME}! To get started, you need to tell me your
     PyTrain API server URL. Please say: 'My PyTrain server is',
     followed by your server's URL. Use the word 'dot' for periods.
     Say 'HTTPS colon slash slash' followed by the URL to use HTTPS.'
@@ -46,7 +47,7 @@ REQUEST_SERVER_OUTPUT = """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
 
-PYTRAIN_REPROMPT = "For PyTrain help, say 'help!"
+PYTRAIN_REPROMPT = f"For {SKILL_NAME} help, say 'help!"
 
 PATH_MAP = {
     "0": "engine",
@@ -180,7 +181,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
         if state and state.get("URL_BASE", None) and state.get("server", None):
-            speak_output = "Welcome back to PyTrain!"
+            speak_output = "Welcome back to My Layout!"
             reprompt = PYTRAIN_REPROMPT
             state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
             response: requests.Response = request_api_key(handler_input, state)
@@ -251,7 +252,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                         speak_output = data.get("detail", None)
                 if speak_output is None:
                     speak_output = (
-                        f"I'm afraid you are not authorized to use PyTrain, good-bye. Error: {response.status_code}"
+                        f"I'm afraid you are not authorized to use {SKILL_NAME}, good-bye. Error: {response.status_code}"
                     )
                     reprompt = None
                     close_session = True
@@ -999,8 +1000,8 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = """
-            <speak>PyTrain lets you control your
+        speak_output = f"""
+            <speak>{SKILL_NAME} lets you control your
             Lion<break strength='none'/><phoneme alphabet='ipa' ph='`ɛ:l'>el</phoneme>
             layout with your voice!<break strength='medium'/>
             Here are some examples of what you can say:<break strength='strong'/>
@@ -1056,8 +1057,8 @@ class FallbackIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = """
-        I'm afraid I can't help you with that. Say 'Help' for PyTrain help and to hear
+        speak_output = f"""
+        I'm afraid I can't help you with that. Say 'Help' for {SKILL_NAME} help and to hear
         examples of what you can say.
         """
         return handler_input.response_builder.speak(speak_output).set_should_end_session(False).response
@@ -1072,7 +1073,7 @@ class StopIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Goodbye from PyTrain!"
+        speak_output = f"Goodbye from {SKILL_NAME}!"
 
         return handler_input.response_builder.speak(speak_output).set_should_end_session(True).response
 
@@ -1140,7 +1141,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
             ask_output = "Please repeat your last request."
             end_session = False
         elif isinstance(exception, UnsupportedDurationException):
-            speak_output = "PyTrain only supports durations of up to 2 minutes. Please try again."
+            speak_output = f"{SKILL_NAME} only supports durations of up to 2 minutes. Please try again."
             ask_output = "try again?"
             end_session = False
         else:
