@@ -404,7 +404,7 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
             else:
                 new_parts.append(part)
         processed = "".join(new_parts).strip()
-        if processed:
+        if processed and processed != "none":
             logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
             response = request_api_key(handler_input, state=state, server=processed, protocol=http)
             if response and response.status_code == 200:
@@ -420,7 +420,7 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
                 )
                 reprompt = REQUEST_SERVER_REPROMPT
         else:
-            logger.warning(f"No Server Specified: {server}")
+            logger.warning(f"No Server Specified: '{server} {processed} {type(processed)}'")
             speak_output = REQUEST_SERVER_REPROMPT
             reprompt = REQUEST_SERVER_REPROMPT
             response = "ok"
