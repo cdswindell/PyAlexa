@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "pie train",
+      "invocationName": "my layout",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",
@@ -32,15 +32,16 @@
           "name": "AMAZON.StopIntent",
           "samples": [
             "All done",
-            "Exit pie train",
+            "Exit my layout",
             "Exit pytrain",
             "Exit skill",
             "Good Bye",
             "I'm done",
+            "Quit my layout",
             "Quit Pie Train",
             "Quit pytrain",
             "Quit skill",
-            "Stop Pie Train",
+            "Stop my layout",
             "Stop PyTrain",
             "That's all",
             "That's it"
@@ -4113,7 +4114,7 @@
         "variations": [
           {
             "type": "PlainText",
-            "value": "What protocol should I use to send requests to yor PyTrain Api Server, HTTP or HTTPs?"
+            "value": "What protocol should I use to make requests to yor PyTrain Api Server, HTTP or HTTPs?"
           }
         ]
       },
