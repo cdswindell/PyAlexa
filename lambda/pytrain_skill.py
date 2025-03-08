@@ -1113,7 +1113,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         elif isinstance(exception, UnsupportedDurationException):
             speak_output = "PyTrain only supports durations of up to 2 minutes. Please try again."
             ask_output = "try again?"
-            end_session = True
+            end_session = False
         else:
             speak_output = "Sorry, I had trouble doing what you asked. Please try again."
             ask_output = "try again?"
