@@ -3,6 +3,5 @@ __pycache__
 .DS_Store
 /.idea
 /.ask/lambda
-/.ask/ask-states.json
 /.pytrain.history
 /pytrain.log*
