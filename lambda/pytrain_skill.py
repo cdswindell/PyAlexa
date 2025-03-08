@@ -38,10 +38,10 @@ logger = logging.getLogger(__name__)
 logger.setLevel(level=LOGGER_LEVEL)
 
 REQUEST_SERVER_OUTPUT = """
-    Welcome to PyTrain! To get started, I need to know your
+    Welcome to PyTrain! To get started, you need to tell me your
     PyTrain API server URL. Please say: 'My PyTrain server is',
     followed by your server's URL. Use the word 'dot' for periods.
-    Say 'HTTPS colon slash slash' and your URL to use HTTPS.'
+    Say 'HTTPS colon slash slash' followed by the URL to use HTTPS.'
 """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
@@ -81,7 +81,7 @@ class ApiTokenExpiredException(Exception):
     pass
 
 
-class UnsupportedDuration(Exception):
+class UnsupportedDurationException(Exception):
     def __init__(self, duration: Any) -> None:
         message = f"Duration not supported: {duration}"
         super().__init__(message)
@@ -334,8 +334,10 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         if duration_slot is not None and duration_slot.value:
             if duration_slot.value.startswith("PT"):
                 duration = parse_duration(duration_slot.value).seconds
+                if duration > 120:
+                    raise UnsupportedDurationException(duration_slot.value)
             else:
-                raise UnsupportedDuration(duration_slot.value)
+                raise UnsupportedDurationException(duration_slot.value)
         else:
             duration = None
         return duration
@@ -1108,11 +1110,14 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
             speak_output = "Sorry, could you please repeat that?"
             ask_output = "Please repeat your last request."
             end_session = False
+        elif isinstance(exception, UnsupportedDurationException):
+            speak_output = "PyTrain only supports durations of up to 2 minutes. Please try again."
+            ask_output = "try again?"
+            end_session = True
         else:
             speak_output = "Sorry, I had trouble doing what you asked. Please try again."
             ask_output = "try again?"
             end_session = True
-
         return (
             handler_input.response_builder.speak(speak_output)
             .ask(ask_output)
