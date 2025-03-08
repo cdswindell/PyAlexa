@@ -812,6 +812,43 @@
             "Set PyTrain Api Server Protocol to {protocol}",
             "Set PyTrain Server Protocol to {protocol}"
           ]
+        },
+        {
+          "name": "SequenceControlIntent",
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope"
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{engine}",
+                "train {engine}",
+                "engine {engine}"
+              ]
+            },
+            {
+              "name": "state",
+              "type": "on_off",
+              "samples": [
+                "{state} automatic  sequence control",
+                "{state} sequence control",
+                "{state}"
+              ]
+            }
+          ],
+          "samples": [
+            "{state} automatic sequence control for {engine}",
+            "{state} sequence control for {engine}",
+            "{state} automatic sequence control for {scope} {engine}",
+            "{state} sequence control for {scope} {engine}"
+          ]
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
         }
       ],
       "types": [
@@ -2393,6 +2430,8 @@
               "name": {
                 "value": "off",
                 "synonyms": [
+                  "deactivate",
+                  "disable",
                   "shut down",
                   "shutdown",
                   "power down",
@@ -2407,6 +2446,8 @@
               "name": {
                 "value": "on",
                 "synonyms": [
+                  "enable",
+                  "activate",
                   "start up",
                   "start",
                   "energize",
@@ -3351,6 +3392,50 @@
               }
             }
           ]
+        },
+        {
+          "name": "SequenceControlIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+            {
+              "name": "scope",
+              "type": "scope",
+              "confirmationRequired": false,
+              "elicitationRequired": false,
+              "prompts": {}
+            },
+            {
+              "name": "engine",
+              "type": "AMAZON.NUMBER",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.630404812288.330816605328"
+              },
+              "validations": [
+                {
+                  "type": "isGreaterThanOrEqualTo",
+                  "prompt": "Slot.Validation.630404812288.330816605328.1299573261260",
+                  "value": "1"
+                },
+                {
+                  "type": "isLessThanOrEqualTo",
+                  "prompt": "Slot.Validation.630404812288.330816605328.862807966326",
+                  "value": "99"
+                }
+              ]
+            },
+            {
+              "name": "state",
+              "type": "on_off",
+              "confirmationRequired": false,
+              "elicitationRequired": true,
+              "prompts": {
+                "elicitation": "Elicit.Slot.1674940795203.546381471068"
+              }
+            }
+          ]
         }
       ],
       "delegationStrategy": "ALWAYS"
@@ -4038,6 +4123,54 @@
           {
             "type": "PlainText",
             "value": "To confirm, you want to set the Pytrain Api server endpoint protocol to {protocol} ?"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.630404812288.330816605328",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "What's the TMCC ID of the engine?"
+          },
+          {
+            "type": "PlainText",
+            "value": "What's the TMCC ID of the {scope} ?"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.630404812288.330816605328.1299573261260",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC {scope} ID's must be between one and ninety nine"
+          },
+          {
+            "type": "PlainText",
+            "value": "TMCC ID's must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Slot.Validation.630404812288.330816605328.862807966326",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "TMCC {scope} ID's must be between one and ninety nine"
+          },
+          {
+            "type": "PlainText",
+            "value": "TMCC ID's must be between one and ninety nine"
+          }
+        ]
+      },
+      {
+        "id": "Elicit.Slot.1674940795203.546381471068",
+        "variations": [
+          {
+            "type": "PlainText",
+            "value": "Enable or disable sequence control?"
           }
         ]
       }

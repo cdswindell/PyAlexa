@@ -744,6 +744,35 @@ class MomentumIntentHandler(PyTrainIntentHandler):
         return self.handle_response(response, handler_input, speak_output)
 
 
+class SequenceControlIntentHandler(PyTrainIntentHandler):
+    """Handler for Sequence Control Intent."""
+
+    def handle(self, handler_input, raise_exception: bool = True) -> Response:
+        super().handle(handler_input)
+        response = None
+        on_off = self.on_off
+        scope = self.scope
+        engine = self.engine
+        logger.info(f"On/Off: {on_off}")
+        if engine is None:
+            logger.warning("No Engine/Train Number Specified")
+            speak_output = f"I don't know what {scope} you want me to control, sorry!"
+        elif on_off and on_off.value.id == "1":
+            url = f"{self.url_base}/{scope}/{engine.value}/aux1?duration=4.0"
+            speak_output = f"Enabling sequence control on {scope} {engine.value}"
+            response = self.post(url)
+        else:
+            url = f"{self.url_base}/{scope}/{engine.value}/aux1"
+            response = self.post(url)
+            if response and response.status_code == 200:
+                url = f"{self.url_base}/{scope}/{engine.value}/numeric_req?number=0"
+                response = self.post(url)
+                speak_output = f"Disabling sequence control on {scope} {engine.value}"
+            else:
+                speak_output = f"I can't disable sequence control. Try saying 'reset {scope} {engine.value}'"
+        return self.handle_response(response, handler_input, speak_output)
+
+
 class PowerDistrictIntentHandler(PyTrainIntentHandler):
     """Handler for Power District Intent."""
 
@@ -1148,6 +1177,7 @@ sb.add_request_handler(ProtocolIntentHandler())
 sb.add_request_handler(RefuelIntentHandler())
 sb.add_request_handler(ResetIntentHandler())
 sb.add_request_handler(RingBellIntentHandler())
+sb.add_request_handler(SequenceControlIntentHandler())
 sb.add_request_handler(SetDirectionIntentHandler())
 sb.add_request_handler(SmokeLevelIntentHandler())
 sb.add_request_handler(SetPyTrainServerIntentHandler())
