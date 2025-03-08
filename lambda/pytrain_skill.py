@@ -114,7 +114,7 @@ def persist_state(handler_input, state: dict[str, Any]):
             deleted_keys.add(k)
         else:
             session_state[k] = v
-            if k not in ["api-key", "uid"]:
+            if k not in {"api-key", "uid", "last-url"}:
                 persisted_state[k] = v
     # don't persist deleted keys
     if deleted_keys:
@@ -145,7 +145,7 @@ def get_user_info(handler_input) -> dict:
     return user_info
 
 
-def encode_id(state, server: str = None) -> str:
+def encrypt_request(state, server: str = None) -> str:
     uid = state.get("uid")
     server = server if server else state.get("server")
     return jwt.encode({"UID": uid, "SERVER": server, "magic": "alexa"}, server, algorithm=ALGORITHM)
@@ -156,7 +156,7 @@ def request_api_key(handler_input, state=None, server: str = None, protocol: str
     state = state if state else get_state(handler_input)
     server = server if server else state.get("server", None)
     protocol = protocol if protocol else state.get("protocol", "http")
-    response = requests.post(f"{protocol}://{server}/version", json={"uid": encode_id(state, server=server)})
+    response = requests.post(f"{protocol}://{server}/version", json={"uid": encrypt_request(state, server=server)})
     if response.status_code == 200:
         state["api-key"] = response.json().get("api-token", None)
         persist_state(handler_input, state)
@@ -459,7 +459,7 @@ class SpeedIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         elif speed is None or speed.value is None:
             logger.info(f"Invalid speed: {speed}")
-            speak_output = f"You've specified an invalid speed for {scope} {engine.value}, please try again."
+            speak_output = f"You specified an invalid speed for {scope} {engine.value}, please try again."
             response = "ok"
         else:
             opt = ""
@@ -731,7 +731,7 @@ class MomentumIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} to change the momentum of, sorry!"
         elif mom is None or mom.value is None:
             logger.info(f"Invalid momentum: {mom}")
-            speak_output = f"You've specified an invalid momentum level for {scope} {engine.value}, please try again."
+            speak_output = f"You specified an invalid momentum level for {scope} {engine.value}, please try again."
             response = "ok"
         else:
             mom_spk = MOMENTUM_MAP.get(mom.value.id, mom.value.id)
@@ -827,6 +827,10 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
         if engine is None:
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to smoke, sorry!"
+        elif smoke is None or smoke.value is None:
+            logger.info(f"Invalid smoke level: {smoke}")
+            speak_output = f"You specified an invalid smoke level for {scope} {engine.value}, please try again."
+            response = "ok"
         else:
             opt = "?level=off" if smoke is None or smoke.value.id == "0" else f"?level={smoke.value.name.lower()}"
             url = f"{self.url_base}/{scope}/{engine.value}/smoke_level_req{opt}"
