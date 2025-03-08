@@ -543,6 +543,13 @@
             }
           ],
           "samples": [
+            "change smoke level of {scope} {engine} to {smoke}",
+            "change smoke level {scope} {engine} to {smoke}",
+            "change smoke level {scope} {engine} {smoke}",
+            "change the smoke level of {engine} to {smoke}",
+            "change the smoke level of {scope} {engine} to {smoke}",
+            "change the smoke level on {engine} to {smoke}",
+            "change the smoke level on {scope} {engine} to {smoke}",
             "set smoke level of {scope} {engine} to {smoke}",
             "set smoke level {scope} {engine} to {smoke}",
             "set smoke level {scope} {engine} {smoke}",
@@ -641,14 +648,26 @@
             "decelerate {scope} {engine} to speed step {speed} {dialog}",
             "decelerate {scope} {engine} to speed {speed} {dialog}",
             "decelerate {scope} {engine} to {speed} {dialog}",
+            "set speed of {engine} to speed step {speed} {dialog}",
             "set speed of {engine} to speed {speed} {dialog}",
             "set speed of {engine} to {speed} {dialog}",
+            "set speed of {scope} {engine} to {speed} {dialog}",
+            "set speed of {scope} {engine} to speed step {speed} {dialog}",
+            "set speed of {scope} {engine} to speed {speed} {dialog}",
+            "set the speed of {engine} to speed step {speed} {dialog}",
             "set the speed of {engine} to speed {speed} {dialog}",
             "set the speed of {engine} to {speed} {dialog}",
+            "slow {engine} to speed step {speed} {dialog}",
+            "slow {engine} to speed {speed} {dialog}",
             "slow {engine} to {speed} {dialog}",
+            "slow {scope} {engine} to speed step {speed} {dialog}",
             "slow {scope} {engine} to speed {speed} {dialog}",
             "slow {scope} {engine} to {speed} {dialog}",
+            "speed up {engine} to speed step {speed} {dialog}",
+            "speed up {engine} to speed {speed} {dialog}",
             "speed up {engine} to {speed} {dialog}",
+            "speed up {scope} {engine} to speed step {speed} {dialog}",
+            "speed up {scope} {engine} to speed {speed} {dialog}",
             "speed up {scope} {engine} to {speed} {dialog}"
           ]
         },
@@ -2462,60 +2481,43 @@
             {
               "id": "7",
               "name": {
-                "value": "7",
+                "value": "high",
                 "synonyms": [
                   "maximum",
-                  "max",
-                  "high"
+                  "max"
                 ]
-              }
-            },
-            {
-              "id": "6",
-              "name": {
-                "value": "6"
               }
             },
             {
               "id": "5",
               "name": {
-                "value": "5"
-              }
-            },
-            {
-              "id": "4",
-              "name": {
-                "value": "4"
+                "value": "medium high"
               }
             },
             {
               "id": "3",
               "name": {
-                "value": "3",
-                "synonyms": [
-                  "medium"
-                ]
+                "value": "medium"
               }
             },
             {
               "id": "2",
               "name": {
-                "value": "2"
+                "value": "medium low"
               }
             },
             {
               "id": "1",
               "name": {
-                "value": "1"
+                "value": "low plus"
               }
             },
             {
               "id": "0",
               "name": {
-                "value": "0",
+                "value": "low",
                 "synonyms": [
-                  "off",
-                  "low"
+                  "off"
                 ]
               }
             }

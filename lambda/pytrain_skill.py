@@ -58,7 +58,10 @@ PATH_MAP = {
 
 MOMENTUM_MAP = {
     "0": "low",
+    "1": "low plus",
+    "2": "medium low",
     "3": "medium",
+    "5": "medium high",
     "7": "high",
 }
 
