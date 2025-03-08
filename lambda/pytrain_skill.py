@@ -227,7 +227,10 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         if isinstance(response, requests.Response):
             if response.status_code == 200:
                 # Handle the response data
-                logger.debug(response.json())
+                resp_dict = response.json()
+                if "api-token" in resp_dict:
+                    resp_dict["api-token"] = "<*** Secret API Token ***>"
+                logger.debug(resp_dict)
             elif response.status_code == 498:
                 # get a new token and repeat the last API call
                 state = self.session_state
