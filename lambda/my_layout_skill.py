@@ -181,7 +181,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
         if state and state.get("URL_BASE", None) and state.get("server", None):
-            speak_output = "Welcome back to My Layout!"
+            speak_output = f"Welcome back to {SKILL_NAME}!"
             reprompt = PYTRAIN_REPROMPT
             state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
             response: requests.Response = request_api_key(handler_input, state)

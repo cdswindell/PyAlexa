@@ -33,16 +33,18 @@
           "samples": [
             "All done",
             "Exit my layout",
+            "Exit layout",
             "Exit pytrain",
             "Exit skill",
             "Good Bye",
             "I'm done",
+            "Quit layout",
             "Quit my layout",
-            "Quit Pie Train",
             "Quit pytrain",
             "Quit skill",
-            "Stop my layout",
             "Stop PyTrain",
+            "Stop layout",
+            "Stop my layout",
             "That's all",
             "That's it"
           ]

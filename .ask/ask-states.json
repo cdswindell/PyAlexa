@@ -1,0 +1,17 @@
+{
+  "askcliStatesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillInfrastructure": {
+        "@ask-cli/lambda-deployer": {
+          "deployState": {}
+        }
+      },
+      "deploymentStatus": "IN_PROGRESS",
+      "skillMetadata": {
+        "lastImportId": "amzn1.ask-package.import.275e1b71-dca5-42c9-80eb-cd1a04aee238",
+        "lastImportTimestamp": "2025-03-08T22:40:18.208Z"
+      }
+    }
+  }
+}
