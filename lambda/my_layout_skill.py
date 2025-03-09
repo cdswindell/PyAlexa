@@ -252,7 +252,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
                         speak_output = data.get("detail", None)
                 if speak_output is None:
                     speak_output = (
-                        f"I'm afraid you are not authorized to use {SKILL_NAME}, good-bye. Error: {response.status_code}"
+                        f"I'm afraid you're not authorized to use {SKILL_NAME}, good-bye. Error: {response.status_code}"
                     )
                     reprompt = None
                     close_session = True
@@ -299,9 +299,17 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @property
     def scope(self) -> str:
+        """
+        Get scope slot. If not present or empty, use persisted value
+        """
+        state = self.session_state
         slots = self._handler_input.request_envelope.request.intent.slots
         scope = get_canonical_slot(slots["scope"]) if "scope" in slots else None
-        return "train" if scope and scope.value.id == "1" else "engine"
+        if scope is None or not scope.value:
+            scope = state.get("scope", None)
+        elif scope != state.get("scope", None):
+            persist_state(self._handler_input, {"scope": scope})
+        return "train" if scope and scope.value and scope.value.id == "1" else "engine"
 
     @property
     def component(self) -> str:
@@ -345,8 +353,17 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @property
     def engine(self):
+        """
+        Get engine slot. If not present or empty, use persisted value
+        """
+        state = self.session_state
         slots = self._handler_input.request_envelope.request.intent.slots
-        return slots["engine"] if "engine" in slots else None
+        engine = slots["engine"] if "engine" in slots else None
+        if engine is None or not engine.value:
+            engine = state.get("engine", None)
+        elif engine != state.get("engine", None):
+            persist_state(self._handler_input, {"engine": engine})
+        return engine
 
     @property
     def horn(self):
@@ -733,7 +750,6 @@ class MomentumIntentHandler(PyTrainIntentHandler):
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} to change the momentum of, sorry!"
         elif mom is None or mom.value is None:
-            logger.info(f"Invalid momentum: {mom}")
             speak_output = f"You specified an invalid momentum level for {scope} {engine.value}, please try again."
             response = "ok"
         else:
