@@ -306,10 +306,12 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         slots = self._handler_input.request_envelope.request.intent.slots
         scope = get_canonical_slot(slots["scope"]) if "scope" in slots else None
         if scope is None or not scope.value:
-            scope = state.get("scope", None)
-        elif scope != state.get("scope", None):
-            persist_state(self._handler_input, {"scope": scope})
-        return "train" if scope and scope.value and scope.value.id == "1" else "engine"
+            scope = state.get("scope", "engine")
+        else:
+            scope = "train" if scope and scope.value and scope.value.id == "1" else "engine"
+            if scope != state.get("scope", None):
+                persist_state(self._handler_input, {"scope": scope})
+        return scope
 
     @property
     def component(self) -> str:

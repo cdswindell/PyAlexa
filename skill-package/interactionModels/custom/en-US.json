@@ -2433,14 +2433,15 @@
               "name": {
                 "value": "off",
                 "synonyms": [
+                  "cancel",
                   "deactivate",
+                  "deenergize",
                   "disable",
-                  "shut down",
-                  "shutdown",
                   "power down",
                   "power off",
-                  "turn off",
-                  "deenergize"
+                  "shut down",
+                  "shutdown",
+                  "turn off"
                 ]
               }
             },
@@ -2449,13 +2450,15 @@
               "name": {
                 "value": "on",
                 "synonyms": [
-                  "enable",
                   "activate",
+                  "enable",
+                  "energize",
+                  "light up",
+                  "power on",
+                  "power up",
                   "start up",
                   "start",
-                  "energize",
-                  "power up",
-                  "power on",
+                  "startup",
                   "turn on"
                 ]
               }
