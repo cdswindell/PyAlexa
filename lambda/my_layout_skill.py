@@ -940,27 +940,30 @@ class GetStatusIntentHandler(PyTrainIntentHandler):
             url = f"{self.url_base}/{scope}/{tmcc_id.value}"
             speak_output = f"Getting the status of {scope} {tmcc_id.value}"
             response = self.get(url)
-            if response and response.status_code == 200:
-                # Handle the response data
-                data = response.json()
-                speak_output = (
-                    f"<speak>Here's the current status of {scope} {tmcc_id.value}: <break strength='strong'/>"
-                )
-
-                for key, value in data.items():
-                    if value is None:
-                        continue
-                    if key == "scope":
-                        continue
-                    if key == "tmcc_id":
-                        key = "TMCC <say-as interpret-as='spell-out'>ID</say-as>"
-                    key = key.replace("_", " ")
-                    if isinstance(value, str):
-                        value = value.replace("_", " ")
-                        value = value.replace("-", " ")
-                        value = value.replace("&", " and ")
-                    speak_output += f"{key}<break strength='medium'/> {value}<break strength='strong'/>"
-                speak_output += "</speak>"
+            if response:
+                if response.status_code == 200:
+                    # Handle the response data
+                    data = response.json()
+                    speak_output = (
+                        f"<speak>Here's the current status of {scope} {tmcc_id.value}: <break strength='strong'/>"
+                    )
+                    for key, value in data.items():
+                        if value is None:
+                            continue
+                        if key == "scope":
+                            continue
+                        if key == "tmcc_id":
+                            key = "TMCC <say-as interpret-as='spell-out'>ID</say-as>"
+                        key = key.replace("_", " ")
+                        if isinstance(value, str):
+                            value = value.replace("_", " ")
+                            value = value.replace("-", " ")
+                            value = value.replace("&", " and ")
+                        speak_output += f"{key}<break strength='medium'/> {value}<break strength='strong'/>"
+                    speak_output += "</speak>"
+                elif response.status_code == 404:
+                    speak_output = f"I couldn't find any {scope} numbered {tmcc_id.value}"
+                    response.status_code = 200
         return self.handle_response(response, handler_input, speak_output)
 
 
@@ -979,16 +982,19 @@ class FindTmccIdIntentHandler(PyTrainIntentHandler):
             speak_output = ""
             url = f"{self.url_base}/engine/{engine_num}"
             response = self.get(url)
-
-            if response and response.status_code == 200:
-                # Handle the response data
-                data = response.json()
-                tmcc_id = data.get("tmcc_id", None)
-                if tmcc_id:
-                    speak_output = "<speak>The TMCC <say-as interpret-as='spell-out'>ID</say-as> "
-                    speak_output += f"of Engine number {engine_num} is {tmcc_id}</speak>"
-                else:
-                    speak_output = f"I couldn't find any engine numbered {engine_num}, sorry!"
+            if response is not None:
+                if response.status_code == 200:
+                    # Handle the response data
+                    data = response.json()
+                    tmcc_id = data.get("tmcc_id", None)
+                    if tmcc_id:
+                        speak_output = "<speak>The TMCC <say-as interpret-as='spell-out'>ID</say-as> "
+                        speak_output += f"of Engine number {engine_num} is {tmcc_id}</speak>"
+                    else:
+                        speak_output = f"I couldn't find any engine numbered {engine_num}."
+                elif response.status_code == 404:
+                    speak_output = f"I couldn't find any engine numbered {engine_num}"
+                    response.status_code = 200
         return self.handle_response(response, handler_input, speak_output)
 
 
