@@ -836,7 +836,7 @@
               "name": "state",
               "type": "on_off",
               "samples": [
-                "{state} automatic  sequence control",
+                "{state} automatic sequence control",
                 "{state} sequence control",
                 "{state}"
               ]
@@ -849,10 +849,6 @@
             "{state} sequence control for {scope} {engine}"
           ]
         },
-        {
-          "name": "AMAZON.NavigateHomeIntent",
-          "samples": []
-        }
       ],
       "types": [
         {
