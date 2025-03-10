@@ -848,7 +848,7 @@
             "{state} automatic sequence control for {scope} {engine}",
             "{state} sequence control for {scope} {engine}"
           ]
-        },
+        }
       ],
       "types": [
         {
