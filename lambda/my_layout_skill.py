@@ -39,10 +39,10 @@ logger.setLevel(level=LOGGER_LEVEL)
 
 SKILL_NAME = "My Layout"
 REQUEST_SERVER_OUTPUT = f"""
-    Welcome to {SKILL_NAME}! To get started, you need to tell me your
+    Welcome to {SKILL_NAME}! To get started, please tell me your
     PyTrain API server URL. Please say: 'My PyTrain server is',
-    followed by your server's URL. Use the word 'dot' for periods.
-    Say 'HTTPS colon slash slash' followed by the URL to use HTTPS.'
+    followed by your server's URL or IP Address.
+    Use the word 'dot' for periods.
 """
 
 REQUEST_SERVER_REPROMPT = "Please say: 'My PyTrain Server is', followed by the name of your server's URL."
@@ -186,9 +186,10 @@ class LaunchRequestHandler(AbstractRequestHandler):
             state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
             response: requests.Response = request_api_key(handler_input, state)
             if response.status_code != 200:
-                logger.warning(f"Launch Request failed with status code: {response.status_code} {response}")
+                logger.warning(f"Launch request failed with status code: {response.status_code} {response}")
                 speak_output = (
                     "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
+                    + f"Error code {response.status_code} "
                     + REQUEST_SERVER_REPROMPT
                 )
                 reprompt = REQUEST_SERVER_REPROMPT
