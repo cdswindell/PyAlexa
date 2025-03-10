@@ -22,7 +22,7 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.skill_builder import CustomSkillBuilder
 from ask_sdk_core.utils.request_util import get_user_id
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
-from ask_sdk_model import Response
+from ask_sdk_model import Response, Slot
 from ask_sdk_model.slu.entityresolution.status_code import StatusCode
 from dotenv import load_dotenv
 from isodate import parse_duration
@@ -354,18 +354,21 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return duration
 
     @property
-    def engine(self):
-        """
-        Get engine slot. If not present or empty, use persisted value
-        """
-        state = self.session_state
+    def engine_slot(self) -> Slot:
         slots = self._handler_input.request_envelope.request.intent.slots
-        engine = slots["engine"] if "engine" in slots else None
-        if engine is None or not engine.value:
-            engine = state.get("engine", None)
-        elif engine != state.get("engine", None):
-            persist_state(self._handler_input, {"engine": engine})
-        return engine
+        return slots["engine"] if "engine" in slots else None
+
+    @property
+    def engine(self) -> int | None:
+        """
+        Get engine address. If not specified, use persisted value
+        """
+        engine_slot = self.engine_slot
+        state = self.session_state
+        engine_addr = engine_slot.value if engine_slot and engine_slot.value else state.get("engine", None)
+        if engine_addr and engine_addr != state.get("engine", None):
+            persist_state(self._handler_input, {"engine": engine_addr})
+        return engine_addr
 
     @property
     def horn(self):
@@ -396,7 +399,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
 
     @property
     def tmcc_id(self):
-        return self._slots["tmcc_id"] if "tmcc_id" in self._slots else self.engine
+        return self._slots["tmcc_id"] if "tmcc_id" in self._slots else self.engine_slot
 
     @property
     def url_base(self) -> str:
@@ -481,7 +484,7 @@ class SpeedIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         elif speed is None or speed.value is None:
             logger.info(f"Invalid speed: {speed}")
-            speak_output = f"You specified an invalid speed for {scope} {engine.value}, please try again."
+            speak_output = f"You specified an invalid speed for {scope} {engine}, please try again."
             response = "ok"
         else:
             opt = ""
@@ -491,8 +494,8 @@ class SpeedIntentHandler(PyTrainIntentHandler):
                 elif dialog.value.id == "2":
                     opt = "?immediate=true"
             speed_val = speed.value.id if speed else "0"
-            url = f"{self.url_base}/{scope}/{engine.value}/speed_req/{speed_val}{opt}"
-            speak_output = f"Changing the speed of {scope} {engine.value} to speed step {speed.value.name}"
+            url = f"{self.url_base}/{scope}/{engine}/speed_req/{speed_val}{opt}"
+            speak_output = f"Changing the speed of {scope} {engine} to speed step {speed.value.name}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -512,8 +515,8 @@ class BoostSpeedIntentHandler(PyTrainIntentHandler):
         else:
             dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
             dur_param = f"?duration={duration}" if duration else ""
-            url = f"{self.url_base}/{scope}/{engine.value}/boost_req{dur_param}"
-            speak_output = f"Boosting speed on {scope} {engine.value}{dur}"
+            url = f"{self.url_base}/{scope}/{engine}/boost_req{dur_param}"
+            speak_output = f"Boosting speed on {scope} {engine}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -533,8 +536,8 @@ class BrakeSpeedIntentHandler(PyTrainIntentHandler):
         else:
             dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
             dur_param = f"?duration={duration}" if duration else ""
-            url = f"{self.url_base}/{scope}/{engine.value}/brake_req{dur_param}"
-            speak_output = f"Braking speed on {scope} {engine.value}{dur}"
+            url = f"{self.url_base}/{scope}/{engine}/brake_req{dur_param}"
+            speak_output = f"Braking speed on {scope} {engine}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -553,12 +556,12 @@ class OpenCouplerIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} you want me to decouple, sorry!"
         else:
             if coupler and coupler.value.id == "1":
-                url = f"{self.url_base}/{scope}/{engine.value}/rear_coupler_req"
+                url = f"{self.url_base}/{scope}/{engine}/rear_coupler_req"
                 device = "rear"
             else:
-                url = f"{self.url_base}/{scope}/{engine.value}/front_coupler_req"
+                url = f"{self.url_base}/{scope}/{engine}/front_coupler_req"
                 device = "front"
-            speak_output = f"Opening {device} coupler on {scope} {engine.value}"
+            speak_output = f"Opening {device} coupler on {scope} {engine}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -590,8 +593,8 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
                     if duration:
                         dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
                         dur_param = f"&duration={duration}"
-            url = f"{self.url_base}/{scope}/{engine.value}/horn_req?option={opt}{dur_param}"
-            speak_output = f"Sounding {device} on {scope} {engine.value}{dur}"
+            url = f"{self.url_base}/{scope}/{engine}/horn_req?option={opt}{dur_param}"
+            speak_output = f"Sounding {device} on {scope} {engine}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -625,8 +628,8 @@ class RingBellIntentHandler(PyTrainIntentHandler):
                 elif bell.value.id == "3":
                     opt = "off"
                     device = "Disable the bell"
-            url = f"{self.url_base}/{scope}/{engine.value}/bell_req?option={opt}{dur_param}"
-            speak_output = f"{device} on {scope} {engine.value}{dur}"
+            url = f"{self.url_base}/{scope}/{engine}/bell_req?option={opt}{dur_param}"
+            speak_output = f"{device} on {scope} {engine}{dur}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -646,13 +649,13 @@ class StartUpShutDownIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         elif on_off and on_off.value.id == "1":
             opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
-            url = f"{self.url_base}/{scope}/{engine.value}/startup_req{opt}"
-            speak_output = f"Starting up {scope} {engine.value}"
+            url = f"{self.url_base}/{scope}/{engine}/startup_req{opt}"
+            speak_output = f"Starting up {scope} {engine}"
             response = self.post(url)
         else:
             opt = "" if dialog is None or dialog.value.id == "0" else "?dialog=true"
-            url = f"{self.url_base}/{scope}/{engine.value}/shutdown_req{opt}"
-            speak_output = f"Shutting down {scope} {engine.value}"
+            url = f"{self.url_base}/{scope}/{engine}/shutdown_req{opt}"
+            speak_output = f"Shutting down {scope} {engine}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -669,8 +672,8 @@ class StopImmediateIntentHandler(PyTrainIntentHandler):
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to stop, sorry!"
         else:
-            url = f"{self.url_base}/{scope}/{engine.value}/stop_req"
-            speak_output = f"<speak>Stopping {scope} {engine.value} "
+            url = f"{self.url_base}/{scope}/{engine}/stop_req"
+            speak_output = f"<speak>Stopping {scope} {engine} "
             speak_output += "<voice name='Brian'><lang xml:lang='en-GB'>in it's tracks!</lang></voice></speak>"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
@@ -679,11 +682,11 @@ class StopImmediateIntentHandler(PyTrainIntentHandler):
 class ResetIntentHandler(PyTrainIntentHandler):
     @property
     def url(self):
-        return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req"
+        return f"{self.url_base}/{self.scope}/{self.engine}/reset_req"
 
     @property
     def spoken_response(self):
-        return f"Resetting {self.scope} {self.engine.value}"
+        return f"Resetting {self.scope} {self.engine}"
 
     """Handler for Reset Intent."""
 
@@ -706,13 +709,13 @@ class RefuelIntentHandler(ResetIntentHandler):
     @property
     def url(self):
         duration = self.duration if self.duration and self.duration >= 3 else 3
-        return f"{self.url_base}/{self.scope}/{self.engine.value}/reset_req?hold=true&duration={duration}"
+        return f"{self.url_base}/{self.scope}/{self.engine}/reset_req?hold=true&duration={duration}"
 
     @property
     def spoken_response(self):
         duration = self.duration
         dur = f" for {duration} second{'s' if duration and duration > 1 else ''}" if duration else ""
-        return f"Refueling {self.scope} {self.engine.value}{dur}"
+        return f"Refueling {self.scope} {self.engine}{dur}"
 
 
 class SetDirectionIntentHandler(PyTrainIntentHandler):
@@ -729,12 +732,12 @@ class SetDirectionIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} to change the direction of, sorry!"
         else:
             if dr and dr.value.id == "1":
-                url = f"{self.url_base}/{scope}/{engine.value}/reverse_req"
+                url = f"{self.url_base}/{scope}/{engine}/reverse_req"
             elif dr and dr.value.id == "2":
-                url = f"{self.url_base}/{scope}/{engine.value}/toggle_direction_req"
+                url = f"{self.url_base}/{scope}/{engine}/toggle_direction_req"
             else:
-                url = f"{self.url_base}/{scope}/{engine.value}/forward_req"
-            speak_output = f"Changing the direction of {scope} {engine.value} to {dr.value.name}"
+                url = f"{self.url_base}/{scope}/{engine}/forward_req"
+            speak_output = f"Changing the direction of {scope} {engine} to {dr.value.name}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -752,13 +755,13 @@ class MomentumIntentHandler(PyTrainIntentHandler):
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} to change the momentum of, sorry!"
         elif mom is None or mom.value is None:
-            speak_output = f"You specified an invalid momentum level for {scope} {engine.value}, please try again."
+            speak_output = f"You specified an invalid momentum level for {scope} {engine}, please try again."
             response = "ok"
         else:
             mom_spk = MOMENTUM_MAP.get(mom.value.id, mom.value.id)
-            url = f"{self.url_base}/{scope}/{engine.value}/momentum_req?level={mom.value.id}"
+            url = f"{self.url_base}/{scope}/{engine}/momentum_req?level={mom.value.id}"
             logger.info(f"Momentum speak: {mom_spk}")
-            speak_output = f"Changing the momentum of {scope} {engine.value} to {mom_spk}"
+            speak_output = f"Changing the momentum of {scope} {engine} to {mom_spk}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -777,18 +780,18 @@ class SequenceControlIntentHandler(PyTrainIntentHandler):
             logger.warning("No Engine/Train Number Specified")
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         elif on_off and on_off.value.id == "1":
-            url = f"{self.url_base}/{scope}/{engine.value}/aux1?duration=4.0"
-            speak_output = f"Enabling sequence control on {scope} {engine.value}"
+            url = f"{self.url_base}/{scope}/{engine}/aux1?duration=4.0"
+            speak_output = f"Enabling sequence control on {scope} {engine}"
             response = self.post(url)
         else:
-            url = f"{self.url_base}/{scope}/{engine.value}/aux1"
+            url = f"{self.url_base}/{scope}/{engine}/aux1"
             response = self.post(url)
             if response and response.status_code == 200:
-                url = f"{self.url_base}/{scope}/{engine.value}/numeric_req?number=0"
+                url = f"{self.url_base}/{scope}/{engine}/numeric_req?number=0"
                 response = self.post(url)
-                speak_output = f"Disabling sequence control on {scope} {engine.value}"
+                speak_output = f"Disabling sequence control on {scope} {engine}"
             else:
-                speak_output = f"I can't disable sequence control. Try saying 'reset {scope} {engine.value}'"
+                speak_output = f"I can't disable sequence control. Try saying 'reset {scope} {engine}'"
         return self.handle_response(response, handler_input, speak_output)
 
 
@@ -855,12 +858,12 @@ class ChangeVolumeIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} to change the volume of, sorry!"
         else:
             if vol and vol.value.id == "1":
-                url = f"{self.url_base}/{scope}/{engine.value}/volume_down_req"
+                url = f"{self.url_base}/{scope}/{engine}/volume_down_req"
                 directive = "Decreasing"
             else:
-                url = f"{self.url_base}/{scope}/{engine.value}/volume_up_req"
+                url = f"{self.url_base}/{scope}/{engine}/volume_up_req"
                 directive = "Increasing"
-            speak_output = f"{directive} the volume of {scope} {engine.value}"
+            speak_output = f"{directive} the volume of {scope} {engine}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -879,12 +882,12 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
             speak_output = f"I don't know what {scope} you want me to smoke, sorry!"
         elif smoke is None or smoke.value is None:
             logger.info(f"Invalid smoke level: {smoke}")
-            speak_output = f"You specified an invalid smoke level for {scope} {engine.value}, please try again."
+            speak_output = f"You specified an invalid smoke level for {scope} {engine}, please try again."
             response = "ok"
         else:
             opt = "?level=off" if smoke is None or smoke.value.id == "0" else f"?level={smoke.value.name.lower()}"
-            url = f"{self.url_base}/{scope}/{engine.value}/smoke_level_req{opt}"
-            speak_output = f"Setting smoke level on {scope} {engine.value} to {smoke.value.name}"
+            url = f"{self.url_base}/{scope}/{engine}/smoke_level_req{opt}"
+            speak_output = f"Setting smoke level on {scope} {engine} to {smoke.value.name}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
 
@@ -978,7 +981,7 @@ class FindTmccIdIntentHandler(PyTrainIntentHandler):
             logger.warning("No Engine Number Specified")
             speak_output = "I don't know the engine number to query, sorry!"
         else:
-            engine_num = engine_num.value
+            engine_num = engine_num
             speak_output = ""
             url = f"{self.url_base}/engine/{engine_num}"
             response = self.get(url)
