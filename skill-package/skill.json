@@ -1,9 +1,39 @@
 {
   "manifest": {
-    "publishingInformation": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "uri": "arn:aws:lambda:us-east-1:253746361293:function:ask-mylayout-default-default-1741473701587"
+        }
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "containsAds": false,
+      "isChildDirected": false,
+      "isExportCompliant": true,
       "locales": {
         "en-US": {
-          "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment by voice.",
+          "privacyPolicyUrl": "https://app.termly.io/policy-viewer/policy.html?policyUUID=aed26dd0-2ae9-4c73-b8d7-ac5a550bcc7b"
+        }
+      },
+      "shoppingKit": {
+        "isAmazonAssociatesOnAlexaEnabled": false,
+        "isShoppingActionsEnabled": false
+      },
+      "usesPersonalInfo": false
+    },
+    "publishingInformation": {
+      "automaticDistribution": {
+        "isActive": false
+      },
+      "category": "GAMES",
+      "distributionCountries": [],
+      "isAvailableWorldwide": true,
+      "locales": {
+        "en-US": {
+          "description": "The My Layout skill allows you to control your Lionel TMCC/Legacy layout using your voice! You can throw switches, fire routes, and control engines and trains all with voice commands. The supported voice commands include:\n\nAccessories:\n  * Turn off | on accessory {tmcc_id} [for {duration}]\n  * Turn off | on track|power district {tmcc_id}\n\nRoutes:\n  * Activate | Fire | Trigger route {tmcc_id}\n\nSwitches:\n  * Throw switch {tmcc_id} [to thru | out]\n\nTrain/Engine:\n  * Accelerate/Decelerate [engine | train] {tmcc_id} to {speed step | official railroad speed} [with dialog]\n  * Blow the horn | whistle on [engine | train] {tmcc_id} [for {duration}]\n  * Boost [engine | train]  {tmcc_id}  [for {duration}]\n  * Brake [engine | train]  {tmcc_id}  [for {duration}]\n  * Enable | Disable sequence control on [engine | train] {tmcc_id}\n  * Forward | Reverse [engine | train] {tmcc_id}\n  * Open front | rear coupler of [engine | train]  {tmcc_id}\n  * Refuel [engine | train] {tmcc_id} [for {duration}]\n  * Reset [engine | train] {tmcc_id}\n  * Ring | Toggle bell on [engine | train] {tmcc_id} [for {duration}]\n  * Raise | Lower volume of [engine | train] {tmcc_id}\n  * Set the smoke level of [engine | train] {tmcc_id} to on | off | low | medium | high\n  * Start up | Shut down [engine | train]  {tmcc_id} [with dialog]\n  * Stop [engine | train] {tmcc_id}\n  * Set the momentum of [engine | train] {tmcc_id} to low | medium | high\n\nMiscellaneous\n  * Find the TMCC ID of engine {road_number}\n  * Get the status of accessory | engine | route | switch | train {tmcc_id}\n  *Emergency Halt | Halt\n\nNotes:\n  - Terms in [square brackets] are optional; [engine | train] defaults to “engine”\n  - Terms in {squiggle brackets} take specific values;\n     - {tmcc_id}: say the TMCC ID of the equipment to control (1 to 99)\n     - {duration}: say the duration to repeat the action (seconds or minutes, max of 120 seconds)\n  - Terms separated by “|” represent options\n\nMost commands have alternative forms, for example, you can say:\n  \"Accelerate  [engine | train] {tmcc_id} to {speed step | official railroad speed} [with dialog]\"  OR\n  \" Set the speed of  [engine | train] {tmcc_id} to {speed step | official railroad speed} [with dialog]\"  OR\n  \" Set speed of  [engine | train] {tmcc_id} to {speed step | official railroad speed} [with dialog]\"  OR\n  \" Speed up | Slow down [engine | train] {tmcc_id} to {speed step | official railroad speed} [with dialog]\"\n\nThe My Layout skill is powered by PyTrain. It talks with a computer on your local network running the PyTrain Api and accessible via HTTP or HTTPS. For information on how to install and configure the PyTrain Api, please visit github.com/cdswindell/PyTrainApi.",
           "examplePhrases": [
             "Alexa open my layout",
             "Alexa launch my layout",
@@ -21,41 +51,14 @@
             "model",
             "railroading"
           ],
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/e0de/b0d1ca07c7984775b5eca01c73af1670/APP_ICON_LARGE?versionId=C4SecjZ.ETHu_ZJ8wof4o4YTa30K7zqp&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250311T210435Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604799&X-Amz-Credential=AKIAWBV6LQ4QBHZDIEXC%2F20250311%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=adc5115a3d1da945cf363bc800d52e08f6eaa93f5e16777054a1dffaddad23d3",
           "name": "My Layout",
-          "description": "The My Layout skill allows you to control your Lionel TMCC/Legacy layout using your voice! You can throw switches, fire routes, and control engines and trains all with voice commands. Examples of engine and train operations include:\n\n* Start up Train 53\n* Accelerate Train 53 to speed step 35\n* Reverse Train 5\n* Ring the bell on Engine 10\n* Stop Train 35\n* Set the smoke level on engine 6 to low\n * Emergency Halt\n\nThe My Layout skill is powered by PyTrain. It talks with a computer on your local network running the PyTrain Api and accessible via HTTP or HTTPS. For information on how to install and configure the PyTrain Api, please visit github.com/cdswindell/PyTrainApi.",
-          "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
-          "largeIconUri": "file://assets/images/en-US_largeIconUri.png",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/b80a/28808054c3b14445893fc59a44ae1cac/APP_ICON?versionId=NJlxw0Ovu01yXB2E8eJ5ziCklMReaQ1U&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20250311T210435Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604799&X-Amz-Credential=AKIAWBV6LQ4QBHZDIEXC%2F20250311%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=77d302f5c85d7cf5113e5e37b56ed7fad2e2774b16838b784ad4330a9ffa82cd",
+          "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment by voice.",
           "updatesDescription": "Persist last engine/train number so you don't have to repeat it every time; it is reset when you say 'Alexa, Launch My Layout' or 'Alexa, Open My Layout'"
         }
       },
-      "isAvailableWorldwide": true,
-      "testingInstructions": "My Layout Testing Instructions (tbw).",
-      "category": "GAMES",
-      "distributionCountries": []
-    },
-    "apis": {
-      "custom": {
-        "endpoint": {
-          "uri": "arn:aws:lambda:us-east-1:253746361293:function:ask-mylayout-default-default-1741473701587"
-        }
-      }
-    },
-    "manifestVersion": "1.0",
-    "privacyAndCompliance": {
-      "allowsPurchases": false,
-      "locales": {
-        "en-US": {
-          "privacyPolicyUrl": "https://app.termly.io/policy-viewer/policy.html?policyUUID=aed26dd0-2ae9-4c73-b8d7-ac5a550bcc7b"
-        }
-      },
-      "containsAds": false,
-      "isExportCompliant": true,
-      "isChildDirected": false,
-      "shoppingKit": {
-        "isShoppingActionsEnabled": false,
-        "isAmazonAssociatesOnAlexaEnabled": false
-      },
-      "usesPersonalInfo": false
+      "testingInstructions": "{\"ask_dist_username\":\"\",\"ask_dist_password\":\"\",\"ask_dist_testing_instructions\":\"My Layout Testing Instructions (tbw).\"}"
     }
   }
 }
