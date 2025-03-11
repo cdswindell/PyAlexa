@@ -43,8 +43,6 @@
             "Quit pytrain",
             "Quit skill",
             "Stop PyTrain",
-            "Stop layout",
-            "Stop my layout",
             "That's all",
             "That's it"
           ]
@@ -284,6 +282,9 @@
             "Emergency Stop",
             "Emergency",
             "Halt",
+            "Stop everything",
+            "Stop layout",
+            "Stop my layout",
             "Whoa"
           ]
         },
@@ -645,6 +646,12 @@
             }
           ],
           "samples": [
+            "accelerate to speed step {speed} {dialog} {engine}",
+            "accelerate to speed {speed} {dialog} {engine}",
+            "accelerate to {speed} {dialog} {engine}",
+            "accelerate {engine} to speed step {speed} {dialog}",
+            "accelerate {engine} to speed {speed} {dialog}",
+            "accelerate {engine} to {speed} {dialog}",
             "accelerate {scope} {engine} to speed step {speed} {dialog}",
             "accelerate {scope} {engine} to speed {speed} {dialog}",
             "accelerate {scope} {engine} to {speed} {dialog}",
@@ -654,24 +661,33 @@
             "set speed of {engine} to speed step {speed} {dialog}",
             "set speed of {engine} to speed {speed} {dialog}",
             "set speed of {engine} to {speed} {dialog}",
-            "set speed of {scope} {engine} to {speed} {dialog}",
             "set speed of {scope} {engine} to speed step {speed} {dialog}",
             "set speed of {scope} {engine} to speed {speed} {dialog}",
+            "set speed of {scope} {engine} to {speed} {dialog}",
+            "set speed to speed {speed} {dialog} {engine}",
             "set the speed of {engine} to speed step {speed} {dialog}",
             "set the speed of {engine} to speed {speed} {dialog}",
             "set the speed of {engine} to {speed} {dialog}",
+            "slow down to speed step {speed} {dialog} {engine}",
+            "slow down to speed {speed} {dialog} {engine}",
+            "slow down to {speed} {dialog} {engine}",
+            "slow down {speed} {dialog} {engine}",
             "slow {engine} to speed step {speed} {dialog}",
             "slow {engine} to speed {speed} {dialog}",
             "slow {engine} to {speed} {dialog}",
             "slow {scope} {engine} to speed step {speed} {dialog}",
             "slow {scope} {engine} to speed {speed} {dialog}",
             "slow {scope} {engine} to {speed} {dialog}",
+            "speed up to speed step {speed} {dialog} {engine}",
+            "speed up to speed {speed} {dialog} {engine}",
+            "speed up to {speed} {dialog} {engine}",
             "speed up {engine} to speed step {speed} {dialog}",
             "speed up {engine} to speed {speed} {dialog}",
             "speed up {engine} to {speed} {dialog}",
             "speed up {scope} {engine} to speed step {speed} {dialog}",
             "speed up {scope} {engine} to speed {speed} {dialog}",
-            "speed up {scope} {engine} to {speed} {dialog}"
+            "speed up {scope} {engine} to {speed} {dialog}",
+            "speed up {speed} {dialog} {engine}"
           ]
         },
         {
@@ -2655,6 +2671,7 @@
       "intents": [
         {
           "name": "StartUpShutDownIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2739,6 +2756,7 @@
         },
         {
           "name": "SoundHornIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2790,6 +2808,7 @@
         },
         {
           "name": "StopImmediateIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2825,6 +2844,7 @@
         },
         {
           "name": "RingBellIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2864,6 +2884,7 @@
         },
         {
           "name": "ResetIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2899,6 +2920,7 @@
         },
         {
           "name": "RefuelIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2934,6 +2956,7 @@
         },
         {
           "name": "SetDirectionIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -2978,6 +3001,7 @@
         },
         {
           "name": "OpenCouplerIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3022,6 +3046,7 @@
         },
         {
           "name": "SpeedIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3121,6 +3146,7 @@
         },
         {
           "name": "SmokeLevelIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3182,6 +3208,7 @@
         },
         {
           "name": "ChangeVolumeIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3242,6 +3269,7 @@
         },
         {
           "name": "BoostSpeedIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3284,6 +3312,7 @@
         },
         {
           "name": "BrakeSpeedIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3395,6 +3424,7 @@
         },
         {
           "name": "MomentumIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [
@@ -3457,6 +3487,7 @@
         },
         {
           "name": "SequenceControlIntent",
+          "delegationStrategy": "SKILL_RESPONSE",
           "confirmationRequired": false,
           "prompts": {},
           "slots": [

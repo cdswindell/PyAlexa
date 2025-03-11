@@ -7,6 +7,8 @@
 # to control engines, trains, switches, and other equipment. The skill communicates
 # via HTTPS with a PyTrain API Server on your local network with access to your Base 3.
 #
+from __future__ import annotations
+
 import logging
 import os
 from os.path import join, dirname
@@ -22,7 +24,8 @@ from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.skill_builder import CustomSkillBuilder
 from ask_sdk_core.utils.request_util import get_user_id
 from ask_sdk_dynamodb.adapter import DynamoDbAdapter
-from ask_sdk_model import Response, Slot
+from ask_sdk_model import Response, Slot, IntentRequest, Intent, IntentConfirmationStatus, DialogState
+from ask_sdk_model.dialog import ElicitSlotDirective
 from ask_sdk_model.slu.entityresolution.status_code import StatusCode
 from dotenv import load_dotenv
 from isodate import parse_duration
@@ -202,14 +205,42 @@ class LaunchRequestHandler(AbstractRequestHandler):
 class PyTrainIntentHandler(AbstractRequestHandler):
     _slots = None
     _handler_input = None
+    _intent = None
 
     def can_handle(self, handler_input: HandlerInput) -> bool:
-        intent = self.__class__.__name__.replace("Handler", "")
+        self._intent = intent = self.__class__.__name__.replace("Handler", "")
         return ask_utils.is_intent_name(intent)(handler_input)
 
     def handle(self, handler_input: HandlerInput, raise_exception: bool = True) -> Response | None:
         setattr(self, "_handler_input", handler_input)
-        setattr(self, "_slots", handler_input.request_envelope.request.intent.slots)
+        request = handler_input.request_envelope.request
+        if isinstance(request, IntentRequest):
+            setattr(self, "_slots", request.intent.slots)
+            state = self.session_state
+            if (
+                request.dialog_state == DialogState.STARTED
+                and self.engine_slot is not None
+                and self.engine_slot.value is None
+                and state.get("engine", None) is None
+            ):
+                directive = ElicitSlotDirective(
+                    slot_to_elicit="engine",
+                    updated_intent=Intent(
+                        name=self.intent,
+                        confirmation_status=IntentConfirmationStatus.NONE,
+                        slots=request.intent.slots,
+                    ),
+                )
+                speak_output = f"What's the TMCC ID of the {self.scope} you want to control?"
+                ask_output = "What's the TMCC ID?"
+                return (
+                    handler_input.response_builder.add_directive(directive)
+                    .speak(speak_output)
+                    .ask(ask_output)
+                    .set_should_end_session(False)
+                    .response
+                )
+                # raise DialogIncompleteException(self)
         if raise_exception is True:
             state = self.session_state
             if state is None or state.get("URL_BASE", None) is None or state.get("server", None) is None:
@@ -305,7 +336,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         """
         state = self.session_state
         slots = self._handler_input.request_envelope.request.intent.slots
-        scope = get_canonical_slot(slots["scope"]) if "scope" in slots else None
+        scope = get_canonical_slot(slots["scope"]) if slots and "scope" in slots else None
         if scope is None or not scope.value:
             scope = state.get("scope", "engine")
         else:
@@ -357,7 +388,7 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     @property
     def engine_slot(self) -> Slot:
         slots = self._handler_input.request_envelope.request.intent.slots
-        return slots["engine"] if "engine" in slots else None
+        return slots["engine"] if slots and "engine" in slots else None
 
     @property
     def engine(self) -> int | None:
@@ -374,6 +405,10 @@ class PyTrainIntentHandler(AbstractRequestHandler):
     @property
     def horn(self):
         return get_canonical_slot(self._slots["horn"]) if "horn" in self._slots else None
+
+    @property
+    def intent(self):
+        return self._intent
 
     @property
     def momentum(self):
@@ -474,8 +509,9 @@ class SpeedIntentHandler(PyTrainIntentHandler):
     """Handler for Speed Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         speed = self.speed
@@ -505,8 +541,9 @@ class BoostSpeedIntentHandler(PyTrainIntentHandler):
     """Handler for Boost Speed Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         duration = self.duration
@@ -526,8 +563,9 @@ class BrakeSpeedIntentHandler(PyTrainIntentHandler):
     """Handler for Brake Speed Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         duration = self.duration
@@ -547,8 +585,9 @@ class OpenCouplerIntentHandler(PyTrainIntentHandler):
     """Handler for Open Coupler Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         coupler = self.coupler
@@ -571,8 +610,9 @@ class SoundHornIntentHandler(PyTrainIntentHandler):
     """Handler for Sound Horn Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         horn = self.horn
@@ -604,8 +644,9 @@ class RingBellIntentHandler(PyTrainIntentHandler):
     """Handler for Ring Bell Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         bell = self.bell
@@ -639,8 +680,9 @@ class StartUpShutDownIntentHandler(PyTrainIntentHandler):
     """Handler for Start Up/Shut Down Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         on_off = self.on_off
         scope = self.scope
         engine = self.engine
@@ -665,8 +707,9 @@ class StopImmediateIntentHandler(PyTrainIntentHandler):
     """Handler for Stop Immediate Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         if engine is None:
@@ -692,8 +735,9 @@ class ResetIntentHandler(PyTrainIntentHandler):
     """Handler for Reset Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         if engine is None:
@@ -723,8 +767,9 @@ class SetDirectionIntentHandler(PyTrainIntentHandler):
     """Handler for Set Direction Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         dr = self.direction
@@ -747,8 +792,9 @@ class MomentumIntentHandler(PyTrainIntentHandler):
     """Handler for momentum Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         mom = self.momentum
@@ -771,8 +817,9 @@ class SequenceControlIntentHandler(PyTrainIntentHandler):
     """Handler for Sequence Control Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         on_off = self.on_off
         scope = self.scope
         engine = self.engine
@@ -849,8 +896,9 @@ class ChangeVolumeIntentHandler(PyTrainIntentHandler):
     """Handler for Change Volume Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         vol = self.volume
@@ -873,8 +921,9 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
     """Handler for Smoke Level Intent."""
 
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
-        super().handle(handler_input)
-        response = None
+        response = super().handle(handler_input)
+        if response:
+            return response
         scope = self.scope
         engine = self.engine
         smoke = self.smoke

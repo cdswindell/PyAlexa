@@ -8,27 +8,27 @@
             "default": {
               "lambda": {
                 "arn": "arn:aws:lambda:us-east-1:253746361293:function:ask-mylayout-default-default-1741473701587",
-                "lastModified": "2025-03-08T23:05:04.000+0000",
-                "revisionId": "80ea9a21-93fd-46e2-89d7-c595a8133c4c"
+                "lastModified": "2025-03-11T19:56:38.000+0000",
+                "revisionId": "885289e3-6b44-482d-8c4e-7473cd75efe7"
               },
               "iamRole": "arn:aws:iam::253746361293:role/ask-lambda-MyLayout-1741473698203"
             }
           }
         }
       },
-      "deploymentStatus": "COMPLETE",
+      "deploymentStatus": "IN_PROGRESS",
       "skillMetadata": {
-        "lastImportId": "amzn1.ask-package.import.e5f26fda-70b5-4b7b-828d-2400319f5117",
-        "lastImportTimestamp": "2025-03-09T15:34:16.726Z",
-        "lastDeployHash": "2Gd9oMZiG42Jf8WMF8miLvyuNkU=",
+        "lastImportId": "amzn1.ask-package.import.90cb56fe-375b-46aa-a65e-31d1638762ff",
+        "lastImportTimestamp": "2025-03-11T20:03:14.372Z",
+        "lastDeployHash": "tDZGr1Ym2Y466C1sIOFsEZPS+lw=",
         "lastDeployType": "interaction-model"
       },
       "skillId": "amzn1.ask.skill.2f1ed214-c481-4dfd-9332-ec6d632f921c",
       "code": {
         "default": {
-          "lastDeployHash": "mSns91H4/xNRh7+KZ2qe9dbZ1rQ="
+          "lastDeployHash": "vq2nb0NdP4LeF1bhri+WIigB0YY="
         },
-        "lastDeployTimestamp": "2025-03-08T23:05:05.925Z"
+        "lastDeployTimestamp": "2025-03-11T19:56:39.599Z"
       }
     }
   }
