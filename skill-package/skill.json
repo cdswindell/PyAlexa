@@ -25,7 +25,7 @@
           "description": "The My Layout skill allows you to control your Lionel TMCC/Legacy layout using your voice! You can throw switches, fire routes, and control engines and trains all with voice commands. Examples of engine and train operations include:\n\n* Start up Train 53\n* Accelerate Train 53 to speed step 35\n* Reverse Train 5\n* Ring the bell on Engine 10\n* Stop Train 35\n* Set the smoke level on engine 6 to low\n * Emergency Halt\n\nThe My Layout skill is powered by PyTrain. It talks with a computer on your local network running the PyTrain Api and accessible via HTTP or HTTPS. For information on how to install and configure the PyTrain Api, please visit github.com/cdswindell/PyTrainApi.",
           "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
           "largeIconUri": "file://assets/images/en-US_largeIconUri.png",
-          "updatesDescription": "Changed the invocation name from PyTrain to My Layout"
+          "updatesDescription": "Persist last engine/train number so you don't have to repeat it every time; it is reset when you say 'Alexa, Launch My Layout' or 'Alexa, Open My Layout'"
         }
       },
       "isAvailableWorldwide": true,

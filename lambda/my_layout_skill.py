@@ -187,6 +187,8 @@ class LaunchRequestHandler(AbstractRequestHandler):
             speak_output = f"Welcome back to {SKILL_NAME}!"
             reprompt = PYTRAIN_REPROMPT
             state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
+            if "engine" in state:
+                state["engine"] = None
             response: requests.Response = request_api_key(handler_input, state)
             if response.status_code != 200:
                 logger.warning(f"Launch request failed with status code: {response.status_code} {response}")
@@ -473,7 +475,9 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
                 reprompt = PYTRAIN_REPROMPT
                 http = http if http else "http"
                 url_base = f"{http}://{processed}/pytrain/v1"
-                persist_state(handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http})
+                persist_state(
+                    handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http, "engine": None}
+                )
             else:
                 logger.warning(f"Failed to set Server URL: {response}")
                 speak_output = (
