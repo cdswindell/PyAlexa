@@ -666,7 +666,6 @@
             "set speed of {scope} {engine} to {speed} {dialog}",
             "set speed to speed step {speed} {dialog} {engine}",
             "set speed to speed {speed} {dialog} {engine}",
-            "set speed to speed {speed} {dialog} {engine}",
             "set speed {speed} {dialog} {engine}",
             "set the speed of {engine} to speed step {speed} {dialog}",
             "set the speed of {engine} to speed {speed} {dialog}",
