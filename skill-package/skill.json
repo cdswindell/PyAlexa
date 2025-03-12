@@ -37,7 +37,7 @@
           "examplePhrases": [
             "Alexa open my layout",
             "Alexa launch my layout",
-            "Alexa ask my layout to ring the bell"
+            "Alexa ask my layout"
           ],
           "keywords": [
             "PyTrain",

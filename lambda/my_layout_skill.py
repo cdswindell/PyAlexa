@@ -476,7 +476,14 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
                 http = http if http else "http"
                 url_base = f"{http}://{processed}/pytrain/v1"
                 persist_state(
-                    handler_input, {"URL_BASE": url_base, "server": processed, "protocol": http, "engine": None}
+                    handler_input,
+                    {
+                        "URL_BASE": url_base,
+                        "server": processed,
+                        "protocol": http,
+                        "engine": None,
+                        "scope": None,
+                    },
                 )
             else:
                 logger.warning(f"Failed to set Server URL: {response}")
@@ -1166,11 +1173,9 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> bool
         return ask_utils.is_request_type("SessionEndedRequest")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-
+    def handle(self, handler_input: HandlerInput) -> Response:
         # Any cleanup logic goes here.
-
+        persist_state(handler_input, {"engine": None, "scope": None})
         return handler_input.response_builder.response
 
 
