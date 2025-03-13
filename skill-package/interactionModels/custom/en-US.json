@@ -862,9 +862,13 @@
           ],
           "samples": [
             "{state} automatic sequence control for {engine}",
-            "{state} sequence control for {engine}",
             "{state} automatic sequence control for {scope} {engine}",
-            "{state} sequence control for {scope} {engine}"
+            "{state} automatic sequence control {engine}",
+            "{state} automatic sequence control {scope} {engine}",
+            "{state} sequence control for {engine}",
+            "{state} sequence control for {scope} {engine}",
+            "{state} sequence control {engine}",
+            "{state} sequence control {scope} {engine}"
           ]
         }
       ],
