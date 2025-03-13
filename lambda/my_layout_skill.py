@@ -1037,7 +1037,9 @@ class FindTmccIdIntentHandler(PyTrainIntentHandler):
     def handle(self, handler_input, raise_exception: bool = True) -> Response:
         super().handle(handler_input)
         response = None
-        engine_num = self.engine
+        # we don't want to persist the engine number, so get the value from the slot
+        engine_slot = self.engine_slot
+        engine_num = engine_slot.value if engine_slot else None
         if engine_num is None:
             logger.warning("No Engine Number Specified")
             speak_output = "I don't know the engine number to query, sorry!"
