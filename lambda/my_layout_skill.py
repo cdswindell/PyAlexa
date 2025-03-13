@@ -125,8 +125,9 @@ def persist_state(handler_input, state: dict[str, Any]):
         persisted_state = {k: v for k, v in persisted_state.items() if k not in deleted_keys}
     handler_input.attributes_manager.session_attributes = persisted_state
     handler_input.attributes_manager.persistent_attributes = persisted_state.copy()
-    if "api-key" in persisted_state:
-        del handler_input.attributes_manager.persistent_attributes["api-key"]
+    for key in ["api-key", "last-url"]:
+        if key in persisted_state:
+            del handler_input.attributes_manager.persistent_attributes[key]
     handler_input.attributes_manager.save_persistent_attributes()
 
 
@@ -1161,10 +1162,9 @@ class StopIntentHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input)
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+    def handle(self, handler_input: HandlerInput) -> Response:
         speak_output = f"Goodbye from {SKILL_NAME}!"
-
+        persist_state(handler_input, {"engine": None, "scope": None})
         return handler_input.response_builder.speak(speak_output).set_should_end_session(True).response
 
 
@@ -1177,7 +1177,6 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         # Any cleanup logic goes here.
-        persist_state(handler_input, {"engine": None, "scope": None})
         return handler_input.response_builder.response
 
 
