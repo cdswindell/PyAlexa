@@ -532,7 +532,7 @@ class SpeedIntentHandler(PyTrainIntentHandler):
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
         elif speed is None or speed.value is None:
-            logger.info(f"Invalid speed: {speed}")
+            logger.warning(f"Invalid speed: {speed}")
             speak_output = f"You specified an invalid speed for {scope} {engine}, please try again."
             response = "ok"
         else:
@@ -819,7 +819,6 @@ class MomentumIntentHandler(PyTrainIntentHandler):
         else:
             mom_spk = MOMENTUM_MAP.get(mom.value.id, mom.value.id)
             url = f"{self.url_base}/{scope}/{engine}/momentum_req?level={mom.value.id}"
-            logger.info(f"Momentum speak: {mom_spk}")
             speak_output = f"Changing the momentum of {scope} {engine} to {mom_spk}"
             response = self.post(url)
         return self.handle_response(response, handler_input, speak_output)
@@ -835,7 +834,6 @@ class SequenceControlIntentHandler(PyTrainIntentHandler):
         on_off = self.on_off
         scope = self.scope
         engine = self.engine
-        logger.info(f"On/Off: {on_off}")
         if engine is None:
             logger.warning("No Engine/Train Number Specified")
             speak_output = f"I don't know what {scope} you want me to control, sorry!"
@@ -943,7 +941,7 @@ class SmokeLevelIntentHandler(PyTrainIntentHandler):
             logger.warning(f"No {scope} Number Specified")
             speak_output = f"I don't know what {scope} you want me to smoke, sorry!"
         elif smoke is None or smoke.value is None:
-            logger.info(f"Invalid smoke level: {smoke}")
+            logger.warning(f"Invalid smoke level: {smoke}")
             speak_output = f"You specified an invalid smoke level for {scope} {engine}, please try again."
             response = "ok"
         else:
