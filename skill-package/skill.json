@@ -55,7 +55,7 @@
           "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment by voice.",
           "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
           "largeIconUri": "file://assets/images/en-US_largeIconUri.png",
-          "updatesDescription": "Persist last engine/train number so you don't have to repeat it every time; it is reset when you say 'Alexa, Launch My Layout' or 'Alexa, Open My Layout'"
+          "updatesDescription": "Modified Sequence Control utterances to support engine-free invocation"
         }
       },
       "testingInstructions": "{\"ask_dist_username\":\"\",\"ask_dist_password\":\"\",\"ask_dist_testing_instructions\":\"My Layout Testing Instructions (tbw).\"}"
