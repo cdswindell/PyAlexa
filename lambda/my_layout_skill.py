@@ -174,7 +174,6 @@ def request_api_key(
 ) -> requests.Response:
     # get_user_info(handler_input)
     state = state if state else get_state(handler_input)
-
     server = server if server else state.get("server", None)
     protocol = protocol if protocol else state.get("protocol", "http")
     if check_accessible is True and is_server_accessible(state) is False:
@@ -208,6 +207,7 @@ def is_server_accessible(state: dict):
     port = 443 if state.get("protocol", "http") == "https" else 80
     if not host:
         return False
+    logger.debug(f"Checking connectivity to {host}:{port}...")
     try:
         # Create a socket object
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -217,8 +217,12 @@ def is_server_accessible(state: dict):
         s.connect((host, port))
         # Close the socket
         s.close()
+        logger.debug(f"{host}:{port} is accessible...")
         return True
-    except socket.error as e:
+    except socket.error as se:
+        logger.warning(f"Error connecting to {host}:{port} - {se}")
+        return False
+    except Exception as e:
         logger.warning(f"Error connecting to {host}:{port} - {e}")
         return False
 
