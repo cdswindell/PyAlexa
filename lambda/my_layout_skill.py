@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import logging
 import os
+import socket
 from os.path import join, dirname
 from typing import Any
 
@@ -79,6 +80,14 @@ dynamodb_adapter = DynamoDbAdapter(table_name=ddb_table_name, create_table=True,
 
 class NoServerException(Exception):
     pass
+
+
+class ServerNotRespondingException(Exception):
+    def __init__(self, server: str, protocol: str) -> None:
+        message = f"Error connecting to {protocol} {server}"
+        super().__init__(message)
+        self.server = server
+        self.protocol = protocol
 
 
 class ApiTokenExpiredException(Exception):
@@ -156,11 +165,20 @@ def encrypt_request(state, server: str = None) -> str:
     return jwt.encode({"UID": uid, "SERVER": server, "magic": "alexa"}, server, algorithm=ALGORITHM)
 
 
-def request_api_key(handler_input, state=None, server: str = None, protocol: str = None) -> requests.Response:
+def request_api_key(
+    handler_input,
+    state=None,
+    server: str = None,
+    protocol: str = None,
+    check_accessible: bool = True,
+) -> requests.Response:
     # get_user_info(handler_input)
     state = state if state else get_state(handler_input)
+
     server = server if server else state.get("server", None)
     protocol = protocol if protocol else state.get("protocol", "http")
+    if check_accessible is True and is_server_accessible(state) is False:
+        raise ServerNotRespondingException(server, protocol)
     response = requests.post(f"{protocol}://{server}/version", json={"uid": encrypt_request(state, server=server)})
     if response.status_code == 200:
         state["api-key"] = response.json().get("api-token", None)
@@ -176,6 +194,35 @@ def get_canonical_slot(slot):
     return None
 
 
+def is_server_accessible(state: dict):
+    """
+    Checks if a server is accessible at the given host and port.
+
+    Args:
+        state (dict): session state, containing host name and protocol.
+
+    Returns:
+        bool: True if the server is accessible, False otherwise.
+    """
+    host = state.get("server", None)
+    port = 443 if state.get("protocol", "http") == "https" else 80
+    if not host:
+        return False
+    try:
+        # Create a socket object
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Set a timeout for the connection attempt
+        s.settimeout(5)
+        # Attempt to connect to the server
+        s.connect((host, port))
+        # Close the socket
+        s.close()
+        return True
+    except socket.error as e:
+        logger.warning(f"Error connecting to {host}:{port} - {e}")
+        return False
+
+
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
 
@@ -185,20 +232,29 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
         if state and state.get("URL_BASE", None) and state.get("server", None):
-            speak_output = f"Welcome back to {SKILL_NAME}!"
-            reprompt = PYTRAIN_REPROMPT
-            state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
-            if "engine" in state:
-                state["engine"] = None
-            response: requests.Response = request_api_key(handler_input, state)
-            if response.status_code != 200:
-                logger.warning(f"Launch request failed with status code: {response.status_code} {response}")
-                speak_output = (
-                    "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
-                    + f"Error code {response.status_code} "
-                    + REQUEST_SERVER_REPROMPT
-                )
-                reprompt = REQUEST_SERVER_REPROMPT
+            if is_server_accessible(state):
+                speak_output = f"Welcome back to {SKILL_NAME}!"
+                reprompt = PYTRAIN_REPROMPT
+                state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
+                if "engine" in state:
+                    state["engine"] = None
+                logger.debug("Requesting API Key...")
+                try:
+                    response: requests.Response = request_api_key(handler_input, state)
+                    if response.status_code != 200:
+                        logger.warning(f"Launch request failed with status code: {response.status_code} {response}")
+                        speak_output = (
+                            "Oh dear, I've hit a snag! Is your PyTrain API server active? If so, try resetting it; "
+                            + f"Error code {response.status_code} "
+                            + REQUEST_SERVER_REPROMPT
+                        )
+                        reprompt = REQUEST_SERVER_REPROMPT
+
+                except Exception as e:
+                    logger.error(e)
+                    raise e
+            else:
+                raise ServerNotRespondingException(state.get("server"), state.get("protocol"))
         else:
             speak_output = REQUEST_SERVER_OUTPUT
             reprompt = REQUEST_SERVER_REPROMPT
@@ -449,6 +505,24 @@ class PyTrainIntentHandler(AbstractRequestHandler):
         return get_canonical_slot(self._slots["volume"]) if "volume" in self._slots else None
 
 
+class ResetApiServerIntentHandler(PyTrainIntentHandler):
+    def handle(self, handler_input: HandlerInput, raise_exception: bool = False) -> Response:
+        super().handle(handler_input, raise_exception)
+        persist_state(
+            handler_input,
+            {
+                "URL_BASE": None,
+                "server": None,
+                "protocol": None,
+                "engine": None,
+                "scope": None,
+            },
+        )
+        speak_output = REQUEST_SERVER_OUTPUT
+        reprompt = REQUEST_SERVER_REPROMPT
+        return handler_input.response_builder.speak(speak_output).ask(reprompt).set_should_end_session(False).response
+
+
 class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
     def handle(self, handler_input: HandlerInput, raise_exception: bool = False) -> Response:
         super().handle(handler_input, raise_exception)
@@ -470,7 +544,13 @@ class SetPyTrainServerIntentHandler(PyTrainIntentHandler):
         processed = "".join(new_parts).strip()
         if processed and processed != "none":
             logger.info(f"Setting PyTrain URL Server: {server} Processed: {processed}")
-            response = request_api_key(handler_input, state=state, server=processed, protocol=http)
+            response = request_api_key(
+                handler_input,
+                state=state,
+                server=processed,
+                protocol=http,
+                check_accessible=False,
+            )
             if response and response.status_code == 200:
                 speak_output = f"Setting PyTrain server URL to {server}"
                 reprompt = PYTRAIN_REPROMPT
@@ -1202,19 +1282,16 @@ class IntentReflectorHandler(AbstractRequestHandler):
 
 
 class CatchAllExceptionHandler(AbstractExceptionHandler):
-    """Generic error handling to capture any syntax or routing errors. If you receive an error
+    """
+    Generic error handling to capture any syntax or routing errors. If you receive an error
     stating the request handler chain is not found, you have not implemented a handler for
     the intent being invoked or included it in the skill builder below.
     """
 
-    def can_handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> bool
+    def can_handle(self, handler_input: HandlerInput, exception: Exception) -> bool:
         return True
 
-    def handle(self, handler_input, exception):
-        # type: (HandlerInput, Exception) -> Response
-        logger.error(exception, exc_info=True)
-
+    def handle(self, handler_input: HandlerInput, exception: Exception) -> Response:
         if isinstance(exception, NoServerException):
             speak_output = REQUEST_SERVER_OUTPUT
             ask_output = REQUEST_SERVER_REPROMPT
@@ -1229,7 +1306,15 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
             speak_output = f"{SKILL_NAME} only supports durations of up to 2 minutes. Please try again."
             ask_output = "try again?"
             end_session = False
+        elif isinstance(exception, ServerNotRespondingException):
+            speak_output = (
+                f"I'm sorry, I can't reach your PyTrain Api server at {exception.protocol} "
+                f"{exception.server}. Please check that the server is up and then try again."
+            )
+            ask_output = ""
+            end_session = True
         else:
+            logger.error(exception, exc_info=True)
             speak_output = "Sorry, I had trouble doing what you asked. Please try again."
             ask_output = "try again?"
             end_session = True
@@ -1272,6 +1357,7 @@ sb.add_request_handler(SoundHornIntentHandler())
 sb.add_request_handler(SpeedIntentHandler())
 sb.add_request_handler(StopImmediateIntentHandler())
 sb.add_request_handler(ThrowSwitchIntentHandler())
+sb.add_request_handler(ResetApiServerIntentHandler())
 
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelIntentHandler())
