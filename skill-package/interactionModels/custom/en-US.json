@@ -3215,7 +3215,9 @@
                 {
                     "name": "SetPyTrainServerIntent",
                     "confirmationRequired": true,
-                    "prompts": {},
+                    "prompts": {
+                        "confirmation": "Confirm.Intent.1635011050618"
+                    },
                     "slots": [
                         {
                             "name": "server",
@@ -4304,6 +4306,15 @@
                     {
                         "type": "PlainText",
                         "value": "To confirm, you want to change your PyTrain Api Server?"
+                    }
+                ]
+            },
+            {
+                "id": "Confirm.Intent.1635011050618",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "To confirm, you want to set your PyTrain Api Server to {server} ?"
                     }
                 ]
             }
