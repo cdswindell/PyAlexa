@@ -55,7 +55,7 @@
           "summary": "Control Lionel TMCC and Legacy Engines, Trains, and Equipment by voice.",
           "smallIconUri": "file://assets/images/en-US_smallIconUri.png",
           "largeIconUri": "file://assets/images/en-US_largeIconUri.png",
-          "updatesDescription": "Modified Sequence Control utterances to support engine-free invocation"
+          "updatesDescription": "Added confirmations to set and reset PyTrain server"
         }
       },
       "testingInstructions": "{\"ask_dist_username\":\"\",\"ask_dist_password\":\"\",\"ask_dist_testing_instructions\":\"My Layout Testing Instructions (tbw).\"}"
