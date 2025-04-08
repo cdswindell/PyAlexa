@@ -522,7 +522,13 @@ class ResetApiServerIntentHandler(PyTrainIntentHandler):
                 "scope": None,
             },
         )
-        speak_output = REQUEST_SERVER_OUTPUT
+        speak_output = """
+        <speak>
+        Your pytrain API server URL has been reset. You will now be asked for a new one.
+        <break strength='strong'/>
+        """
+        speak_output += REQUEST_SERVER_OUTPUT
+        speak_output += "</speak>"
         reprompt = REQUEST_SERVER_REPROMPT
         return handler_input.response_builder.speak(speak_output).ask(reprompt).set_should_end_session(False).response
 
