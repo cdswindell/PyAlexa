@@ -233,16 +233,17 @@ class LaunchRequestHandler(AbstractRequestHandler):
     def can_handle(self, handler_input: HandlerInput) -> bool:
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
+    # noinspection PyUnusedLocal
     def handle(self, handler_input: HandlerInput) -> Response:
         state = get_state(handler_input)
         if state and state.get("URL_BASE", None) and state.get("server", None):
             if is_server_accessible(state):
-                speak_output = f"Welcome back to {SKILL_NAME}!"
-                reprompt = PYTRAIN_REPROMPT
                 state["invocations"] = state["invocations"] + 1 if "invocations" in state else 1
                 if "engine" in state:
                     state["engine"] = None
                 logger.debug("Requesting API Key...")
+                speak_output = f"Welcome back to {SKILL_NAME}!"
+                reprompt = PYTRAIN_REPROMPT
                 try:
                     response: requests.Response = request_api_key(handler_input, state)
                     if response.status_code != 200:
@@ -253,7 +254,6 @@ class LaunchRequestHandler(AbstractRequestHandler):
                             + REQUEST_SERVER_REPROMPT
                         )
                         reprompt = REQUEST_SERVER_REPROMPT
-
                 except Exception as e:
                     logger.error(e)
                     raise e
@@ -262,7 +262,11 @@ class LaunchRequestHandler(AbstractRequestHandler):
         else:
             speak_output = REQUEST_SERVER_OUTPUT
             reprompt = REQUEST_SERVER_REPROMPT
-        return handler_input.response_builder.speak(speak_output).ask(reprompt).set_should_end_session(False).response
+        return (handler_input.response_builder
+                .speak(speak_output)
+                .ask(reprompt)
+                .set_should_end_session(False)
+                .response)
 
 
 class PyTrainIntentHandler(AbstractRequestHandler):
